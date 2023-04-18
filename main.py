@@ -7,12 +7,12 @@ class MHMain():
 
     def __init__(self):
         """Initialize the program"""
-        #self.window = Window()
+        self.window = Window()
         self.dmgcalc = DamageCalc()
 
     def run_program(self):
         """Run the program"""
-        #self.window.make_main_window()
+        self.window.make_main_window()
         self.weapon_stats()
         self.other_stats()
         self.dmgcalc.get_weapon_stats(self.raw, self.elem,
