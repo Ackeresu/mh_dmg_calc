@@ -7,7 +7,7 @@ class DamageCalc():
         """Initialize the class"""
         self.root = root
         #self.wpn_stats = dict.fromkeys(['raw', 'elem', 'crit', 'sharp'])
-        #self.other_stats = dict.fromkeys(['mv', 'hitzone', 'elemhitzone'])
+        #self.other_stats = dict.fromkeys(['mv', 'hzv', 'ehzv'])
 
         self.raw = tk.StringVar()
         self.raw.set(0)
@@ -16,14 +16,14 @@ class DamageCalc():
         self.crit = tk.StringVar()
         self.crit.set(0)
         self.sharp = tk.StringVar()
-        self.sharp.set('green')
+        self.sharp.set('Green')
 
         self.mv = tk.StringVar()
         self.mv.set(0)
-        self.hitzone = tk.StringVar()
-        self.hitzone.set(0)
-        self.elemhitzone = tk.StringVar()
-        self.elemhitzone.set(0)
+        self.hzv = tk.StringVar()
+        self.hzv.set(0)
+        self.ehzv = tk.StringVar()
+        self.ehzv.set(0)
 
         self.root.title("Calculator")
 
@@ -34,7 +34,8 @@ class DamageCalc():
         self.top_frame.pack(side='top', padx=5, pady=5, expand=True)
 
         self.bot_frame = tk.Frame(self.canvas, bg='pink')
-        self.bot_frame.pack(side='bottom', padx=5, pady=5, expand=True)
+        self.bot_frame.pack(side='bottom', fill='both', padx=5, pady=5,
+                            expand=True)
 
         self._create_frames()
         self._create_labels()
@@ -84,15 +85,11 @@ class DamageCalc():
         self.mv_label = tk.Label(self.other_labels, text="Motion value: ")
         self.mv_label.pack(padx=3, pady=3)
 
-        self.hitzone_label = tk.Label(self.other_labels, text="Hitzone: ")
-        self.hitzone_label.pack(padx=3, pady=3)
+        self.hzv_label = tk.Label(self.other_labels, text="Hitzone: ")
+        self.hzv_label.pack(padx=3, pady=3)
 
-        self.elemhitzone_label = tk.Label(self.other_labels,
-                                          text="Elem. hitzone: ")
-        self.elemhitzone_label.pack(padx=3, pady=3)
-
-        # ----- Output -----
-        
+        self.ehzv_label = tk.Label(self.other_labels, text="Elem. hitzone: ")
+        self.ehzv_label.pack(padx=3, pady=3)
 
     def _create_entries(self):
         """Create the entries of the window"""
@@ -102,7 +99,7 @@ class DamageCalc():
         self.raw_entry.pack(padx=3, pady=4)
 
         self.elem_entry = tk.Entry(self.wpn_entries, width=5, justify='center',
-                                  textvariable=self.elem)
+                                   textvariable=self.elem)
         self.elem_entry.pack(padx=3, pady=4)
 
         self.crit_entry = tk.Entry(self.wpn_entries, width=5, justify='center',
@@ -110,28 +107,31 @@ class DamageCalc():
         self.crit_entry.pack(padx=3, pady=4)
 
         self.sharp_entry = tk.Entry(self.wpn_entries, width=8, justify='center',
-                                  textvariable=self.sharp)
+                                    textvariable=self.sharp)
         self.sharp_entry.pack(padx=3, pady=4)
 
         # ----- Other -----
         self.mv_entry = tk.Entry(self.other_entries, width=5, justify='center',
-                                  textvariable=self.mv)
+                                 textvariable=self.mv)
         self.mv_entry.pack(padx=3, pady=4)
 
-        self.hitzone_entry = tk.Entry(self.other_entries, width=5,
-                                      justify='center',
-                                      textvariable=self.hitzone)
-        self.hitzone_entry.pack(padx=3, pady=4)
+        self.hzv_entry = tk.Entry(self.other_entries, width=5, justify='center',
+                                  textvariable=self.hzv)
+        self.hzv_entry.pack(padx=3, pady=4)
 
-        self.elemhitzone_entry = tk.Entry(self.other_entries, width=5,
-                                          justify='center',
-                                          textvariable=self.elemhitzone)
-        self.elemhitzone_entry.pack(padx=3, pady=4)
+        self.ehzv_entry = tk.Entry(self.other_entries, width=5,
+                                   justify='center', textvariable=self.ehzv)
+        self.ehzv_entry.pack(padx=3, pady=4)
 
     def _calculate(self):
         """Call the necessary functions to calculate the damage"""
+        # Check for a previous output and delete it if present.
+        try:
+            self.output_label.destroy()
+        except AttributeError:
+            pass
         self._get_values()
-        self._do_calc()
+        self._do_calcs()
         self._show_results()
     
     def _get_values(self):
@@ -142,13 +142,13 @@ class DamageCalc():
         self.sharp = self.sharp_entry.get()
 
         self.mv = float(self.mv_entry.get())
-        self.mv = self.mv /100
-        self.hitzone = float(self.hitzone_entry.get())
-        self.hitzone = self.hitzone /100
-        self.elemhitzone = float(self.elemhitzone_entry.get())
-        self.elemhitzone = self.elemhitzone /100
+        self.mv = self.mv / 100
+        self.hzv = float(self.hzv_entry.get())
+        self.hzv = self.hzv / 100
+        self.ehzv = float(self.ehzv_entry.get())
+        self.ehzv = self.ehzv / 100
 
-    def _do_calc(self):
+    def _do_calcs(self):
         """Do the calculations"""
         self._sharp_mod()
         raw_sharp_mltp = self.sharp_mltp[0]
@@ -157,17 +157,30 @@ class DamageCalc():
         phys_atk = (self.raw * raw_sharp_mltp) * self.mv
         elem_atk = (self.elem * elem_sharp_mltp)
 
-        self.phys_dmg = int(phys_atk * self.hitzone)
-        self.elem_dmg = int(elem_atk * self.elemhitzone)
+        crit_calc = 1 + ((self.crit / 100) * (25 / 100))
+
+        self.eff_raw = round((self.raw * raw_sharp_mltp) * crit_calc)
+        self.eff_elem = round(self.elem * elem_sharp_mltp)
+
+        self.phys_dmg = round(phys_atk * self.hzv)
+        self.elem_dmg = round(elem_atk * self.ehzv)
+
+        self.phys_crit_dmg = round(self.phys_dmg * 1.25)
+        self.elem_crit_dmg = round(self.elem_dmg * 1.15)
 
         self.tot_dmg = self.phys_dmg + self.elem_dmg
 
     def _show_results(self):
         """Print the results"""
         self.output_label = tk.Label(self.bot_frame,
-                                     text=f"Total damage: {self.tot_dmg}\n"
-                                          f"Physical: {self.phys_dmg}\n"
-                                          f"Elemental: {self.elem_dmg}")
+            text=f"Effective raw: {self.eff_raw}\n"
+                 f"Effective element: {self.eff_elem}\n\n"
+                 f"Total damage: {self.tot_dmg}\n"
+                 f"If crit: {self.phys_crit_dmg + self.elem_crit_dmg}\n\n"
+                 f"Physical: {self.phys_dmg}\n"
+                 f"If crit: {self.phys_crit_dmg}\n\n"
+                 f"Elemental: {self.elem_dmg}\n"
+                 f"If crit: {self.elem_crit_dmg}")
         self.output_label.pack(side='bottom')
     
     def _sharp_mod(self):
