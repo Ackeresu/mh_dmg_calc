@@ -1,42 +1,58 @@
 import tkinter as tk
-from window import Window
 from damage_calc import DamageCalc
 
 class MHMain():
-    """Overall class to manage everything"""
+    """Main class"""
 
-    def __init__(self):
+    def __init__(self, root):
         """Initialize the program"""
-        self.window = Window()
-        self.dmgcalc = DamageCalc()
+        self.root = root
 
-    def run_program(self):
-        """Run the program"""
-        self.window.make_main_window()
-        self.weapon_stats()
-        self.other_stats()
-        self.dmgcalc.get_weapon_stats(self.raw, self.elem,
-                                      self.affinity, self.sharp)
-        self.dmgcalc.do_calc(self.motion, self.hitzone, self.elemhitzone)
-        self.dmgcalc.show_results()
+        self.canvas = tk.Canvas(self.root, width=400, height=300)
+        self.canvas.pack()
 
-    def weapon_stats(self):
-        """Get the weapon stats from the user"""
-        self.raw = float(input("--- Weapon stats ---\nRaw: "))
-        self.elem = float(input("Element value: "))
-        self.affinity = float(input("Affinity: "))
-        self.sharp = input("Sharpness color: ")
+        self.create_widgets()
+        self.place_widgets()
 
-    def other_stats(self):
-        """Get the other stats necessary for the calc"""
-        self.motion = float(input("\nMotion value: "))
-        self.hitzone = float(input("Monster hit-zone: "))
-        self.elemhitzone = float(input("Monster elemental hit-zone: "))
-        self.motion = self.motion / 100
-        self.hitzone = self.hitzone / 100
-        self.elemhitzone = self.elemhitzone / 100
+    def create_widgets(self):
+        """Generate the widgets"""
+        # ----- DIFF -----
+        # Input
+        self.name_input = tk.Entry(self.root)
+        # Button
+        self.print_name = tk.Button(self.root,
+                                    text="clicca se vuoi venire diffato",
+                                    command=self.mimmo)
+        
+        # ----- CALCULATOR -----
+        self.calc = tk.Button(self.root, text="clicca se vuoi calcolare",
+                              command=lambda:
+                              self.make_calc_window(DamageCalc))
+        self.calc.pack(side="right")
+
+    def place_widgets(self):
+        """Place the widgets in the window"""
+        # ----- DIFF -----
+        # Input
+        self.canvas.create_window(200, 120, window=self.name_input)
+        # Button
+        self.canvas.create_window(200, 150, window=self.print_name)
+
+    def mimmo(self):
+        """Mimmo diff"""
+        name = self.name_input.get()
+        
+        name_output = tk.Label(self.root, text=f"{name} diff")
+        self.canvas.create_window(200, 180, window=name_output)
+
+    def make_calc_window(self, _class):
+        """Create the calculator window"""
+        self.calc = tk.Toplevel(self.root)
+        _class(self.calc)
 
 if __name__ == '__main__':
     # Make an app istance and run the app
-    mh = MHMain()
-    mh.run_program()
+    root = tk.Tk()
+    app = MHMain(root)
+    app.root.title("MH Builder")
+    root.mainloop()
