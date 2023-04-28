@@ -1,5 +1,7 @@
 import tkinter as tk
-from damage_calc import DamageCalc
+
+from dmg_calc import DamageCalc
+from dmg_calc_win import DamageCalcWin
 
 class MHMain():
     """Main class"""
@@ -27,7 +29,7 @@ class MHMain():
         # ----- CALCULATOR -----
         self.calc = tk.Button(self.root, text="clicca se vuoi calcolare",
                               command=lambda:
-                              self.make_calc_window(DamageCalc))
+                              self.make_calc_window(DamageCalcWin))
         self.calc.pack(side="right")
 
     def place_widgets(self):
