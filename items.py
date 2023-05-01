@@ -1,6 +1,5 @@
 import tkinter as tk
 
-
 class Items():
     """A class that manage the items data"""
 

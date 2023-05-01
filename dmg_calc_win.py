@@ -1,6 +1,6 @@
 import tkinter as tk
-from tkinter import ttk
 
+from get_values import GetValues
 from dmg_calc import DamageCalc
 from items import Items
 from skills import Skills
@@ -11,7 +11,6 @@ class DamageCalcWin():
     def __init__(self, root):
         """Initialize the class"""
         self.root = root
-        self.dmg_calc = DamageCalc()
         self.items = Items()
         self.skills = Skills()
         #self.wpn_stats = dict.fromkeys(['raw', 'elem', 'crit', 'sharp'])
@@ -19,27 +18,22 @@ class DamageCalcWin():
 
         # Weapon variables
         self.raw = tk.IntVar()
-        self.raw.set(160)
+        self.raw.set(300)
         self.elem = tk.IntVar()
-        self.elem.set(0)
+        self.elem.set(100)
         self.crit = tk.IntVar()
-        self.crit.set(0)
+        self.crit.set(30)
         self.sharp = tk.StringVar()
-        self.sharp.set('Green')
+        self.sharp.set('White')
         # Other variables
         self.mv = tk.DoubleVar()
-        self.mv.set(46)
+        self.mv.set(50)
         self.hzv = tk.DoubleVar()
-        self.hzv.set(68)
+        self.hzv.set(45)
         self.ehzv = tk.DoubleVar()
-        self.ehzv.set(0)
+        self.ehzv.set(30)
 
-        self.atk_buffs = tk.IntVar()
-        self.atk_buffs.set(0)
-        self.display_atk = tk.IntVar()
-        self.display_atk.set(0)
-
-        self.root.title("Calculator")
+        self.root.title("MH Damage Calculator")
         
         self._create_window()
 
@@ -55,7 +49,6 @@ class DamageCalcWin():
         self._create_entries()
         self._create_optionmenu()
         self._create_checkboxes()
-        
 
     def _create_main_frames(self):
         """Create the frames of the window"""
@@ -76,6 +69,10 @@ class DamageCalcWin():
         """Create the subframes of the window"""
         # ---------- Top frame ----------
         # ----- Weapon -----
+        # Title
+        self.top_title = tk.Label(self.top_frame, text="Weapon")
+        self.top_title.pack(side='top', fill='none',
+                            padx=2, pady=2, expand=True)
         # Labels
         self.wpn_labels = tk.Frame(self.top_frame,bg='blue')
         self.wpn_labels.pack(side='left', anchor='w', fill='none',
@@ -188,46 +185,80 @@ class DamageCalcWin():
                                    justify='center', textvariable=self.ehzv)
         self.ehzv_entry.pack(anchor='w', padx=3, pady=4)
 
+# -----------------------------------------------------------------------------
+# -------------------------------- OPTIONMENU ---------------------------------
+# -----------------------------------------------------------------------------
+
     def _create_optionmenu(self):
         """Create the option menus of the window"""
+        # Attack boost
+        self.atk_boost_menu = tk.OptionMenu(self.right_optionmenu,
+            self.skills.atk_boost_lvl, *self.skills.lvl_list_7)
+        self.atk_boost_menu.config(state='disabled')
+        self.atk_boost_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Agitator
+        self.agitator_menu = tk.OptionMenu(self.right_optionmenu,
+            self.skills.agitator_lvl, *self.skills.lvl_list_5)
+        self.agitator_menu.config(state='disabled')
+        self.agitator_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Elem attack
+        self.elem_atk_menu = tk.OptionMenu(self.right_optionmenu,
+            self.skills.elem_atk_lvl, *self.skills.lvl_list_5)
+        self.elem_atk_menu.config(state='disabled')
+        self.elem_atk_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Critical eye
+        self.crit_eye_menu = tk.OptionMenu(self.right_optionmenu,
+            self.skills.crit_eye_lvl, *self.skills.lvl_list_7)
+        self.crit_eye_menu.config(state='disabled')
+        self.crit_eye_menu.pack(anchor='w', padx=3, pady=1)
+
         # Critical boost
         self.crit_boost_menu = tk.OptionMenu(self.right_optionmenu,
-            self.skills.crit_boost_lvl_n, *self.skills.crit_boost_lvl)
+            self.skills.crit_boost_lvl, *self.skills.lvl_list_3)
         self.crit_boost_menu.config(state='disabled')
-        self.crit_boost_menu.pack(anchor='w', padx=3, pady=2)
+        self.crit_boost_menu.pack(anchor='w', padx=3, pady=1)
 
         # Critical element
         self.crit_elem_menu = tk.OptionMenu(self.right_optionmenu,
-            self.skills.crit_elem_lvl_n, *self.skills.crit_elem_lvl)
+            self.skills.crit_elem_lvl, *self.skills.lvl_list_3)
         self.crit_elem_menu.config(state='disabled')
-        self.crit_elem_menu.pack(anchor='w', padx=3, pady=2)
+        self.crit_elem_menu.pack(anchor='w', padx=3, pady=1)
+
+# -----------------------------------------------------------------------------
+# -------------------------------- CHECKBOXES ---------------------------------
+# -----------------------------------------------------------------------------
 
     def _create_checkboxes(self):
         """Create the checkboxes of the window"""
-        # ----- Items -----
+
+# -------------------------------- ITEMS --------------------------------------
+        
         # Powercharm
         self.powercharm_check = tk.Checkbutton(self.left_checks,
             text='Powercharm', variable=self.items.powercharm,
             onvalue=1, offvalue=0)
-        self.powercharm_check.pack(anchor='w', padx=3, pady=3)
+        self.powercharm_check.pack(anchor='w', padx=3, pady=4)
 
         # Powertalon
         self.powertalon_check = tk.Checkbutton(self.left_checks,
             text='Powertalon', variable=self.items.powertalon,
             onvalue=1, offvalue=0)
-        self.powertalon_check.pack(anchor='w', padx=3, pady=3)
+        self.powertalon_check.pack(anchor='w', padx=3, pady=4)
 
         # Might Seed
         self.might_seed_check = tk.Checkbutton(self.left_checks,
             text='Might Seed', variable=self.items.might_seed,
             onvalue=1, offvalue=0)
-        self.might_seed_check.pack(anchor='w', padx=3, pady=3)
+        self.might_seed_check.pack(anchor='w', padx=3, pady=4)
 
         # Demon Powder
         self.demon_powder_check = tk.Checkbutton(self.left_checks,
             text='Demon Powder', variable=self.items.demon_powder,
             onvalue=1, offvalue=0)
-        self.demon_powder_check.pack(anchor='w', padx=3, pady=3)
+        self.demon_powder_check.pack(anchor='w', padx=3, pady=4)
 
         # Demondrug
         self.demondrug_check = tk.Checkbutton(self.left_checks,
@@ -236,7 +267,7 @@ class DamageCalcWin():
         self.demondrug_check.config(command=lambda:self._mutually_ex(
                                                     self.items.demondrug,
                                                     self.mega_demondrug_check))
-        self.demondrug_check.pack(anchor='w', padx=3, pady=3)
+        self.demondrug_check.pack(anchor='w', padx=3, pady=4)
 
         # Mega Demondrug
         self.mega_demondrug_check = tk.Checkbutton(self.left_checks,
@@ -245,9 +276,46 @@ class DamageCalcWin():
         self.mega_demondrug_check.config(command=lambda:self._mutually_ex(
                                                     self.items.mega_demondrug,
                                                     self.demondrug_check))
-        self.mega_demondrug_check.pack(anchor='w', padx=3, pady=3)
+        self.mega_demondrug_check.pack(anchor='w', padx=3, pady=4)
 
-        # ----- Skills -----
+# ---------------------------------- SKILLS -----------------------------------
+
+        # Attack boost
+        self.atk_boost_check = tk.Checkbutton(self.right_checks,
+            text='Attack Boost', variable=self.skills.atk_boost,
+            onvalue=1, offvalue=0)
+        self.atk_boost_check.config(command=lambda:self._switch_state(
+                                                    self.skills.atk_boost,
+                                                    self.atk_boost_menu))
+        self.atk_boost_check.pack(anchor='w', padx=3, pady=4)
+
+        # Agitator
+        self.agitator_check = tk.Checkbutton(self.right_checks,
+            text='Agitator', variable=self.skills.agitator,
+            onvalue=1, offvalue=0)
+        self.agitator_check.config(command=lambda:self._switch_state(
+                                                    self.skills.agitator,
+                                                    self.agitator_menu))
+        self.agitator_check.pack(anchor='w', padx=3, pady=4)
+
+        # Elem attack
+        self.elem_atk_check = tk.Checkbutton(self.right_checks,
+            text='Elem Attack', variable=self.skills.elem_atk,
+            onvalue=1, offvalue=0)
+        self.elem_atk_check.config(command=lambda:self._switch_state(
+                                                    self.skills.elem_atk,
+                                                    self.elem_atk_menu))
+        self.elem_atk_check.pack(anchor='w', padx=3, pady=4)
+
+        # Critical eye
+        self.crit_eye_check = tk.Checkbutton(self.right_checks,
+            text='Critical Eye', variable=self.skills.crit_eye,
+            onvalue=1, offvalue=0)
+        self.crit_eye_check.config(command=lambda:self._switch_state(
+                                                    self.skills.crit_eye,
+                                                    self.crit_eye_menu))
+        self.crit_eye_check.pack(anchor='w', padx=3, pady=4)
+
         # Critical boost
         self.crit_boost_check = tk.Checkbutton(self.right_checks,
             text='Critical Boost', variable=self.skills.crit_boost,
@@ -255,7 +323,7 @@ class DamageCalcWin():
         self.crit_boost_check.config(command=lambda:self._switch_state(
                                                     self.skills.crit_boost,
                                                     self.crit_boost_menu))
-        self.crit_boost_check.pack(anchor='w', padx=3, pady=3)
+        self.crit_boost_check.pack(anchor='w', padx=3, pady=4)
 
         # Critical element
         self.crit_elem_check = tk.Checkbutton(self.right_checks,
@@ -282,10 +350,6 @@ class DamageCalcWin():
         else:
             menu['state'] = 'active'
 
-# -----------------------------------------------------------------------------
-# ------------------------------- CALCULATIONS --------------------------------
-# -----------------------------------------------------------------------------
-
     def _calculate(self):
         """Call the necessary functions to calculate the damage"""
         # Check for a previous output and delete it if present.
@@ -293,142 +357,24 @@ class DamageCalcWin():
             self.output_label.destroy()
         except AttributeError:
             pass
-        self._get_values()
-        self._do_calcs()
+        self.get_values = GetValues(self)
+        self.get_values.get_values()
+        self.calc = DamageCalc(self.get_values)
+        self.calc.do_calcs()
         self._show_results()
-
-    def _get_values(self):
-        """"""
-        self._get_weapon_values()
-        self._get_items_values()
-        self._get_skills_values()
-    
-    def _get_weapon_values(self):
-        """Get the values from the entries and convert them if necessary"""
-        self.raw = float(self.raw_entry.get())
-        self.elem = float(self.elem_entry.get())
-        self.crit = float(self.crit_entry.get())
-        self.sharp = self.sharp_entry.get()
-
-        self.mv = float(self.mv_entry.get())
-        self.mv = self.mv / 100
-        self.hzv = float(self.hzv_entry.get())
-        self.hzv = self.hzv / 100
-        self.ehzv = float(self.ehzv_entry.get())
-        self.ehzv = self.ehzv / 100
-
-    def _get_items_values(self):
-        """Get the values from the active items"""
-        atk_buffs = 0
-        powercharm = self.items.powercharm.get()
-        powertalon = self.items.powertalon.get()
-        might_seed = self.items.might_seed.get()
-        demon_powder = self.items.demon_powder.get()
-        demondrug = self.items.demondrug.get()
-        mega_demondrug = self.items.mega_demondrug.get()
-
-        if powercharm == 1:
-            atk_buffs += 6
-        if powertalon == 1:
-            atk_buffs += 9
-        if mega_demondrug == 1:
-            atk_buffs += 7
-        if demondrug == 1:
-            atk_buffs += 5
-        if might_seed == 1:
-            atk_buffs += 10
-        if demon_powder == 1:
-            atk_buffs += 10
-
-        self.atk_buffs = atk_buffs
-
-    def _get_skills_values(self):
-        """Get the values from the active skills"""
-        # Critical boost
-        crit_boost = self.skills.crit_boost.get()
-        crit_boost_lvl_n = self.skills.crit_boost_lvl_n.get()
-
-        if crit_boost == 0:
-            self.crit_mltp = 1.25
-            self.crit_value = 25
-        elif crit_boost == 1 and crit_boost_lvl_n == 1:
-            self.crit_mltp = 1.30
-            self.crit_value = 30
-        elif crit_boost == 1 and crit_boost_lvl_n == 2:
-            self.crit_mltp = 1.35
-            self.crit_value = 35
-        elif crit_boost == 1 and crit_boost_lvl_n == 3:
-            self.crit_mltp = 1.40
-            self.crit_value = 40
-        
-        # Critical element
-        crit_elem = self.skills.crit_elem.get()
-        crit_elem_lvl_n = self.skills.crit_elem_lvl_n.get()
-
-        if crit_elem == 0:
-            self.crit_elem_mltp = 1.0
-        elif crit_elem == 1 and crit_elem_lvl_n == 1:
-            self.crit_elem_mltp = 1.05
-        elif crit_elem == 1 and crit_elem_lvl_n == 2:
-            self.crit_elem_mltp = 1.10
-        elif crit_elem == 1 and crit_elem_lvl_n == 3:
-            self.crit_elem_mltp = 1.15
-
-    def _do_calcs(self):
-        """Do the calculations"""
-        # Calculate the sharpness multiplier
-        self._sharp_mod()
-        raw_sharp_mltp = self.sharp_mltp[0]
-        elem_sharp_mltp = self.sharp_mltp[1]
-
-        # Sum the raw with the atk buffs
-        self.display_atk = round(self.raw + self.atk_buffs)
-
-        phys_atk = (self.display_atk * raw_sharp_mltp) * self.mv
-        elem_atk = (self.elem * elem_sharp_mltp)
-
-        # Calculate the effective raw/elem
-        crit_calc = 1 + ((self.crit / 100) * (self.crit_value / 100))
-
-        self.eff_raw = round((self.display_atk * raw_sharp_mltp) * crit_calc)
-        self.eff_elem = round(self.elem * elem_sharp_mltp)
-
-        # Calculate the damage
-        self.phys_dmg = round(phys_atk * self.hzv)
-        self.elem_dmg = round(elem_atk * self.ehzv)
-
-        self.phys_crit_dmg = round(self.phys_dmg * self.crit_mltp)
-        self.elem_crit_dmg = round(self.elem_dmg * self.crit_elem_mltp)
-
-        self.tot_dmg = self.phys_dmg + self.elem_dmg
 
     def _show_results(self):
         """Print the results"""
         self.output_label = tk.Label(self.bot_frame, justify='left',
-            text=f"Displayed attack: {self.display_atk}\n"
-                 f"Effective raw: {self.eff_raw}\n"
-                 f"Effective element: {self.eff_elem}\n\n"
-                 f"Total damage: {self.tot_dmg}\n"
-                 f"If crit: {self.phys_crit_dmg + self.elem_crit_dmg}\n\n"
-                 f"Physical: {self.phys_dmg}\n"
-                 f"If crit: {self.phys_crit_dmg}\n\n"
-                 f"Elemental: {self.elem_dmg}\n"
-                 f"If crit: {self.elem_crit_dmg}")
+            text=f"Displayed attack: {self.calc.display_atk}\n"
+                 f"Displayed element: {self.calc.display_elem}\n"
+                 f"Affinity: {self.calc.final_crit}\n\n"
+                 f"Effective raw: {self.calc.eff_raw}\n"
+                 f"Effective element: {self.calc.eff_elem}\n\n"
+                 f"Total damage: {self.calc.tot_dmg}\n"
+                 f"If crit: {self.calc.phys_crit_dmg + self.calc.elem_crit_dmg}"
+                 f"\n\nPhysical: {self.calc.phys_dmg}\n"
+                 f"If crit: {self.calc.phys_crit_dmg}\n\n"
+                 f"Elemental: {self.calc.elem_dmg}\n"
+                 f"If crit: {self.calc.elem_crit_dmg}")
         self.output_label.pack(side='bottom')
-    
-    def _sharp_mod(self):
-        """Calculate the sharpness modifier"""
-        if self.sharp.lower() == 'red':
-            self.sharp_mltp = [0.5, 0.25]
-        elif self.sharp.lower() == 'orange':
-            self.sharp_mltp = [0.75, 0.5]
-        elif self.sharp.lower() == 'yellow':
-            self.sharp_mltp = [1, 0.75]
-        elif self.sharp.lower() == 'green':
-            self.sharp_mltp = [1.05, 1]
-        elif self.sharp.lower() == 'blue':
-            self.sharp_mltpr = [1.2, 1.063]
-        elif self.sharp.lower() == 'white':
-            self.sharp_mltp = [1.32, 1.15]
-        elif self.sharp.lower() == 'purple':
-            self.sharp_mltp = [1.39, 1.27]

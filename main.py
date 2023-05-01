@@ -1,6 +1,5 @@
 import tkinter as tk
 
-from dmg_calc import DamageCalc
 from dmg_calc_win import DamageCalcWin
 
 class MHMain():
