@@ -16,6 +16,7 @@ class DamageCalc():
         self.atk_buffs = value.atk_buffs
         self.elem_mltp = value.elem_mltp
         self.elem_buffs = value.elem_buffs
+        
         self.crit_mltp = value.crit_mltp
         self.crit_mltp_value = value.crit_mltp_value
         self.crit_elem_mltp = value.crit_elem_mltp

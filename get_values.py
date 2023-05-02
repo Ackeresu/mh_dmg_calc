@@ -99,6 +99,43 @@ class GetValues():
             self.atk_buffs += 20
             self.crit_buffs += 15
         
+        # Peak performance
+        peak_perf = self.dmg_calc_win.skills.peak_perf.get()
+        peak_perf_lvl = self.dmg_calc_win.skills.peak_perf_lvl.get()
+
+        if peak_perf == 1 and peak_perf_lvl == 1:
+            self.atk_buffs += 5
+        elif peak_perf == 1 and peak_perf_lvl == 2:
+            self.atk_buffs += 10
+        elif peak_perf == 1 and peak_perf_lvl == 3:
+            self.atk_buffs += 20
+
+        # Resentment
+        resentment = self.dmg_calc_win.skills.resentment.get()
+        resentment_lvl = self.dmg_calc_win.skills.resentment_lvl.get()
+
+        if resentment == 1 and resentment_lvl == 1:
+            self.atk_buffs += 5
+        elif resentment == 1 and resentment_lvl == 2:
+            self.atk_buffs += 10
+        elif resentment == 1 and resentment_lvl == 3:
+            self.atk_buffs += 15
+        elif resentment == 1 and resentment_lvl == 4:
+            self.atk_buffs += 20
+        elif resentment == 1 and resentment_lvl == 5:
+            self.atk_buffs += 25
+
+        # Resuscitate
+        resuscitate = self.dmg_calc_win.skills.resuscitate.get()
+        resuscitate_lvl = self.dmg_calc_win.skills.resuscitate_lvl.get()
+
+        if resuscitate == 1 and resuscitate_lvl == 1:
+            self.atk_buffs += 5
+        elif resuscitate == 1 and resuscitate_lvl == 2:
+            self.atk_buffs += 10
+        elif resuscitate == 1 and resuscitate_lvl == 3:
+            self.atk_buffs += 20
+        
         # ----- Element -----
         # Elem attack
         elem_atk = self.dmg_calc_win.skills.elem_atk.get()
@@ -167,3 +204,16 @@ class GetValues():
             self.crit_elem_mltp = 1.10
         elif crit_elem == 1 and crit_elem_lvl == 3:
             self.crit_elem_mltp = 1.15
+
+        # Weakness exploit
+        weak_ex = self.dmg_calc_win.skills.weak_ex.get()
+        weak_ex_lvl = self.dmg_calc_win.skills.weak_ex_lvl.get()
+
+        if self.hzv < 0.45:
+            pass
+        elif weak_ex == 1 and weak_ex_lvl == 1:
+            self.crit_buffs += 15
+        elif weak_ex == 1 and weak_ex_lvl == 2:
+            self.crit_buffs += 30
+        elif weak_ex == 1 and weak_ex_lvl == 3:
+            self.crit_buffs += 50

@@ -23,6 +23,21 @@ class Skills:
         self.agitator = tk.IntVar()
         self.agitator_lvl = tk.IntVar()
         self.agitator_lvl.set(5)
+
+        # Peak performance
+        self.peak_perf = tk.IntVar()
+        self.peak_perf_lvl = tk.IntVar()
+        self.peak_perf_lvl.set(3)
+
+        # Resentment
+        self.resentment = tk.IntVar()
+        self.resentment_lvl = tk.IntVar()
+        self.resentment_lvl.set(5)
+
+        # Resuscitate
+        self.resuscitate = tk.IntVar()
+        self.resuscitate_lvl = tk.IntVar()
+        self.resuscitate_lvl.set(3)
         
         # ----- Element -----
         # Elem attack
@@ -45,3 +60,8 @@ class Skills:
         self.crit_elem = tk.IntVar()
         self.crit_elem_lvl = tk.IntVar()
         self.crit_elem_lvl.set(3)
+
+        # Weakness exploit
+        self.weak_ex = tk.IntVar()
+        self.weak_ex_lvl = tk.IntVar()
+        self.weak_ex_lvl.set(3)

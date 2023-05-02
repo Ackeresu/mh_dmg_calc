@@ -118,13 +118,29 @@ class DamageCalcWin():
         self.right_center_title = tk.Label(self.right_center, text="Skills")
         self.right_center_title.pack(side='top', fill='none',
                                      padx=2, pady=2, expand=True)
-        # Checks
-        self.right_checks = tk.Frame(self.right_center, bg='orange')
-        self.right_checks.pack(side='left', anchor='w', fill='none',
+        # Checks 1 
+        self.right_checks_1 = tk.Frame(self.right_center, bg='orange')
+        self.right_checks_1.pack(side='left', anchor='w', fill='none',
                                padx=2, pady=2, expand=True)
-        # Option menus
-        self.right_optionmenu = tk.Frame(self.right_center, bg='yellow')
-        self.right_optionmenu.pack(side='left', anchor='w', fill='none',
+        # Option menus 1
+        self.right_optionmenu_1 = tk.Frame(self.right_center, bg='yellow')
+        self.right_optionmenu_1.pack(side='left', anchor='w', fill='none',
+                                   padx=2, pady=2, expand=True)
+        # Checks 2
+        self.right_checks_2 = tk.Frame(self.right_center, bg='orange')
+        self.right_checks_2.pack(side='left', anchor='w', fill='none',
+                               padx=2, pady=2, expand=True)
+        # Option menus 2
+        self.right_optionmenu_2 = tk.Frame(self.right_center, bg='yellow')
+        self.right_optionmenu_2.pack(side='left', anchor='w', fill='none',
+                                   padx=2, pady=2, expand=True)
+        # Checks 3
+        self.right_checks_3 = tk.Frame(self.right_center, bg='orange')
+        self.right_checks_3.pack(side='left', anchor='w', fill='none',
+                               padx=2, pady=2, expand=True)
+        # Option menus 3
+        self.right_optionmenu_3 = tk.Frame(self.right_center, bg='yellow')
+        self.right_optionmenu_3.pack(side='left', anchor='w', fill='none',
                                    padx=2, pady=2, expand=True)
         
     def _create_labels(self):
@@ -192,40 +208,64 @@ class DamageCalcWin():
     def _create_optionmenu(self):
         """Create the option menus of the window"""
         # Attack boost
-        self.atk_boost_menu = tk.OptionMenu(self.right_optionmenu,
+        self.atk_boost_menu = tk.OptionMenu(self.right_optionmenu_1,
             self.skills.atk_boost_lvl, *self.skills.lvl_list_7)
         self.atk_boost_menu.config(state='disabled')
         self.atk_boost_menu.pack(anchor='w', padx=3, pady=1)
 
         # Agitator
-        self.agitator_menu = tk.OptionMenu(self.right_optionmenu,
+        self.agitator_menu = tk.OptionMenu(self.right_optionmenu_1,
             self.skills.agitator_lvl, *self.skills.lvl_list_5)
         self.agitator_menu.config(state='disabled')
         self.agitator_menu.pack(anchor='w', padx=3, pady=1)
 
+        # Peak performance
+        self.peak_perf_menu = tk.OptionMenu(self.right_optionmenu_1,
+            self.skills.peak_perf_lvl, *self.skills.lvl_list_3)
+        self.peak_perf_menu.config(state='disabled')
+        self.peak_perf_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Resentment
+        self.resentment_menu = tk.OptionMenu(self.right_optionmenu_1,
+            self.skills.resentment_lvl, *self.skills.lvl_list_5)
+        self.resentment_menu.config(state='disabled')
+        self.resentment_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Resuscitate
+        self.resuscitate_menu = tk.OptionMenu(self.right_optionmenu_1,
+            self.skills.resuscitate_lvl, *self.skills.lvl_list_3)
+        self.resuscitate_menu.config(state='disabled')
+        self.resuscitate_menu.pack(anchor='w', padx=3, pady=1)
+
         # Elem attack
-        self.elem_atk_menu = tk.OptionMenu(self.right_optionmenu,
+        self.elem_atk_menu = tk.OptionMenu(self.right_optionmenu_2,
             self.skills.elem_atk_lvl, *self.skills.lvl_list_5)
         self.elem_atk_menu.config(state='disabled')
         self.elem_atk_menu.pack(anchor='w', padx=3, pady=1)
 
         # Critical eye
-        self.crit_eye_menu = tk.OptionMenu(self.right_optionmenu,
+        self.crit_eye_menu = tk.OptionMenu(self.right_optionmenu_3,
             self.skills.crit_eye_lvl, *self.skills.lvl_list_7)
         self.crit_eye_menu.config(state='disabled')
         self.crit_eye_menu.pack(anchor='w', padx=3, pady=1)
 
         # Critical boost
-        self.crit_boost_menu = tk.OptionMenu(self.right_optionmenu,
+        self.crit_boost_menu = tk.OptionMenu(self.right_optionmenu_3,
             self.skills.crit_boost_lvl, *self.skills.lvl_list_3)
         self.crit_boost_menu.config(state='disabled')
         self.crit_boost_menu.pack(anchor='w', padx=3, pady=1)
 
         # Critical element
-        self.crit_elem_menu = tk.OptionMenu(self.right_optionmenu,
+        self.crit_elem_menu = tk.OptionMenu(self.right_optionmenu_3,
             self.skills.crit_elem_lvl, *self.skills.lvl_list_3)
         self.crit_elem_menu.config(state='disabled')
         self.crit_elem_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Critical element
+        self.weak_ex_menu = tk.OptionMenu(self.right_optionmenu_3,
+            self.skills.weak_ex_lvl, *self.skills.lvl_list_3)
+        self.weak_ex_menu.config(state='disabled')
+        self.weak_ex_menu.pack(anchor='w', padx=3, pady=1)
 
 # -----------------------------------------------------------------------------
 # -------------------------------- CHECKBOXES ---------------------------------
@@ -281,7 +321,7 @@ class DamageCalcWin():
 # ---------------------------------- SKILLS -----------------------------------
 
         # Attack boost
-        self.atk_boost_check = tk.Checkbutton(self.right_checks,
+        self.atk_boost_check = tk.Checkbutton(self.right_checks_1,
             text='Attack Boost', variable=self.skills.atk_boost,
             onvalue=1, offvalue=0)
         self.atk_boost_check.config(command=lambda:self._switch_state(
@@ -290,7 +330,7 @@ class DamageCalcWin():
         self.atk_boost_check.pack(anchor='w', padx=3, pady=4)
 
         # Agitator
-        self.agitator_check = tk.Checkbutton(self.right_checks,
+        self.agitator_check = tk.Checkbutton(self.right_checks_1,
             text='Agitator', variable=self.skills.agitator,
             onvalue=1, offvalue=0)
         self.agitator_check.config(command=lambda:self._switch_state(
@@ -298,8 +338,35 @@ class DamageCalcWin():
                                                     self.agitator_menu))
         self.agitator_check.pack(anchor='w', padx=3, pady=4)
 
+        # Peak performance
+        self.peak_perf_check = tk.Checkbutton(self.right_checks_1,
+            text='Peak Performance', variable=self.skills.peak_perf,
+            onvalue=1, offvalue=0)
+        self.peak_perf_check.config(command=lambda:self._switch_state(
+                                                    self.skills.peak_perf,
+                                                    self.peak_perf_menu))
+        self.peak_perf_check.pack(anchor='w', padx=3, pady=4)
+
+        # Resentment
+        self.resentment_check = tk.Checkbutton(self.right_checks_1,
+            text='Resentment', variable=self.skills.resentment,
+            onvalue=1, offvalue=0)
+        self.resentment_check.config(command=lambda:self._switch_state(
+                                                    self.skills.resentment,
+                                                    self.resentment_menu))
+        self.resentment_check.pack(anchor='w', padx=3, pady=4)
+
+        # Resuscitate
+        self.resuscitate_check = tk.Checkbutton(self.right_checks_1,
+            text='Resuscitate', variable=self.skills.resuscitate,
+            onvalue=1, offvalue=0)
+        self.resuscitate_check.config(command=lambda:self._switch_state(
+                                                    self.skills.resuscitate,
+                                                    self.resuscitate_menu))
+        self.resuscitate_check.pack(anchor='w', padx=3, pady=4)
+
         # Elem attack
-        self.elem_atk_check = tk.Checkbutton(self.right_checks,
+        self.elem_atk_check = tk.Checkbutton(self.right_checks_2,
             text='Elem Attack', variable=self.skills.elem_atk,
             onvalue=1, offvalue=0)
         self.elem_atk_check.config(command=lambda:self._switch_state(
@@ -308,7 +375,7 @@ class DamageCalcWin():
         self.elem_atk_check.pack(anchor='w', padx=3, pady=4)
 
         # Critical eye
-        self.crit_eye_check = tk.Checkbutton(self.right_checks,
+        self.crit_eye_check = tk.Checkbutton(self.right_checks_3,
             text='Critical Eye', variable=self.skills.crit_eye,
             onvalue=1, offvalue=0)
         self.crit_eye_check.config(command=lambda:self._switch_state(
@@ -317,7 +384,7 @@ class DamageCalcWin():
         self.crit_eye_check.pack(anchor='w', padx=3, pady=4)
 
         # Critical boost
-        self.crit_boost_check = tk.Checkbutton(self.right_checks,
+        self.crit_boost_check = tk.Checkbutton(self.right_checks_3,
             text='Critical Boost', variable=self.skills.crit_boost,
             onvalue=1, offvalue=0)
         self.crit_boost_check.config(command=lambda:self._switch_state(
@@ -326,13 +393,22 @@ class DamageCalcWin():
         self.crit_boost_check.pack(anchor='w', padx=3, pady=4)
 
         # Critical element
-        self.crit_elem_check = tk.Checkbutton(self.right_checks,
+        self.crit_elem_check = tk.Checkbutton(self.right_checks_3,
             text='Critical Element', variable=self.skills.crit_elem,
             onvalue=1, offvalue=0)
         self.crit_elem_check.config(command=lambda:self._switch_state(
                                                     self.skills.crit_elem,
                                                     self.crit_elem_menu))
         self.crit_elem_check.pack(anchor='w', padx=3, pady=4)
+
+        # Weakness exploit
+        self.weak_ex_check = tk.Checkbutton(self.right_checks_3,
+            text='Weakness Exploit', variable=self.skills.weak_ex,
+            onvalue=1, offvalue=0)
+        self.weak_ex_check.config(command=lambda:self._switch_state(
+                                                    self.skills.weak_ex,
+                                                    self.weak_ex_menu))
+        self.weak_ex_check.pack(anchor='w', padx=3, pady=4)
 
     def _switch_state(self, flag, menu):
         """Switch the state of the selected item"""
