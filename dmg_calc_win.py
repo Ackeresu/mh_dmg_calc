@@ -36,8 +36,9 @@ class DamageCalcWin():
         self.root.title("MH Damage Calculator")
         
         self._create_window()
+        self._calculate()
 
-        self.calc_btn = tk.Button(self.bot_frame, width=20, text='Calculate',
+        self.calc_btn = tk.Button(self.center_frame, width=30, text='Calculate',
                                   command=self._calculate)
         self.calc_btn.pack(side='top')
 
@@ -58,43 +59,68 @@ class DamageCalcWin():
         self.top_frame = tk.Frame(self.canvas, bg='purple')
         self.top_frame.pack(side='top', padx=5, pady=5, expand=True)
 
-        self.center_frame = tk.Frame(self.canvas, bg='red')
+        self.center_frame = tk.Frame(self.canvas, bg='pink')
         self.center_frame.pack(side='top', fill='both', padx=5, pady=0,
                                expand=True)
 
-        self.bot_frame = tk.Frame(self.canvas, bg='pink')
-        self.bot_frame.pack(side='top', fill='both',padx=5, pady=5, expand=True)
+        self.bot_frame = tk.Frame(self.canvas, bg='red')
+        self.bot_frame.pack(side='top', fill='both', padx=5, pady=5,
+                            expand=True)
 
     def _create_sub_frames(self):
         """Create the subframes of the window"""
         # ---------- Top frame ----------
         # ----- Weapon -----
+        # Weapon frame
+        self.wpn_frame = tk.Frame(self.top_frame,bg='green')
+        self.wpn_frame.pack(side='left', anchor='w', fill='none',
+                             padx=2, pady=2, expand=True)
         # Title
-        self.top_title = tk.Label(self.top_frame, text="Weapon")
+        self.top_title = tk.Label(self.wpn_frame, text="Weapon")
         self.top_title.pack(side='top', fill='none',
                             padx=2, pady=2, expand=True)
         # Labels
-        self.wpn_labels = tk.Frame(self.top_frame,bg='blue')
+        self.wpn_labels = tk.Frame(self.wpn_frame,bg='blue')
         self.wpn_labels.pack(side='left', anchor='w', fill='none',
                              padx=2, pady=2, expand=True)
         # Entries
-        self.wpn_entries = tk.Frame(self.top_frame, bg='green')
+        self.wpn_entries = tk.Frame(self.wpn_frame, bg='blue')
         self.wpn_entries.pack(side='left', anchor='w', fill='none',
                               padx=2, pady=2, expand=True)
         
         # ----- Other -----
         # Labels
-        self.other_labels = tk.Frame(self.top_frame, bg='blue')
+        self.other_labels = tk.Frame(self.wpn_frame, bg='blue')
         self.other_labels.pack(side='left', anchor='w', fill='none',
                                padx=2, pady=2, expand=True)
         # Entries
-        self.other_entries = tk.Frame(self.top_frame, bg='green')
+        self.other_entries = tk.Frame(self.wpn_frame, bg='blue')
         self.other_entries.pack(side='left', anchor='w', fill='none',
                                 padx=2, pady=2, expand=True)
         
-        # ---------- Center frame ----------
+        # ----- Results -----
+        # Frame
+        self.output_frame = tk.Frame(self.top_frame, bg='green')
+        self.output_frame.pack(side='left', anchor='w', fill='none',
+                              padx=5, pady=5, expand=True)
+        # Title
+        self.output_title = tk.Label(self.output_frame, text="Results")
+        self.output_title.pack(side='top', fill='none',
+                            padx=2, pady=2, expand=True)
+        
+        # ----- Options -----
+        # Frame
+        self.options_frame = tk.Frame(self.top_frame, bg='green')
+        self.options_frame.pack(side='left', anchor='w', fill='none',
+                              padx=5, pady=5, expand=True)
+        # Title
+        self.options_title = tk.Label(self.options_frame, text="Options")
+        self.options_title.pack(side='top', fill='none',
+                            padx=2, pady=2, expand=True)
+        
+        # ---------- Bottom frame ----------
         # ----- Left -----
-        self.left_center = tk.Frame(self.center_frame, bg='pink')
+        self.left_center = tk.Frame(self.bot_frame, bg='pink')
         self.left_center.pack(side='left', anchor='w', fill='none',
                               padx=2, pady=2, expand=True)
         # Title
@@ -111,7 +137,7 @@ class DamageCalcWin():
                                   padx=2, pady=2, expand=True)
         
         # ----- Right -----
-        self.right_center = tk.Frame(self.center_frame, bg='pink')
+        self.right_center = tk.Frame(self.bot_frame, bg='pink')
         self.right_center.pack(side='right', anchor='e', fill='none',
                                padx=2, pady=2, expand=True)
         # Title
@@ -207,6 +233,7 @@ class DamageCalcWin():
 
     def _create_optionmenu(self):
         """Create the option menus of the window"""
+        # ---------------------------------------------------------------------
         # Attack boost
         self.atk_boost_menu = tk.OptionMenu(self.right_optionmenu_1,
             self.skills.atk_boost_lvl, *self.skills.lvl_list_7)
@@ -237,11 +264,81 @@ class DamageCalcWin():
         self.resuscitate_menu.config(state='disabled')
         self.resuscitate_menu.pack(anchor='w', padx=3, pady=1)
 
+        # Buildup boost
+        self.bu_boost_menu = tk.OptionMenu(self.right_optionmenu_1,
+            self.skills.bu_boost_lvl, *self.skills.lvl_list_3)
+        self.bu_boost_menu.config(state='disabled')
+        self.bu_boost_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Foray
+        self.foray_menu = tk.OptionMenu(self.right_optionmenu_1,
+            self.skills.foray_lvl, *self.skills.lvl_list_3)
+        self.foray_menu.config(state='disabled')
+        self.foray_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Counterstrike
+        self.counterstrike_menu = tk.OptionMenu(self.right_optionmenu_1,
+            self.skills.counterstrike_lvl, *self.skills.lvl_list_3)
+        self.counterstrike_menu.config(state='disabled')
+        self.counterstrike_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Offensive guard
+        self.off_guard_menu = tk.OptionMenu(self.right_optionmenu_1,
+            self.skills.off_guard_lvl, *self.skills.lvl_list_3)
+        self.off_guard_menu.config(state='disabled')
+        self.off_guard_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Heroics
+        self.heroics_menu = tk.OptionMenu(self.right_optionmenu_1,
+            self.skills.heroics_lvl, *self.skills.lvl_list_5)
+        self.heroics_menu.config(state='disabled')
+        self.heroics_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Fortify
+        self.fortify_menu = tk.OptionMenu(self.right_optionmenu_1,
+            self.skills.fortify_lvl, *self.skills.lvl_list_2)
+        self.fortify_menu.config(state='disabled')
+        self.fortify_menu.pack(anchor='w', padx=3, pady=1)
+
+        # ---------------------------------------------------------------------
+
         # Elem attack
         self.elem_atk_menu = tk.OptionMenu(self.right_optionmenu_2,
             self.skills.elem_atk_lvl, *self.skills.lvl_list_5)
         self.elem_atk_menu.config(state='disabled')
         self.elem_atk_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Element exploit
+        self.elem_ex_menu = tk.OptionMenu(self.right_optionmenu_2,
+            self.skills.elem_ex_lvl, *self.skills.lvl_list_3)
+        self.elem_ex_menu.config(state='disabled')
+        self.elem_ex_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Burst
+        self.burst_menu = tk.OptionMenu(self.right_optionmenu_2,
+            self.skills.burst_lvl, *self.skills.lvl_list_3)
+        self.burst_menu.config(state='disabled')
+        self.burst_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Coalescence
+        self.coalescence_menu = tk.OptionMenu(self.right_optionmenu_2,
+            self.skills.coalescence_lvl, *self.skills.lvl_list_3)
+        self.coalescence_menu.config(state='disabled')
+        self.coalescence_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Bloodlust
+        self.bloodlust_menu = tk.OptionMenu(self.right_optionmenu_2,
+            self.skills.bloodlust_lvl, *self.skills.lvl_list_3)
+        self.bloodlust_menu.config(state='disabled')
+        self.bloodlust_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Mail of hellfire
+        self.mail_hellfire_menu = tk.OptionMenu(self.right_optionmenu_2,
+            self.skills.mail_hellfire_lvl, *self.skills.lvl_list_3)
+        self.mail_hellfire_menu.config(state='disabled')
+        self.mail_hellfire_menu.pack(anchor='w', padx=3, pady=1)
+
+        # ---------------------------------------------------------------------
 
         # Critical eye
         self.crit_eye_menu = tk.OptionMenu(self.right_optionmenu_3,
@@ -261,7 +358,25 @@ class DamageCalcWin():
         self.crit_elem_menu.config(state='disabled')
         self.crit_elem_menu.pack(anchor='w', padx=3, pady=1)
 
-        # Critical element
+        # Critical draw
+        self.crit_draw_menu = tk.OptionMenu(self.right_optionmenu_3,
+            self.skills.crit_draw_lvl, *self.skills.lvl_list_3)
+        self.crit_draw_menu.config(state='disabled')
+        self.crit_draw_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Latent power
+        self.latent_power_menu = tk.OptionMenu(self.right_optionmenu_3,
+            self.skills.latent_power_lvl, *self.skills.lvl_list_5)
+        self.latent_power_menu.config(state='disabled')
+        self.latent_power_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Maximum might
+        self.max_might_menu = tk.OptionMenu(self.right_optionmenu_3,
+            self.skills.max_might_lvl, *self.skills.lvl_list_3)
+        self.max_might_menu.config(state='disabled')
+        self.max_might_menu.pack(anchor='w', padx=3, pady=1)
+
+        # Weakness exploit
         self.weak_ex_menu = tk.OptionMenu(self.right_optionmenu_3,
             self.skills.weak_ex_lvl, *self.skills.lvl_list_3)
         self.weak_ex_menu.config(state='disabled')
@@ -273,6 +388,20 @@ class DamageCalcWin():
 
     def _create_checkboxes(self):
         """Create the checkboxes of the window"""
+
+# ------------------------------- OPTIONS -------------------------------------
+
+        # Scroll change
+        self.scroll_check = tk.Checkbutton(self.options_frame,
+            text='Use Blue Scroll', variable=self.items.scroll_color,
+            onvalue=1, offvalue=0)
+        self.scroll_check.pack(anchor='w', padx=3, pady=4)
+
+        # Frenzy
+        self.frenzy_check = tk.Checkbutton(self.options_frame,
+            text='Beaten Frenzy', variable=self.items.beaten_frenzy,
+            onvalue=1, offvalue=0)
+        self.frenzy_check.pack(anchor='w', padx=3, pady=4)
 
 # -------------------------------- ITEMS --------------------------------------
         
@@ -365,6 +494,62 @@ class DamageCalcWin():
                                                     self.resuscitate_menu))
         self.resuscitate_check.pack(anchor='w', padx=3, pady=4)
 
+        # Buildup boost
+        self.bu_boost_check = tk.Checkbutton(self.right_checks_1,
+            text='Buildup Boost', variable=self.skills.bu_boost,
+            onvalue=1, offvalue=0)
+        self.bu_boost_check.config(command=lambda:self._switch_state(
+                                                    self.skills.bu_boost,
+                                                    self.bu_boost_menu))
+        self.bu_boost_check.pack(anchor='w', padx=3, pady=4)
+
+        # Foray
+        self.foray_check = tk.Checkbutton(self.right_checks_1,
+            text='Foray', variable=self.skills.foray,
+            onvalue=1, offvalue=0)
+        self.foray_check.config(command=lambda:self._switch_state(
+                                                    self.skills.foray,
+                                                    self.foray_menu))
+        self.foray_check.pack(anchor='w', padx=3, pady=4)
+
+        # Counterstrike
+        self.counterstrike_check = tk.Checkbutton(self.right_checks_1,
+            text='Counterstrike', variable=self.skills.counterstrike,
+            onvalue=1, offvalue=0)
+        self.counterstrike_check.config(command=lambda:self._switch_state(
+                                                    self.skills.counterstrike,
+                                                    self.counterstrike_menu))
+        self.counterstrike_check.pack(anchor='w', padx=3, pady=4)
+
+        # Offensive guard
+        self.off_guard_check = tk.Checkbutton(self.right_checks_1,
+            text='Offensive Guard', variable=self.skills.off_guard,
+            onvalue=1, offvalue=0)
+        self.off_guard_check.config(command=lambda:self._switch_state(
+                                                    self.skills.off_guard,
+                                                    self.off_guard_menu))
+        self.off_guard_check.pack(anchor='w', padx=3, pady=4)
+
+        # Heroics
+        self.heroics_check = tk.Checkbutton(self.right_checks_1,
+            text='Heroics', variable=self.skills.heroics,
+            onvalue=1, offvalue=0)
+        self.heroics_check.config(command=lambda:self._switch_state(
+                                                    self.skills.heroics,
+                                                    self.heroics_menu))
+        self.heroics_check.pack(anchor='w', padx=3, pady=4)
+
+        # Fortify
+        self.fortify_check = tk.Checkbutton(self.right_checks_1,
+            text='Fortify (N° of carts)', variable=self.skills.fortify,
+            onvalue=1, offvalue=0)
+        self.fortify_check.config(command=lambda:self._switch_state(
+                                                    self.skills.fortify,
+                                                    self.fortify_menu))
+        self.fortify_check.pack(anchor='w', padx=3, pady=4)
+        
+        # ---------------------------------------------------------------------
+
         # Elem attack
         self.elem_atk_check = tk.Checkbutton(self.right_checks_2,
             text='Elem Attack', variable=self.skills.elem_atk,
@@ -373,6 +558,53 @@ class DamageCalcWin():
                                                     self.skills.elem_atk,
                                                     self.elem_atk_menu))
         self.elem_atk_check.pack(anchor='w', padx=3, pady=4)
+
+        # Element exploit
+        self.elem_ex_check = tk.Checkbutton(self.right_checks_2,
+            text='Element Exploit', variable=self.skills.elem_ex,
+            onvalue=1, offvalue=0)
+        self.elem_ex_check.config(command=lambda:self._switch_state(
+                                                    self.skills.elem_ex,
+                                                    self.elem_ex_menu))
+        self.elem_ex_check.pack(anchor='w', padx=3, pady=4)
+
+        # Burst
+        self.burst_check = tk.Checkbutton(self.right_checks_2,
+            text='Burst', variable=self.skills.burst,
+            onvalue=1, offvalue=0)
+        self.burst_check.config(command=lambda:self._switch_state(
+                                                    self.skills.burst,
+                                                    self.burst_menu))
+        self.burst_check.pack(anchor='w', padx=3, pady=4)
+
+        # Coalescence
+        self.coalescence_check = tk.Checkbutton(self.right_checks_2,
+            text='Coalescence', variable=self.skills.coalescence,
+            onvalue=1, offvalue=0)
+        self.coalescence_check.config(command=lambda:self._switch_state(
+                                                    self.skills.coalescence,
+                                                    self.coalescence_menu))
+        self.coalescence_check.pack(anchor='w', padx=3, pady=4)
+
+        # Bloodlust
+        self.bloodlust_check = tk.Checkbutton(self.right_checks_2,
+            text='Bloodlust', variable=self.skills.bloodlust,
+            onvalue=1, offvalue=0)
+        self.bloodlust_check.config(command=lambda:self._switch_state(
+                                                    self.skills.bloodlust,
+                                                    self.bloodlust_menu))
+        self.bloodlust_check.pack(anchor='w', padx=3, pady=4)
+
+        # Mail of hellfire
+        self.mail_hellfire_check = tk.Checkbutton(self.right_checks_2,
+            text='Mail of Hellfire', variable=self.skills.mail_hellfire,
+            onvalue=1, offvalue=0)
+        self.mail_hellfire_check.config(command=lambda:self._switch_state(
+                                                    self.skills.mail_hellfire,
+                                                    self.mail_hellfire_menu))
+        self.mail_hellfire_check.pack(anchor='w', padx=3, pady=4)
+
+        # ---------------------------------------------------------------------
 
         # Critical eye
         self.crit_eye_check = tk.Checkbutton(self.right_checks_3,
@@ -400,6 +632,33 @@ class DamageCalcWin():
                                                     self.skills.crit_elem,
                                                     self.crit_elem_menu))
         self.crit_elem_check.pack(anchor='w', padx=3, pady=4)
+
+        # Critical draw
+        self.crit_draw_check = tk.Checkbutton(self.right_checks_3,
+            text='Critical Draw', variable=self.skills.crit_draw,
+            onvalue=1, offvalue=0)
+        self.crit_draw_check.config(command=lambda:self._switch_state(
+                                                    self.skills.crit_draw,
+                                                    self.crit_draw_menu))
+        self.crit_draw_check.pack(anchor='w', padx=3, pady=4)
+
+        # Latent power
+        self.latent_power_check = tk.Checkbutton(self.right_checks_3,
+            text='Latent Power', variable=self.skills.latent_power,
+            onvalue=1, offvalue=0)
+        self.latent_power_check.config(command=lambda:self._switch_state(
+                                                    self.skills.latent_power,
+                                                    self.latent_power_menu))
+        self.latent_power_check.pack(anchor='w', padx=3, pady=4)
+
+        # Maximum might
+        self.max_might_check = tk.Checkbutton(self.right_checks_3,
+            text='Maximum Might', variable=self.skills.max_might,
+            onvalue=1, offvalue=0)
+        self.max_might_check.config(command=lambda:self._switch_state(
+                                                    self.skills.max_might,
+                                                    self.max_might_menu))
+        self.max_might_check.pack(anchor='w', padx=3, pady=4)
 
         # Weakness exploit
         self.weak_ex_check = tk.Checkbutton(self.right_checks_3,
@@ -430,7 +689,8 @@ class DamageCalcWin():
         """Call the necessary functions to calculate the damage"""
         # Check for a previous output and delete it if present.
         try:
-            self.output_label.destroy()
+            self.output_label_1.destroy()
+            self.output_label_2.destroy()
         except AttributeError:
             pass
         self.get_values = GetValues(self)
@@ -441,16 +701,20 @@ class DamageCalcWin():
 
     def _show_results(self):
         """Print the results"""
-        self.output_label = tk.Label(self.bot_frame, justify='left',
+        self.output_label_1 = tk.Label(self.output_frame, justify='left',
             text=f"Displayed attack: {self.calc.display_atk}\n"
-                 f"Displayed element: {self.calc.display_elem}\n"
-                 f"Affinity: {self.calc.final_crit}\n\n"
+                 f"Displayed element: {self.calc.display_elem}\n\n"
+                 f"Affinity: {self.calc.final_crit}\n\n\n"
                  f"Effective raw: {self.calc.eff_raw}\n"
-                 f"Effective element: {self.calc.eff_elem}\n\n"
-                 f"Total damage: {self.calc.tot_dmg}\n"
+                 f"Effective element: {self.calc.eff_elem}")
+        self.output_label_1.pack(side='left', padx=3, pady=3)
+
+        self.output_label_2 = tk.Label(self.output_frame, justify='left',
+            text=f"Total damage: {self.calc.tot_dmg}\n"
                  f"If crit: {self.calc.phys_crit_dmg + self.calc.elem_crit_dmg}"
                  f"\n\nPhysical: {self.calc.phys_dmg}\n"
                  f"If crit: {self.calc.phys_crit_dmg}\n\n"
                  f"Elemental: {self.calc.elem_dmg}\n"
                  f"If crit: {self.calc.elem_crit_dmg}")
-        self.output_label.pack(side='bottom')
+        self.output_label_2.pack(side='left', padx=3, pady=3)
+                 
