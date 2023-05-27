@@ -79,8 +79,8 @@ class GetValues():
 # -----------------------------------------------------------------------------
 
         # Attack boost
-        atk_boost = self.dmg_calc_win.skills.atk_boost.get()
-        atk_boost_lvl = self.dmg_calc_win.skills.atk_boost_lvl.get()
+        atk_boost = self.dmg_calc_win.skills.attack_boost
+        atk_boost_lvl = self.dmg_calc_win.skills.attack_boost_lvl.get()
 
         if atk_boost == 0:
             pass
@@ -288,7 +288,7 @@ class GetValues():
             self.elem_global_mltp += 0.15
 
         # Burst
-        burst = self.dmg_calc_win.skills.burst.get()
+        burst = self.dmg_calc_win.skills.burst
         burst_lvl = self.dmg_calc_win.skills.burst_lvl.get()
 
         if burst == 0:
@@ -386,8 +386,8 @@ class GetValues():
             self.crit_buffs += 40
 
         # Critical boost
-        crit_boost = self.dmg_calc_win.skills.crit_boost.get()
-        crit_boost_lvl = self.dmg_calc_win.skills.crit_boost_lvl.get()
+        crit_boost = self.dmg_calc_win.skills.critical_boost
+        crit_boost_lvl = self.dmg_calc_win.skills.critical_boost_lvl.get()
 
         if crit_boost == 0:
             pass

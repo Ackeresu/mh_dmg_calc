@@ -12,15 +12,22 @@ class Skills:
         self.lvl_list_5 = list(range(1, 6))
         self.lvl_list_6 = list(range(1, 7))
         self.lvl_list_7 = list(range(1, 8))
+        
+        # Initialize the list of skills
+        self.skill_list = ('attack boost', 'critical boost', 'burst')
+        # Format the skills and then order them in alphabetical order
+        self.skill_list = [skill.title() for skill in self.skill_list]
+        self.skill_list = sorted(self.skill_list)
 
 # -----------------------------------------------------------------------------
 # --------------------------------- ATTACK ------------------------------------
 # -----------------------------------------------------------------------------
 
         # Attack boost
-        self.atk_boost = tk.IntVar()
-        self.atk_boost_lvl = tk.IntVar()
-        self.atk_boost_lvl.set(7)
+        self.attack_boost = 0
+        self.attack_boost_lvl = tk.IntVar()
+        self.attack_boost_lvl.set(7)
+        self.attack_boost_lvl_list = list(range(1, 8))
 
         # Agitator
         self.agitator = tk.IntVar()
@@ -87,9 +94,10 @@ class Skills:
         self.elem_ex_lvl.set(3)
 
         # Burst
-        self.burst = tk.IntVar()
+        self.burst = 0
         self.burst_lvl = tk.IntVar()
         self.burst_lvl.set(3)
+        self.burst_lvl_list = list(range(1, 4))
 
         # Coalescence
         self.coalescence = tk.IntVar()
@@ -116,9 +124,10 @@ class Skills:
         self.crit_eye_lvl.set(7)
 
         # Critical boost
-        self.crit_boost = tk.IntVar()
-        self.crit_boost_lvl = tk.IntVar()
-        self.crit_boost_lvl.set(3)
+        self.critical_boost = 0
+        self.critical_boost_lvl = tk.IntVar()
+        self.critical_boost_lvl.set(3)
+        self.critical_boost_lvl_list = list(range(1, 4))
 
         # Critical element
         self.crit_elem = tk.IntVar()
