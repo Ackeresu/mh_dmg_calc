@@ -3,6 +3,7 @@ from tkinter import ttk
 
 from get_values import GetValues
 from dmg_calc import DamageCalc
+from options import Options
 from items import Items
 from skills import Skills
 
@@ -12,6 +13,7 @@ class DamageCalcWin():
     def __init__(self, root):
         """Initialize the class"""
         self.root = root
+        self.options = Options()
         self.items = Items()
         self.skills = Skills()
         self.active_skills = {}
@@ -228,13 +230,13 @@ class DamageCalcWin():
         # ----- Options -----
         # Scroll change
         self.scroll_check = tk.Checkbutton(self.options_frame,
-            text='Use Blue Scroll', variable=self.items.scroll_color,
+            text='Use Blue Scroll', variable=self.options.scroll_color,
             onvalue=1, offvalue=0)
         self.scroll_check.pack(anchor='w', padx=3, pady=4)
 
         # Frenzy
         self.frenzy_check = tk.Checkbutton(self.options_frame,
-            text='Beaten Frenzy', variable=self.items.beaten_frenzy,
+            text='Beaten Frenzy', variable=self.options.beaten_frenzy,
             onvalue=1, offvalue=0)
         self.frenzy_check.pack(anchor='w', padx=3, pady=4)
 
@@ -279,41 +281,16 @@ class DamageCalcWin():
 
     def _add_skill(self, new_skill):
         """Add the new skill."""
-        skill_name = new_skill.get()
-        skill_elements = []
-
-        if skill_name != '':
-            # Makes a copy of the skill's name for editing purposes
-            skill_name_edit = new_skill.get()
-            skill_name_edit = skill_name_edit.lower()
-            skill_name_edit = skill_name_edit.replace(' ', '_')
-
-            skill_lvl_name = skill_name_edit + '_lvl'
-            skill_lvl_list_name = skill_name_edit + '_lvl_list'
-
-            skill_lvl = getattr(self.skills, skill_lvl_name)
-            skill_lvl_list = getattr(self.skills, skill_lvl_list_name)
-
-            setattr(self.skills, skill_name_edit, 1)
-
-            # Makes the menus for the added skill
-            skill_menu = tk.OptionMenu(self.skills_optionmenu,
-                skill_lvl, *skill_lvl_list)
-            skill_menu.pack(anchor='n', padx=3, pady=1)
-
-            skill_label = tk.Label(self.skills_labels,
-                                            text=skill_name)
-            skill_label.pack(padx=3, pady=6)
-
-            skill_btn = tk.Button(self.skills_btn, width=3,
-                                        text='X',
-                                        command=lambda:self._remove_skill(skill_name_edit))
-            skill_btn.pack(anchor='s', padx=3, pady=3)
-
-            # Add the added skill and their elements to the dict of
-            # active skills
-            skill_elements.extend([skill_menu, skill_label, skill_btn])
-            self.active_skills[skill_name_edit] = skill_elements
+        # Get the skill name
+        self.skill_name = new_skill.get()
+        
+        #for key in self.active_skills.keys():
+            
+        if self.skill_name != '':
+            self._format_skill_name(self.skill_name)
+            self._create_skill_elements()
+            # Flag the newly added skill as active
+            setattr(self.skills, self.skill_name_edit, 1)
 
             for key, value in self.active_skills.items():
                 print(f"Key: {key}\n"
@@ -322,16 +299,56 @@ class DamageCalcWin():
         else:
             pass
 
-    def _get_skill_attributes(self):
-        """"""
+    def _format_skill_name(self, new_skill):
+        """Format the name of the newly added skill for use in the logic"""
+        self.skill_name_edit = new_skill.lower()
+        self.skill_name_edit = self.skill_name_edit.replace(' ', '_')
 
-    def _remove_skill(self, skill_to_remove):
-        """"""
-        setattr(self.skills, skill_to_remove, 0)
+        # Create two variables from the formatted name to access the
+        # skill's data
+        skill_lvl_name = self.skill_name_edit + '_lvl'
+        skill_lvl_list_name = self.skill_name_edit + '_lvl_list'
 
-        for element in self.active_skills[skill_to_remove]:
+        # Get the necessary attributes of the skills from the edits
+        self.skill_lvl = getattr(self.skills, skill_lvl_name)
+        self.skill_lvl_list = getattr(self.skills, skill_lvl_list_name)
+
+    def _create_skill_elements(self):
+        """Create the elements of the newly added skill and add them
+           to the list of active skills"""
+        # Create a new list to store the elements
+        skill = self.skill_name_edit
+        skill_lvl = self.skill_lvl
+        skill_lvl_list = self.skill_lvl_list
+        skill_elements =[]
+        
+        # Create the elements
+        # Optionmenu
+        skill_menu = tk.OptionMenu(self.skills_optionmenu,
+                                   skill_lvl, *skill_lvl_list)
+        skill_menu.pack(anchor='n', padx=3, pady=1)
+        # Label
+        skill_label = tk.Label(self.skills_labels, text=self.skill_name)
+        skill_label.pack(padx=3, pady=6)
+        # Remove btn
+        skill_btn = tk.Button(self.skills_btn, width=3, text='X',
+                              command=lambda:self._remove_skill(skill))
+        skill_btn.pack(anchor='s', padx=3, pady=3)
+
+        # Add the elements to the list and add then add the skill in the dict 
+        # of active skills
+        skill_elements.extend([skill_menu, skill_label, skill_btn])
+        self.active_skills[self.skill_name_edit] = skill_elements
+
+    def _remove_skill(self, skill):
+        """Remove the skill and relative elements"""
+        # Flag the skill as inactive
+        setattr(self.skills, skill, 0)
+
+        # Remove the elements from the UI then the skill itself from the dict
+        for element in self.active_skills[skill]:
             element.destroy()
-        del self.active_skills[skill_to_remove]
+        del self.active_skills[skill]
 
         for key, value in self.active_skills.items():
                 print(f"Key: {key}\n"

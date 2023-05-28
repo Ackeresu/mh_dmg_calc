@@ -5,22 +5,23 @@ class Skills:
 
     def __init__(self):
         """Initialize the skills"""
-        # Initialize the lists that set the skill's maximum level
-        self.lvl_list_2 = list(range(1, 3))
-        self.lvl_list_3 = list(range(1, 4))
-        self.lvl_list_4 = list(range(1, 5))
-        self.lvl_list_5 = list(range(1, 6))
-        self.lvl_list_6 = list(range(1, 7))
-        self.lvl_list_7 = list(range(1, 8))
-        
         # Initialize the list of skills
-        self.skill_list = ('attack boost', 'critical boost', 'burst')
+        self.skill_list = ('attack boost', 'agitator', 'peak performance',
+                           'resentment', 'resuscitate', 'buildup boost',
+                           'foray', 'counterstrike', 'offensive guard',
+                           'heroics', 'fortify', 'elemental attack',
+                           'element exploit', 'burst', 'coalescence',
+                           'bloodlust', 'mail of hellfire', 'critical eye',
+                           'critical boost', 'critical element',
+                           'critical draw', 'latent power', 'maximum might',
+                           'weakness exploit',)
+        
         # Format the skills and then order them in alphabetical order
         self.skill_list = [skill.title() for skill in self.skill_list]
         self.skill_list = sorted(self.skill_list)
 
 # -----------------------------------------------------------------------------
-# --------------------------------- ATTACK ------------------------------------
+# --------------------------------- SKILLS ------------------------------------
 # -----------------------------------------------------------------------------
 
         # Attack boost
@@ -30,98 +31,107 @@ class Skills:
         self.attack_boost_lvl_list = list(range(1, 8))
 
         # Agitator
-        self.agitator = tk.IntVar()
+        self.agitator = 0
         self.agitator_lvl = tk.IntVar()
         self.agitator_lvl.set(5)
+        self.agitator_lvl_list = list(range(1, 6))
 
         # Peak performance
-        self.peak_perf = tk.IntVar()
-        self.peak_perf_lvl = tk.IntVar()
-        self.peak_perf_lvl.set(3)
+        self.peak_performance = 0
+        self.peak_performance_lvl = tk.IntVar()
+        self.peak_performance_lvl.set(3)
+        self.peak_performance_lvl_list = list(range(1, 4))
 
         # Resentment
-        self.resentment = tk.IntVar()
+        self.resentment = 0
         self.resentment_lvl = tk.IntVar()
         self.resentment_lvl.set(5)
+        self.resentment_lvl_list = list(range(1, 6))
 
         # Resuscitate
-        self.resuscitate = tk.IntVar()
+        self.resuscitate = 0
         self.resuscitate_lvl = tk.IntVar()
         self.resuscitate_lvl.set(3)
+        self.resuscitate_lvl_list = list(range(1, 4))
 
         # Buildup boost
-        self.bu_boost = tk.IntVar()
-        self.bu_boost_lvl = tk.IntVar()
-        self.bu_boost_lvl.set(3)
+        self.buildup_boost = 0
+        self.buildup_boost_lvl = tk.IntVar()
+        self.buildup_boost_lvl.set(3)
+        self.buildup_boost_lvl_list = list(range(1, 4))
 
         # Foray
-        self.foray = tk.IntVar()
+        self.foray = 0
         self.foray_lvl = tk.IntVar()
         self.foray_lvl.set(3)
+        self.foray_lvl_list = list(range(1, 4))
 
         # Counterstrike
-        self.counterstrike = tk.IntVar()
+        self.counterstrike = 0
         self.counterstrike_lvl = tk.IntVar()
         self.counterstrike_lvl.set(3)
+        self.counterstrike_lvl_list = list(range(1, 4))
 
         # Offensive guard
-        self.off_guard = tk.IntVar()
-        self.off_guard_lvl = tk.IntVar()
-        self.off_guard_lvl.set(3)
+        self.offensive_guard = 0
+        self.offensive_guard_lvl = tk.IntVar()
+        self.offensive_guard_lvl.set(3)
+        self.offensive_guard_lvl_list = list(range(1, 4))
 
         # Heroics
-        self.heroics = tk.IntVar()
+        self.heroics = 0
         self.heroics_lvl = tk.IntVar()
         self.heroics_lvl.set(5)
+        self.heroics_lvl_list = list(range(1, 6))
 
         # Fortify
-        self.fortify = tk.IntVar()
+        self.fortify = 0
         self.fortify_lvl = tk.IntVar()
         self.fortify_lvl.set(2)
+        self.fortify_lvl_list = 1
 
-# -----------------------------------------------------------------------------
-# -------------------------------- ELEMENT ------------------------------------
-# -----------------------------------------------------------------------------
-
-        # Elem attack
-        self.elem_atk = tk.IntVar()
-        self.elem_atk_lvl = tk.IntVar()
-        self.elem_atk_lvl.set(5)
+        # Elemental attack
+        self.elemental_attack = 0
+        self.elemental_attack_lvl = tk.IntVar()
+        self.elemental_attack_lvl.set(5)
+        self.elemental_attack_lvl_list = list(range(1, 6))
 
         # Element exploit
-        self.elem_ex = tk.IntVar()
-        self.elem_ex_lvl = tk.IntVar()
-        self.elem_ex_lvl.set(3)
+        self.element_exploit = 0
+        self.element_exploit_lvl = tk.IntVar()
+        self.element_exploit_lvl.set(3)
+        self.element_exploit_lvl_list = list(range(1, 4))
 
         # Burst
         self.burst = 0
         self.burst_lvl = tk.IntVar()
         self.burst_lvl.set(3)
         self.burst_lvl_list = list(range(1, 4))
+        self.burst_lvl_list = list(range(1, 4))
 
         # Coalescence
-        self.coalescence = tk.IntVar()
+        self.coalescence = 0
         self.coalescence_lvl = tk.IntVar()
         self.coalescence_lvl.set(3)
+        self.coalescence_lvl_list = list(range(1, 4))
 
         # Bloodlust
-        self.bloodlust = tk.IntVar()
+        self.bloodlust = 0
         self.bloodlust_lvl = tk.IntVar()
         self.bloodlust_lvl.set(3)
+        self.bloodlust_lvl_list = list(range(1, 4))
 
         # Mail of hellfire
-        self.mail_hellfire = tk.IntVar()
-        self.mail_hellfire_lvl = tk.IntVar()
-        self.mail_hellfire_lvl.set(3)
-
-# -----------------------------------------------------------------------------
-# -------------------------------- AFFINITY -----------------------------------
-# -----------------------------------------------------------------------------
+        self.mail_of_hellfire = 0
+        self.mail_of_hellfire_lvl = tk.IntVar()
+        self.mail_of_hellfire_lvl.set(3)
+        self.mail_of_hellfire_lvl_list = list(range(1, 4))
 
         # Critical eye
-        self.crit_eye = tk.IntVar()
-        self.crit_eye_lvl = tk.IntVar()
-        self.crit_eye_lvl.set(7)
+        self.critical_eye = 0
+        self.critical_eye_lvl = tk.IntVar()
+        self.critical_eye_lvl.set(7)
+        self.critical_eye_lvl_list = list(range(1, 8))
 
         # Critical boost
         self.critical_boost = 0
@@ -130,26 +140,31 @@ class Skills:
         self.critical_boost_lvl_list = list(range(1, 4))
 
         # Critical element
-        self.crit_elem = tk.IntVar()
-        self.crit_elem_lvl = tk.IntVar()
-        self.crit_elem_lvl.set(3)
+        self.critical_element = 0
+        self.critical_element_lvl = tk.IntVar()
+        self.critical_element_lvl.set(3)
+        self.critical_element_lvl_list = list(range(1, 4))
 
         # Critical draw
-        self.crit_draw = tk.IntVar()
-        self.crit_draw_lvl = tk.IntVar()
-        self.crit_draw_lvl.set(3)
+        self.critical_draw = 0
+        self.critical_draw_lvl = tk.IntVar()
+        self.critical_draw_lvl.set(3)
+        self.critical_draw_lvl_list = list(range(1, 4))
 
         # Latent power
-        self.latent_power = tk.IntVar()
+        self.latent_power = 0
         self.latent_power_lvl = tk.IntVar()
         self.latent_power_lvl.set(5)
+        self.latent_power_lvl_list = list(range(1, 4))
 
         # Maximum might
-        self.max_might = tk.IntVar()
-        self.max_might_lvl = tk.IntVar()
-        self.max_might_lvl.set(3)
+        self.maximum_might = 0
+        self.maximum_might_lvl = tk.IntVar()
+        self.maximum_might_lvl.set(3)
+        self.maximum_might_lvl_list = list(range(1, 4))
 
         # Weakness exploit
-        self.weak_ex = tk.IntVar()
-        self.weak_ex_lvl = tk.IntVar()
-        self.weak_ex_lvl.set(3)
+        self.weakness_exploit = 0
+        self.weakness_exploit_lvl = tk.IntVar()
+        self.weakness_exploit_lvl.set(3)
+        self.weakness_exploit_lvl_list = list(range(1, 4))

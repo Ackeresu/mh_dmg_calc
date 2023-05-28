@@ -4,15 +4,7 @@ class Items():
     """A class that manage the items data"""
 
     def __init__(self):
-        """Initialize the options and items"""
-        # Options
-        self.scroll_color = tk.IntVar()
-        self.scroll_color.set(0)
-
-        self.beaten_frenzy = tk.IntVar()
-        self.beaten_frenzy.set(0)
-
-        # Items
+        """Initialize the items"""
         self.powercharm = tk.IntVar()
         self.powercharm.set(1)
 
