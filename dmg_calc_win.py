@@ -39,6 +39,7 @@ class DamageCalcWin():
         self._create_window()
         self._calculate()
 
+        # Calculate button
         self.calc_btn = tk.Button(self.center_frame, width=30, text='Calculate',
                                   command=self._calculate)
         self.calc_btn.pack(side='top', fill='both')
@@ -239,6 +240,24 @@ class DamageCalcWin():
             text='Beaten Frenzy', variable=self.options.beaten_frenzy,
             onvalue=1, offvalue=0)
         self.frenzy_check.pack(anchor='w', padx=3, pady=4)
+        
+        # Carted once
+        self.carted_once_check = tk.Checkbutton(self.options_frame,
+            text='Carted Once', variable=self.options.carted_once,
+            onvalue=1, offvalue=0, state='active')
+        self.carted_once_check.config(command=lambda:self._mutually_ex(
+                                                    self.options.carted_once,
+                                                    self.carted_twice_check))
+        self.carted_once_check.pack(anchor='w', padx=3, pady=4)
+
+        # Carted twice
+        self.carted_twice_check = tk.Checkbutton(self.options_frame,
+            text='Carted Twice', variable=self.options.carted_twice,
+            onvalue=1, offvalue=0, state='active')
+        self.carted_twice_check.config(command=lambda:self._mutually_ex(
+                                                    self.options.carted_twice,
+                                                    self.carted_once_check))
+        self.carted_twice_check.pack(anchor='w', padx=3, pady=4)
 
     def _create_skills_box(self):
         """Create the box that manage the skills."""
@@ -270,7 +289,7 @@ class DamageCalcWin():
         # ----- Skill selection -----
         new_skill = tk.StringVar()
         dropdown = ttk.Combobox(self.bot_right_frame,
-                                textvariable=new_skill,
+                                textvariable=new_skill, width=25,
                                 values=self.skills.skill_list, state='readonly')
         dropdown.pack(side='left', anchor='w', padx=3, pady=4)
 
@@ -280,28 +299,28 @@ class DamageCalcWin():
         self.add_skill_btn.pack(side='left', anchor='e')
 
     def _add_skill(self, new_skill):
-        """Add the new skill."""
-        # Get the skill name
+        """Add the new skill"""
         self.skill_name = new_skill.get()
-        
-        #for key in self.active_skills.keys():
-            
-        if self.skill_name != '':
-            self._format_skill_name(self.skill_name)
+
+        # Format the skill name for logical purposes, then Initialize a flag 
+        # for checking if the skill is not already added to
+        # the list of active skills
+        self._format_skill_name()
+        skill_check = False
+
+        for key in self.active_skills.keys():
+            if key == self.skill_name_edit:
+                skill_check = True
+
+        # If the check passes, proceed with the addition of the skill
+        if self.skill_name != '' and skill_check == False:
             self._create_skill_elements()
             # Flag the newly added skill as active
             setattr(self.skills, self.skill_name_edit, 1)
 
-            for key, value in self.active_skills.items():
-                print(f"Key: {key}\n"
-                      f"Value: {value}")
-            print()
-        else:
-            pass
-
-    def _format_skill_name(self, new_skill):
+    def _format_skill_name(self):
         """Format the name of the newly added skill for use in the logic"""
-        self.skill_name_edit = new_skill.lower()
+        self.skill_name_edit = self.skill_name.lower()
         self.skill_name_edit = self.skill_name_edit.replace(' ', '_')
 
         # Create two variables from the formatted name to access the
@@ -349,11 +368,6 @@ class DamageCalcWin():
         for element in self.active_skills[skill]:
             element.destroy()
         del self.active_skills[skill]
-
-        for key, value in self.active_skills.items():
-                print(f"Key: {key}\n"
-                      f"Value: {value}")
-        print()
 
     def _switch_state(self, flag, menu):
         """Switch the state of the selected item"""

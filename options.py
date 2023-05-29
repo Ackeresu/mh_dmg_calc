@@ -10,3 +10,9 @@ class Options():
 
         self.beaten_frenzy = tk.IntVar()
         self.beaten_frenzy.set(0)
+
+        self.carted_once = tk.IntVar()
+        self.carted_once.set(0)
+
+        self.carted_twice = tk.IntVar()
+        self.carted_twice.set(0)

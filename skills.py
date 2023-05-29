@@ -14,7 +14,9 @@ class Skills:
                            'bloodlust', 'mail of hellfire', 'critical eye',
                            'critical boost', 'critical element',
                            'critical draw', 'latent power', 'maximum might',
-                           'weakness exploit',)
+                           'weakness exploit', 'sneak attack',
+                           'kushala teostra blessing', 'stormsoul',
+                           'dragonheart', )
         
         # Format the skills and then order them in alphabetical order
         self.skill_list = [skill.title() for skill in self.skill_list]
@@ -87,8 +89,8 @@ class Skills:
         # Fortify
         self.fortify = 0
         self.fortify_lvl = tk.IntVar()
-        self.fortify_lvl.set(2)
-        self.fortify_lvl_list = 1
+        self.fortify_lvl.set(1)
+        self.fortify_lvl_list = [1]
 
         # Elemental attack
         self.elemental_attack = 0
@@ -168,3 +170,27 @@ class Skills:
         self.weakness_exploit_lvl = tk.IntVar()
         self.weakness_exploit_lvl.set(3)
         self.weakness_exploit_lvl_list = list(range(1, 4))
+
+        # Sneak attack
+        self.sneak_attack = 0
+        self.sneak_attack_lvl = tk.IntVar()
+        self.sneak_attack_lvl.set(3)
+        self.sneak_attack_lvl_list = list(range(1, 4))
+
+        # Kushala/Teostra blessing
+        self.kushala_teostra_blessing = 0
+        self.kushala_teostra_blessing_lvl = tk.IntVar()
+        self.kushala_teostra_blessing_lvl.set(4)
+        self.kushala_teostra_blessing_lvl_list = list(range(1, 5))
+
+        # Stormsoul
+        self.stormsoul = 0
+        self.stormsoul_lvl = tk.IntVar()
+        self.stormsoul_lvl.set(5)
+        self.stormsoul_lvl_list = list(range(1, 6))
+
+        # Dragonheart
+        self.dragonheart = 0
+        self.dragonheart_lvl = tk.IntVar()
+        self.dragonheart_lvl.set(5)
+        self.dragonheart_lvl_list = list(range(1, 6))

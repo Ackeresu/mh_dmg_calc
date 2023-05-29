@@ -4,9 +4,12 @@ class GetValues():
     def __init__(self, dmg_calc_win):
         """Initialize the class"""
         self.dmg_calc_win = dmg_calc_win
-
+        
+        # Get the options value
         self.scroll_color = self.dmg_calc_win.options.scroll_color.get()
         self.beaten_frenzy = self.dmg_calc_win.options.beaten_frenzy.get()
+        self.carted_once = self.dmg_calc_win.options.carted_once.get()
+        self.carted_twice = self.dmg_calc_win.options.carted_twice.get()
 
     def get_values(self):
         """Get the values"""
@@ -239,13 +242,12 @@ class GetValues():
 
         # Fortify
         fortify = self.dmg_calc_win.skills.fortify
-        fortify_lvl = self.dmg_calc_win.skills.fortify_lvl.get()
 
         if fortify == 0:
             pass
-        elif fortify_lvl == 1:
+        elif fortify == 1 and self.carted_once == 1:
             self.atk_mltp += 0.1
-        elif fortify_lvl == 2:
+        elif fortify == 1 and self.carted_twice == 1:
             self.atk_mltp += 0.2
 
         # Elemental attack
@@ -458,3 +460,53 @@ class GetValues():
             self.crit_buffs += 30
         elif weakness_exploit_lvl == 3:
             self.crit_buffs += 50
+
+        # Sneak attack
+        sneak_attack = self.dmg_calc_win.skills.sneak_attack
+        sneak_attack_lvl = self.dmg_calc_win.skills.sneak_attack_lvl.get()
+
+        if sneak_attack == 0:
+            pass
+        elif sneak_attack_lvl == 1:
+            self.atk_global_mltp += 0.05
+        elif sneak_attack_lvl == 2:
+            self.atk_global_mltp += 0.1
+        elif sneak_attack_lvl == 3:
+            self.atk_global_mltp += 0.2
+
+        # Kushala/Teostra blessing
+        kushala_teostra_blessing = self.dmg_calc_win.skills.kushala_teostra_blessing
+        kushala_teostra_blessing_lvl = self.dmg_calc_win.skills.kushala_teostra_blessing_lvl.get()
+
+        if kushala_teostra_blessing == 0:
+            pass
+        elif kushala_teostra_blessing_lvl == 1:
+            self.elem_mltp += 0.05
+        elif (kushala_teostra_blessing_lvl == 2
+              or kushala_teostra_blessing_lvl == 3
+              or kushala_teostra_blessing_lvl == 4):
+            self.elem_mltp += 0.1
+
+        # Stormsoul
+        stormsoul = self.dmg_calc_win.skills.stormsoul
+        stormsoul_lvl = self.dmg_calc_win.skills.stormsoul_lvl.get()
+
+        if stormsoul == 0:
+            pass
+        elif stormsoul_lvl == 1:
+            self.elem_mltp += 0.05
+        elif stormsoul_lvl == 2:
+            self.elem_mltp += 0.1
+        elif stormsoul_lvl == 3 or stormsoul_lvl == 4 or stormsoul_lvl == 5:
+            self.elem_mltp += 0.15
+
+        # Dragonheart
+        dragonheart = self.dmg_calc_win.skills.dragonheart
+        dragonheart_lvl = self.dmg_calc_win.skills.dragonheart_lvl.get()
+
+        if dragonheart == 0:
+            pass
+        elif dragonheart_lvl == 4:
+            self.atk_mltp += 0.05
+        elif dragonheart_lvl == 5:
+            self.atk_mltp += 0.1
