@@ -4,18 +4,11 @@ class GetValues():
     def __init__(self, dmg_calc_win):
         """Initialize the class"""
         self.dmg_calc_win = dmg_calc_win
-        
-        # Get the options value
-        self.scroll_color = self.dmg_calc_win.options.scroll_color.get()
-        self.beaten_frenzy = self.dmg_calc_win.options.beaten_frenzy.get()
-        self.carted_once = self.dmg_calc_win.options.carted_once.get()
-        self.carted_twice = self.dmg_calc_win.options.carted_twice.get()
 
     def get_values(self):
         """Get the values"""
         self._get_weapon_values()
-        self._get_options_values()
-        self._get_items_values()
+        self._get_other_values()
         self._get_skills_values()
     
     def _get_weapon_values(self):
@@ -23,8 +16,7 @@ class GetValues():
         self.raw = float(self.dmg_calc_win.raw_entry.get())
         self.elem = float(self.dmg_calc_win.elem_entry.get())
         self.crit = float(self.dmg_calc_win.crit_entry.get())
-        self.sharp = self.dmg_calc_win.sharp_entry.get()
-        self.sharp = self.sharp.lower()
+        self.sharp = self.dmg_calc_win.sharp.get()
 
         self.mv = float(self.dmg_calc_win.mv_entry.get())
         self.mv = self.mv / 100
@@ -45,19 +37,15 @@ class GetValues():
         self.crit_elem_mltp = 1.0
         self.crit_buffs = 0
 
-    def _get_options_values(self):
-        """Get the values from the options"""
-        if self.beaten_frenzy == 1:
-            self.crit_buffs += 15
-
-    def _get_items_values(self):
-        """Get the values from the active items"""
-        powercharm = self.dmg_calc_win.items.powercharm.get()
-        powertalon = self.dmg_calc_win.items.powertalon.get()
-        might_seed = self.dmg_calc_win.items.might_seed.get()
-        demon_powder = self.dmg_calc_win.items.demon_powder.get()
-        demondrug = self.dmg_calc_win.items.demondrug.get()
-        mega_demondrug = self.dmg_calc_win.items.mega_demondrug.get()
+    def _get_other_values(self):
+        """Get the values not skill related"""
+        # ---------- ITEMS ----------
+        powercharm = self.dmg_calc_win.other.powercharm.get()
+        powertalon = self.dmg_calc_win.other.powertalon.get()
+        might_seed = self.dmg_calc_win.other.might_seed.get()
+        demon_powder = self.dmg_calc_win.other.demon_powder.get()
+        demondrug = self.dmg_calc_win.other.demondrug.get()
+        mega_demondrug = self.dmg_calc_win.other.mega_demondrug.get()
 
         if powercharm == 1:
             self.atk_buffs += 6
@@ -71,15 +59,32 @@ class GetValues():
             self.atk_buffs += 10
         if demon_powder == 1:
             self.atk_buffs += 10
+        
+        # ---------- HH SONGS ----------
+        self.attack_song = self.dmg_calc_win.other.attack_song.get()
+        self.infernal_melody = self.dmg_calc_win.other.infernal_melody.get()
+        self.affinity_song = self.dmg_calc_win.other.affinity_song.get()
+        self.element_song = self.dmg_calc_win.other.element_song.get()
+
+        if self.attack_song == 1:
+            self.atk_mltp += 0.1
+        if self.affinity_song == 1:
+            self.crit_buffs += 20
+        if self.element_song == 1:
+            self.elem_mltp += 0.1
+        if self.infernal_melody == 1:
+            self.atk_mltp += 0.2
+
+        # ---------- OTHER ----------
+        self.scroll_color = self.dmg_calc_win.other.scroll_color.get()
+        self.beaten_frenzy = self.dmg_calc_win.other.beaten_frenzy.get()
+
+        if self.beaten_frenzy == 1:
+            self.crit_buffs += 15
 
     def _get_skills_values(self):
         """Get the values from the active skills"""
-
-# -----------------------------------------------------------------------------
-# --------------------------------- SKILLS ------------------------------------
-# -----------------------------------------------------------------------------
-
-        # Attack boost
+         # Attack boost
         attack_boost = self.dmg_calc_win.skills.attack_boost
         attack_boost_lvl = self.dmg_calc_win.skills.attack_boost_lvl.get()
 
@@ -240,16 +245,6 @@ class GetValues():
         elif heroics_lvl == 5:
             self.atk_mltp += 0.3
 
-        # Fortify
-        fortify = self.dmg_calc_win.skills.fortify
-
-        if fortify == 0:
-            pass
-        elif fortify == 1 and self.carted_once == 1:
-            self.atk_mltp += 0.1
-        elif fortify == 1 and self.carted_twice == 1:
-            self.atk_mltp += 0.2
-
         # Elemental attack
         elemental_attack = self.dmg_calc_win.skills.elemental_attack
         elemental_attack_lvl = self.dmg_calc_win.skills.elemental_attack_lvl.get()
@@ -334,7 +329,7 @@ class GetValues():
         # Beaten frenzy
         elif bloodlust_lvl == 1 and self.beaten_frenzy == 1:
             self.crit_buffs += 5
-        elif bloodlust_lvl == 2 or bloodlust_lvl == 3 and self.beaten_frenzy == 1:
+        elif bloodlust_lvl >= 2 and self.beaten_frenzy == 1:
             self.crit_buffs += 10
 
         # Mail of hellfire
@@ -482,9 +477,7 @@ class GetValues():
             pass
         elif kushala_teostra_blessing_lvl == 1:
             self.elem_mltp += 0.05
-        elif (kushala_teostra_blessing_lvl == 2
-              or kushala_teostra_blessing_lvl == 3
-              or kushala_teostra_blessing_lvl == 4):
+        elif kushala_teostra_blessing_lvl >= 2:
             self.elem_mltp += 0.1
 
         # Stormsoul
@@ -497,7 +490,7 @@ class GetValues():
             self.elem_mltp += 0.05
         elif stormsoul_lvl == 2:
             self.elem_mltp += 0.1
-        elif stormsoul_lvl == 3 or stormsoul_lvl == 4 or stormsoul_lvl == 5:
+        elif stormsoul_lvl >= 3:
             self.elem_mltp += 0.15
 
         # Dragonheart
@@ -510,3 +503,136 @@ class GetValues():
             self.atk_mltp += 0.05
         elif dragonheart_lvl == 5:
             self.atk_mltp += 0.1
+
+        # Frostcraft
+        frostcraft = self.dmg_calc_win.skills.frostcraft
+        frostcraft_lvl = self.dmg_calc_win.skills.frostcraft_lvl.get()
+
+        if frostcraft == 0:
+            pass
+        elif frostcraft_lvl == 1:
+            self.atk_global_mltp += 0.05
+        elif frostcraft_lvl == 2:
+            self.atk_global_mltp += 0.2
+        elif frostcraft_lvl == 3:
+            self.atk_global_mltp += 0.3
+
+        # Grinder
+        grinder = self.dmg_calc_win.skills.grinder
+
+        if grinder == 0:
+            pass
+        else:
+            self.atk_global_mltp += 0.1
+            self.elem_global_mltp += 0.075
+
+        # Charge master
+        charge_master = self.dmg_calc_win.skills.charge_master
+        charge_master_lvl = self.dmg_calc_win.skills.charge_master_lvl.get()
+
+        if charge_master == 0:
+            pass
+        elif charge_master_lvl == 1:
+            self.elem_global_mltp += 0.05
+        elif charge_master_lvl == 2:
+            self.elem_global_mltp += 0.1
+        elif charge_master_lvl == 3:
+            self.elem_global_mltp += 0.15
+
+        # Normal rapid up
+        #normal_rapid_up = self.dmg_calc_win.skills.normal_rapid_up
+        #normal_rapid_up_lvl = self.dmg_calc_win.skills.normal_rapid_up_lvl.get()
+
+        #if normal_rapid_up == 0:
+        #    pass
+        #elif normal_rapid_up_lvl == 1:
+        #    self.atk_global_mltp += 0.05
+        #elif normal_rapid_up_lvl == 2:
+        #    self.atk_global_mltp += 0.2
+        #elif normal_rapid_up_lvl == 3:
+        #    self.atk_global_mltp += 0.3
+
+# -----------------------------------------------------------------------------
+# ------------------------------ SPECIAL SKILLS -------------------------------
+# -----------------------------------------------------------------------------
+
+        # Fortify
+        fortify = self.dmg_calc_win.skills.fortify
+        carts_n = self.dmg_calc_win.skills.fortify_special.get()
+
+        if fortify == 0:
+            pass
+        elif carts_n == 1:
+            self.atk_mltp += 0.1
+        elif carts_n == 2:
+            self.atk_mltp += 0.2
+
+        # Dereliction
+        dereliction = self.dmg_calc_win.skills.dereliction
+        dereliction_lvl = self.dmg_calc_win.skills.dereliction_lvl.get()
+        qurio_n = self.dmg_calc_win.skills.dereliction_special.get()
+
+        if dereliction == 0:
+            pass
+        # Red scroll
+        elif self.scroll_color == 0:
+           self._check_qurio_red(dereliction_lvl, qurio_n)
+        # Blue scroll
+        elif self.scroll_color == 1:
+           self._check_qurio_blue(dereliction_lvl, qurio_n)
+
+        # Strife
+        strife = self.dmg_calc_win.skills.strife
+        strife_lvl = self.dmg_calc_win.skills.strife_lvl.get()
+        red_health = self.dmg_calc_win.skills.strife_special.get()
+
+        if strife == 0:
+            pass
+        elif red_health == '< 60%':
+            if strife_lvl == 1:
+                self.elem_mltp += 0.05
+                self.crit_buffs += 5
+            elif strife_lvl == 2:
+                self.elem_mltp += 0.1
+                self.crit_buffs += 10
+            elif strife_lvl == 3:
+                self.elem_mltp += 0.15
+                self.crit_buffs += 10
+        elif red_health == '> 60%':
+            if strife_lvl == 1:
+                self.elem_mltp += 0.1
+                self.crit_buffs += 10
+            elif strife_lvl == 2:
+                self.elem_mltp += 0.15
+                self.crit_buffs += 15
+            elif strife_lvl == 3:
+                self.elem_mltp += 0.20
+                self.crit_buffs += 20
+
+    def _check_qurio_red(self, dereliction_lvl, qurio_n):
+        """Check the value for the buff in the red scroll"""
+        if dereliction_lvl == 1:
+            if qurio_n == 1:
+                self.elem_buffs += 5
+            elif qurio_n == 2:
+                self.elem_buffs += 8
+            elif qurio_n == 3:
+                self.elem_buffs += 12
+        elif dereliction_lvl == 2:
+            if qurio_n == 1:
+                self.elem_buffs += 7
+            elif qurio_n == 2:
+                self.elem_buffs += 12
+            elif qurio_n == 3:
+                self.elem_buffs += 15
+        elif dereliction_lvl == 3:
+            if qurio_n == 1:
+                self.elem_buffs += 10
+            elif qurio_n == 2:
+                self.elem_buffs += 15
+            elif qurio_n == 3:
+                self.elem_buffs += 20
+
+    def _check_qurio_blue(self, dereliction_lvl, qurio_n):
+        """Calculate the value for the buff in the blue scroll"""
+        self.atk_buffs += (dereliction_lvl * 5) + (qurio_n * 5) + 5

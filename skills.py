@@ -6,17 +6,23 @@ class Skills:
     def __init__(self):
         """Initialize the skills"""
         # Initialize the list of skills
-        self.skill_list = ('attack boost', 'agitator', 'peak performance',
+        self.skill_list = ['attack boost', 'agitator', 'peak performance',
                            'resentment', 'resuscitate', 'buildup boost',
                            'foray', 'counterstrike', 'offensive guard',
-                           'heroics', 'fortify', 'elemental attack',
+                           'heroics', 'elemental attack',
                            'element exploit', 'burst', 'coalescence',
                            'bloodlust', 'mail of hellfire', 'critical eye',
                            'critical boost', 'critical element',
                            'critical draw', 'latent power', 'maximum might',
                            'weakness exploit', 'sneak attack',
                            'kushala teostra blessing', 'stormsoul',
-                           'dragonheart', )
+                           'dragonheart', 'frostcraft', 'grinder',
+                           'charge master']
+        
+        self.special_skill_list = ['fortify','dereliction', 'strife',]
+
+        for skill in self.special_skill_list:
+            self.skill_list.append(skill)
         
         # Format the skills and then order them in alphabetical order
         self.skill_list = [skill.title() for skill in self.skill_list]
@@ -85,12 +91,6 @@ class Skills:
         self.heroics_lvl = tk.IntVar()
         self.heroics_lvl.set(5)
         self.heroics_lvl_list = list(range(1, 6))
-
-        # Fortify
-        self.fortify = 0
-        self.fortify_lvl = tk.IntVar()
-        self.fortify_lvl.set(1)
-        self.fortify_lvl_list = [1]
 
         # Elemental attack
         self.elemental_attack = 0
@@ -194,3 +194,64 @@ class Skills:
         self.dragonheart_lvl = tk.IntVar()
         self.dragonheart_lvl.set(5)
         self.dragonheart_lvl_list = list(range(1, 6))
+
+        # Frostcraft
+        self.frostcraft = 0
+        self.frostcraft_lvl = tk.IntVar()
+        self.frostcraft_lvl.set(3)
+        self.frostcraft_lvl_list = list(range(1, 4))
+
+        # Grinder
+        self.grinder = 0
+        self.grinder_lvl = tk.IntVar()
+        self.grinder_lvl.set(3)
+        self.grinder_lvl_list = list(range(1, 4))
+
+        # Charge master
+        self.charge_master = 0
+        self.charge_master_lvl = tk.IntVar()
+        self.charge_master_lvl.set(3)
+        self.charge_master_lvl_list = list(range(1, 4))
+
+        # Normal rapid up
+        #self.normal_rapid_up = 0
+        #self.normal_rapid_up_lvl = tk.IntVar()
+        #self.normal_rapid_up_lvl.set(3)
+        #self.normal_rapid_up_lvl_list = list(range(1, 4))
+
+# -----------------------------------------------------------------------------
+# ------------------------------ SPECIAL SKILLS -------------------------------
+# -----------------------------------------------------------------------------
+
+        # Fortify
+        self.fortify = 0
+        self.fortify_lvl = tk.IntVar()
+        self.fortify_lvl.set(1)
+        self.fortify_lvl_list = [1]
+        # Number of carts
+        self.fortify_special_name = 'Carts'
+        self.fortify_special = tk.IntVar()
+        self.fortify_special.set(2)
+        self.fortify_special_list = list(range(1, 3))
+
+        # Dereliction
+        self.dereliction = 0
+        self.dereliction_lvl = tk.IntVar()
+        self.dereliction_lvl.set(3)
+        self.dereliction_lvl_list = list(range(1, 4))
+        # Number of active qurios
+        self.dereliction_special_name = 'Active Qurios'
+        self.dereliction_special = tk.IntVar()
+        self.dereliction_special.set(3)
+        self.dereliction_special_list = list(range(1, 4))
+
+        # Strife
+        self.strife = 0
+        self.strife_lvl = tk.IntVar()
+        self.strife_lvl.set(3)
+        self.strife_lvl_list = list(range(1, 4))
+        # Red health ratio
+        self.strife_special_name = 'Red Health'
+        self.strife_special = tk.StringVar()
+        self.strife_special.set('> 60%')
+        self.strife_special_list = ('< 60%', '> 60%')

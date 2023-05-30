@@ -71,7 +71,6 @@ class DamageCalc():
                               self.atk_global_mltp) * crit_calc)
         self.eff_elem = round((self.display_elem * elem_sharp_mltp *
                               self.elem_global_mltp) * elem_crit_calc)
-        
 
         # Calculate the damage
         self.phys_dmg = round(phys_atk * self.hzv)
@@ -84,17 +83,17 @@ class DamageCalc():
         
     def _sharp_mod(self):
         """Calculate the sharpness modifier"""
-        if self.sharp == 'red':
+        if self.sharp == 'Red':
             self.sharp_mltp = [0.5, 0.25]
-        elif self.sharp == 'orange':
+        elif self.sharp == 'Orange':
             self.sharp_mltp = [0.75, 0.5]
-        elif self.sharp == 'yellow':
+        elif self.sharp == 'Yellow':
             self.sharp_mltp = [1, 0.75]
-        elif self.sharp == 'green':
+        elif self.sharp == 'Green':
             self.sharp_mltp = [1.05, 1]
-        elif self.sharp == 'blue':
+        elif self.sharp == 'Blue':
             self.sharp_mltpr = [1.2, 1.063]
-        elif self.sharp == 'white':
+        elif self.sharp == 'White':
             self.sharp_mltp = [1.32, 1.15]
-        elif self.sharp == 'purple':
+        elif self.sharp == 'Purple':
             self.sharp_mltp = [1.39, 1.27]
