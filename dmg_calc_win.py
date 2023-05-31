@@ -50,7 +50,7 @@ class DamageCalcWin():
         self._create_main_frames()
         self._create_wpn_box()
         self._create_results_box()
-        self._create_items_box()
+        self._create_items_food_box()
         self._create_other_box()
         self._create_skills_box()
 
@@ -165,59 +165,98 @@ class DamageCalcWin():
         self.results_title.pack(side='top', fill='none',
                             padx=2, pady=2, expand=True)
         
-    def _create_items_box(self):
+    def _create_items_food_box(self):
         """Create the box that manage the items."""
         # Frame
-        self.items_frame = tk.Frame(self.bot_right_frame, bg='pink')
-        self.items_frame.pack(side='left', anchor='w', fill='none',
+        self.items_food_frame = tk.Frame(self.bot_right_frame, bg='pink')
+        self.items_food_frame.pack(side='left', anchor='w', fill='none',
                               padx=2, pady=2, expand=True)
+        
+        # ----- Items -----
         # Title
-        self.items_title = tk.Label(self.items_frame, text="Items")
+        self.items_title = tk.Label(self.items_food_frame, text="Items")
         self.items_title.pack(side='top', fill='none',
                                     padx=2, pady=2, expand=True)
         
-        # ----- Items -----
         # Powercharm
-        self.powercharm_check = tk.Checkbutton(self.items_frame,
+        self.powercharm_check = tk.Checkbutton(self.items_food_frame,
             text='Powercharm', variable=self.other.powercharm,
             onvalue=1, offvalue=0)
-        self.powercharm_check.pack(anchor='w', padx=3, pady=4)
+        self.powercharm_check.pack(anchor='w')
 
         # Powertalon
-        self.powertalon_check = tk.Checkbutton(self.items_frame,
+        self.powertalon_check = tk.Checkbutton(self.items_food_frame,
             text='Powertalon', variable=self.other.powertalon,
             onvalue=1, offvalue=0)
-        self.powertalon_check.pack(anchor='w', padx=3, pady=4)
+        self.powertalon_check.pack(anchor='w')
 
         # Might Seed
-        self.might_seed_check = tk.Checkbutton(self.items_frame,
+        self.might_seed_check = tk.Checkbutton(self.items_food_frame,
             text='Might Seed', variable=self.other.might_seed,
             onvalue=1, offvalue=0)
-        self.might_seed_check.pack(anchor='w', padx=3, pady=4)
+        self.might_seed_check.pack(anchor='w')
 
         # Demon Powder
-        self.demon_powder_check = tk.Checkbutton(self.items_frame,
+        self.demon_powder_check = tk.Checkbutton(self.items_food_frame,
             text='Demon Powder', variable=self.other.demon_powder,
             onvalue=1, offvalue=0)
-        self.demon_powder_check.pack(anchor='w', padx=3, pady=4)
+        self.demon_powder_check.pack(anchor='w')
 
         # Demondrug
-        self.demondrug_check = tk.Checkbutton(self.items_frame,
+        self.demondrug_check = tk.Checkbutton(self.items_food_frame,
             text='Demondrug', variable=self.other.demondrug,
             onvalue=1, offvalue=0, state='active')
         self.demondrug_check.config(command=lambda:self._mutually_ex(
                                                     self.other.demondrug,
                                                     self.mega_demondrug_check))
-        self.demondrug_check.pack(anchor='w', padx=3, pady=4)
+        self.demondrug_check.pack(anchor='w')
 
         # Mega Demondrug
-        self.mega_demondrug_check = tk.Checkbutton(self.items_frame,
+        self.mega_demondrug_check = tk.Checkbutton(self.items_food_frame,
             text='Mega Demondrug', variable=self.other.mega_demondrug,
             onvalue=1, offvalue=0, state='active')
         self.mega_demondrug_check.config(command=lambda:self._mutually_ex(
                                                     self.other.mega_demondrug,
                                                     self.demondrug_check))
-        self.mega_demondrug_check.pack(anchor='w', padx=3, pady=4)
+        self.mega_demondrug_check.pack(anchor='w')
+
+        # ----- Food -----
+        # Title
+        self.food_title = tk.Label(self.items_food_frame, text="Food")
+        self.food_title.pack(side='top', fill='none',
+                             padx=2, pady=2, expand=True)
+        
+        # Dango booster menu
+        self.dango_booster_menu = tk.OptionMenu(self.items_food_frame,
+                                            self.other.dango_booster_lvl,
+                                            *self.other.dango_booster_lvl_list)
+        self.dango_booster_menu.config(state='disabled')
+        self.dango_booster_menu.pack(pady=2)
+        
+        # Dango booster check
+        self.dango_booster_check = tk.Checkbutton(self.items_food_frame,
+            text='Dango Booster', variable=self.other.dango_booster,
+            onvalue=1, offvalue=0)
+        self.dango_booster_check.config(command=lambda:self._switch_state(
+                                                    self.other.dango_booster,
+                                                    self.dango_booster_menu))
+        self.dango_booster_check.pack(pady=4, anchor='w')
+
+        # Dango adrenaline menu
+        self.dango_adrenaline_menu = tk.OptionMenu(self.items_food_frame,
+                                            self.other.dango_adrenaline_lvl,
+                                            *self.other.dango_adrenaline_lvl_list)
+        self.dango_adrenaline_menu.config(state='disabled')
+        self.dango_adrenaline_menu.pack(pady=2)
+        
+        # Dango adrenaline check
+        self.dango_adrenaline_check = tk.Checkbutton(self.items_food_frame,
+            text='Dango Adrenaline', variable=self.other.dango_adrenaline,
+            onvalue=1, offvalue=0)
+        self.dango_adrenaline_check.config(command=lambda:self._switch_state(
+                                                    self.other.dango_adrenaline,
+                                                    self.dango_adrenaline_menu))
+        self.dango_adrenaline_check.pack(pady=4, anchor='w')
 
     def _create_other_box(self):
         """Create the box that manage the options."""
@@ -235,37 +274,37 @@ class DamageCalcWin():
         self.scroll_check = tk.Checkbutton(self.options_frame,
             text='Use Blue Scroll', variable=self.other.scroll_color,
             onvalue=1, offvalue=0)
-        self.scroll_check.pack(anchor='w', padx=3, pady=4)
+        self.scroll_check.pack(anchor='w')
 
         # Frenzy
         self.frenzy_check = tk.Checkbutton(self.options_frame,
             text='Beaten Frenzy', variable=self.other.beaten_frenzy,
             onvalue=1, offvalue=0)
-        self.frenzy_check.pack(anchor='w', padx=3, pady=4)
+        self.frenzy_check.pack(anchor='w')
 
         # Attack song
         self.attack_song_check = tk.Checkbutton(self.options_frame,
             text='Attack Up Song', variable=self.other.attack_song,
             onvalue=1, offvalue=0)
-        self.attack_song_check.pack(anchor='w', padx=3, pady=4)
+        self.attack_song_check.pack(anchor='w')
 
         # Affinity song
         self.affinity_song_check = tk.Checkbutton(self.options_frame,
             text='Affinity Up Song', variable=self.other.affinity_song,
             onvalue=1, offvalue=0)
-        self.affinity_song_check.pack(anchor='w', padx=3, pady=4)
+        self.affinity_song_check.pack(anchor='w')
 
         # Element song
         self.element_song_check = tk.Checkbutton(self.options_frame,
             text='Element Up Song', variable=self.other.element_song,
             onvalue=1, offvalue=0)
-        self.element_song_check.pack(anchor='w', padx=3, pady=4)
+        self.element_song_check.pack(anchor='w')
 
         # Infernal melody
         self.infernal_melody_check = tk.Checkbutton(self.options_frame,
             text='Infernal Melody', variable=self.other.infernal_melody,
             onvalue=1, offvalue=0)
-        self.infernal_melody_check.pack(anchor='w', padx=3, pady=4)
+        self.infernal_melody_check.pack(anchor='w')
 
     def _create_skills_box(self):
         """Create the box that manage the skills."""

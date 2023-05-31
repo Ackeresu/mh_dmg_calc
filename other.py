@@ -23,6 +23,22 @@ class Other():
 
         self.mega_demondrug = tk.IntVar()
         self.mega_demondrug.set(0)
+
+    # ---------- FOOD ----------
+        self.dango_booster = tk.IntVar()
+        self.dango_booster.set(0)
+        self.dango_booster_lvl = tk.IntVar()
+        self.dango_booster_lvl.set(4)
+        self.dango_booster_lvl_list = list(range(1, 5))
+
+        self.dango_adrenaline = tk.IntVar()
+        self.dango_adrenaline.set(0)
+        self.dango_adrenaline_lvl = tk.IntVar()
+        self.dango_adrenaline_lvl.set(4)
+        self.dango_adrenaline_lvl_list = list(range(1, 5))
+
+        self.dango_bulker = tk.IntVar()
+        self.dango_bulker.set(0)
     
     # ---------- HH SONGS ----------
         self.attack_song = tk.IntVar()

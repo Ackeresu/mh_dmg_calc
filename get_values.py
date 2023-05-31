@@ -49,16 +49,43 @@ class GetValues():
 
         if powercharm == 1:
             self.atk_buffs += 6
+
         if powertalon == 1:
             self.atk_buffs += 9
+
         if mega_demondrug == 1:
             self.atk_buffs += 7
+
         if demondrug == 1:
             self.atk_buffs += 5
+
         if might_seed == 1:
             self.atk_buffs += 10
+
         if demon_powder == 1:
             self.atk_buffs += 10
+
+        # ---------- FOOD ----------
+        dango_booster = self.dmg_calc_win.other.dango_booster.get()
+        dango_booster_lvl = self.dmg_calc_win.other.dango_booster_lvl.get()
+        dango_adrenaline = self.dmg_calc_win.other.dango_adrenaline.get()
+        dango_adrenaline_lvl = self.dmg_calc_win.other.dango_adrenaline_lvl.get()
+        dango_bulker = self.dmg_calc_win.other.dango_bulker.get()
+
+        if dango_booster == 0:
+            pass
+        else:
+            self.atk_buffs += (dango_booster_lvl * 3) + 3
+
+        if dango_adrenaline == 0:
+            pass
+        elif dango_adrenaline_lvl == 1:
+            self.atk_mltp += 0.25
+        elif dango_adrenaline_lvl >= 2:
+            self.atk_mltp += 0.3
+
+        if dango_bulker == 1:
+            self.atk_buffs += 15
         
         # ---------- HH SONGS ----------
         self.attack_song = self.dmg_calc_win.other.attack_song.get()
@@ -68,10 +95,13 @@ class GetValues():
 
         if self.attack_song == 1:
             self.atk_mltp += 0.1
+
         if self.affinity_song == 1:
             self.crit_buffs += 20
+
         if self.element_song == 1:
             self.elem_mltp += 0.1
+
         if self.infernal_melody == 1:
             self.atk_mltp += 0.2
 
