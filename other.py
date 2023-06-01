@@ -5,6 +5,17 @@ class Other():
 
     def __init__(self):
         """Initialize the variables"""
+        self.rampage_deco_list = ['none', 'element exploit', 'hellion mode',
+                                  'anti species', 'small monster exploit',
+                                  'blight exploit', 'magnamalo soul',
+                                  'valstrax soul', 'kushala daora soul',
+                                  'narwa soul', 'bloody heart']
+        self.rampage_deco_list = [item.title() for item in self.rampage_deco_list]
+        self.rampage_deco_list = sorted(self.rampage_deco_list)
+
+        self.petalace_list = ('None', 'Hunting III', 'Strength III', 'Fortitude III',
+                              'Demon III', 'Absolute', 'Underworld')
+
         self.items_list = ['powercharm', 'powertalon', 'might seed',
                            'demon powder']
         self.items_list = [item.title() for item in self.items_list]
@@ -16,6 +27,26 @@ class Other():
         self.other_list = ['blue scroll', 'beaten frenzy', 'power drum',
                            'rousing roar', 'butterflame', 'cutterfly']
         self.other_list = [item.title() for item in self.other_list]
+
+    # ---------- RAMPAGE DECO ----------
+        self.element_exploit = 0
+        self.hellion_mode = 0
+        self.anti_species = 0
+        self.small_monster_exploit = 0
+        self.blight_exploit = 0
+        self.magnamalo_soul = 0
+        self.valstrax_soul = 0
+        self.kushala_daora_soul = 0
+        self.narwa_soul = 0
+        self.bloody_heart = 0
+
+    # ---------- PETALACE ----------
+        self.hunting_iii = 0
+        self.strength_iii = 0
+        self.fortitude_iii = 0
+        self.demon_iii = 0
+        self.absolute = 0
+        self.underworld = 0
 
     # ---------- ITEMS ----------
         self.powercharm = tk.IntVar()

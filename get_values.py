@@ -16,7 +16,7 @@ class GetValues():
         self.raw = float(self.dmg_calc_win.raw_entry.get())
         self.elem = float(self.dmg_calc_win.elem_entry.get())
         self.crit = float(self.dmg_calc_win.crit_entry.get())
-        self.sharp = self.dmg_calc_win.sharp.get()
+        self.sharp = self.dmg_calc_win.wpn.sharpness.get()
 
         self.mv = float(self.dmg_calc_win.mv_entry.get())
         self.mv = self.mv / 100
@@ -39,6 +39,72 @@ class GetValues():
 
     def _get_other_values(self):
         """Get the values not skill related"""
+        # ---------- RAMPAGE DECO ----------
+        element_exploit = self.dmg_calc_win.other.element_exploit
+        hellion_mode = self.dmg_calc_win.other.hellion_mode
+        anti_species = self.dmg_calc_win.other.anti_species
+        small_monster_exploit = self.dmg_calc_win.other.small_monster_exploit
+        blight_exploit = self.dmg_calc_win.other.blight_exploit
+        magnamalo_soul = self.dmg_calc_win.other.magnamalo_soul
+        valstrax_soul = self.dmg_calc_win.other.valstrax_soul
+        kushala_daora_soul = self.dmg_calc_win.other.kushala_daora_soul
+        narwa_soul = self.dmg_calc_win.other.narwa_soul
+        bloody_heart = self.dmg_calc_win.other.bloody_heart
+
+        if element_exploit == 1:
+            self.elem_global_mltp += 0.15
+
+        if hellion_mode == 1:
+            self.crit_buffs += 20
+        
+        if anti_species == 1:
+            self.atk_global_mltp += 0.05
+
+        if small_monster_exploit == 1:
+            self.atk_global_mltp += 0.5
+
+        if blight_exploit == 1:
+            self.atk_global_mltp += 0.1
+
+        if magnamalo_soul == 1:
+            self.atk_buffs += 12
+
+        if valstrax_soul == 1:
+            self.elem_global_mltp += 0.2
+
+        if kushala_daora_soul == 1:
+            self.crit_buffs += 15
+
+        if narwa_soul == 1:
+            self.crit_buffs += 40
+
+        if bloody_heart == 1:
+            self.atk_buffs += 30
+            self.elem_global_mltp += 0.2
+
+        # ---------- PETALACE ----------
+        hunting_iii = self.dmg_calc_win.other.hunting_iii
+        strength_iii = self.dmg_calc_win.other.strength_iii
+        fortitude_iii = self.dmg_calc_win.other.fortitude_iii
+        demon_iii = self.dmg_calc_win.other.demon_iii
+        absolute = self.dmg_calc_win.other.absolute
+        underworld = self.dmg_calc_win.other.underworld
+
+        if hunting_iii == 1:
+            self.atk_buffs += 13
+        
+        if strength_iii == 1:
+            self.atk_buffs += 10
+
+        if fortitude_iii == 1:
+            self.atk_buffs += 8
+
+        if demon_iii == 1:
+            self.atk_buffs += 20
+
+        if absolute or underworld == 1:
+            self.atk_buffs += 15
+
         # ---------- ITEMS ----------
         powercharm = self.dmg_calc_win.other.powercharm.get()
         powertalon = self.dmg_calc_win.other.powertalon.get()

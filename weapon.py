@@ -20,7 +20,7 @@ class Weapon():
         self.sharpness = tk.StringVar()
         self.sharpness.set('White')
         self.sharpness_list = ('Red', 'Orange', 'Yellow',
-                                'Green', 'Blue', 'White', 'Purple')
+                               'Green', 'Blue', 'White', 'Purple')
         
         self.mv = tk.DoubleVar()
         self.mv.set(50)
