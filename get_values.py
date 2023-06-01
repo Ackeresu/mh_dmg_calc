@@ -88,10 +88,10 @@ class GetValues():
             self.atk_buffs += 15
         
         # ---------- HH SONGS ----------
-        self.attack_song = self.dmg_calc_win.other.attack_song.get()
+        self.attack_song = self.dmg_calc_win.other.attack_up.get()
+        self.affinity_song = self.dmg_calc_win.other.affinity_up.get()
+        self.element_song = self.dmg_calc_win.other.element_up.get()
         self.infernal_melody = self.dmg_calc_win.other.infernal_melody.get()
-        self.affinity_song = self.dmg_calc_win.other.affinity_song.get()
-        self.element_song = self.dmg_calc_win.other.element_song.get()
 
         if self.attack_song == 1:
             self.atk_mltp += 0.1
@@ -106,11 +106,27 @@ class GetValues():
             self.atk_mltp += 0.2
 
         # ---------- OTHER ----------
-        self.scroll_color = self.dmg_calc_win.other.scroll_color.get()
+        self.blue_scroll = self.dmg_calc_win.other.blue_scroll.get()
         self.beaten_frenzy = self.dmg_calc_win.other.beaten_frenzy.get()
+        self.power_drum = self.dmg_calc_win.other.power_drum.get()
+        self.rousing_roar = self.dmg_calc_win.other.rousing_roar.get()
+        self.butterflame = self.dmg_calc_win.other.butterflame.get()
+        self.cutterfly = self.dmg_calc_win.other.cutterfly.get()
 
         if self.beaten_frenzy == 1:
             self.crit_buffs += 15
+
+        if self.power_drum == 1:
+            self.atk_mltp += 0.05
+
+        if self.rousing_roar == 1:
+            self.crit_buffs += 30
+
+        if self.butterflame == 1:
+            self.atk_buffs += 25
+
+        if self.cutterfly == 1:
+            self.crit_buffs += 50
 
     def _get_skills_values(self):
         """Get the values from the active skills"""
@@ -369,18 +385,18 @@ class GetValues():
         if mail_of_hellfire == 0:
             pass
         # Red scroll
-        elif mail_of_hellfire_lvl == 1 and self.scroll_color == 0:
+        elif mail_of_hellfire_lvl == 1 and self.blue_scroll == 0:
             self.atk_buffs += 15
-        elif mail_of_hellfire_lvl == 2 and self.scroll_color == 0:
+        elif mail_of_hellfire_lvl == 2 and self.blue_scroll == 0:
             self.atk_buffs += 20
-        elif mail_of_hellfire_lvl == 3 and self.scroll_color == 0:
+        elif mail_of_hellfire_lvl == 3 and self.blue_scroll == 0:
             self.atk_buffs += 25
         # Blue scroll
-        elif mail_of_hellfire_lvl == 1 and self.scroll_color == 1:
+        elif mail_of_hellfire_lvl == 1 and self.blue_scroll == 1:
             self.elem_mltp += 0.05
-        elif mail_of_hellfire_lvl == 2 and self.scroll_color == 1:
+        elif mail_of_hellfire_lvl == 2 and self.blue_scroll == 1:
             self.elem_mltp += 0.1
-        elif mail_of_hellfire_lvl == 3 and self.scroll_color == 1:
+        elif mail_of_hellfire_lvl == 3 and self.blue_scroll == 1:
             self.elem_mltp += 0.2
 
         # Critical eye
@@ -605,10 +621,10 @@ class GetValues():
         if dereliction == 0:
             pass
         # Red scroll
-        elif self.scroll_color == 0:
+        elif self.blue_scroll == 0:
            self._check_qurio_red(dereliction_lvl, qurio_n)
         # Blue scroll
-        elif self.scroll_color == 1:
+        elif self.blue_scroll == 1:
            self._check_qurio_blue(dereliction_lvl, qurio_n)
 
         # Strife

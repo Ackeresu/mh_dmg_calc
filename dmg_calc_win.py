@@ -3,8 +3,8 @@ from tkinter import ttk
 
 from get_values import GetValues
 from dmg_calc import DamageCalc
-from other import Other
 from skills import Skills
+from other import Other
 
 class DamageCalcWin():
     """Class that manage the damage calc window"""
@@ -12,9 +12,10 @@ class DamageCalcWin():
     def __init__(self, root):
         """Initialize the class"""
         self.root = root
-        self.other = Other()
         self.skills = Skills()
+        self.other = Other()
         self.active_skills = {}
+        self.row_pos = 0
 
         # Weapon variables
         self.raw = tk.IntVar()
@@ -50,13 +51,13 @@ class DamageCalcWin():
         self._create_main_frames()
         self._create_wpn_box()
         self._create_results_box()
-        self._create_items_food_box()
-        self._create_other_box()
+        self._create_other_frame_one()
+        self._create_other_frame_two()
         self._create_skills_box()
 
     def _create_main_frames(self):
         """Create the frames of the window"""
-        self.canvas = tk.Frame(self.root, width=240, height=180, bg='lightgrey')
+        self.canvas = tk.Frame(self.root, width=200, height=180, bg='lightgrey')
         self.canvas.pack(fill='both', expand=True)
 
         self.top_frame = tk.Frame(self.canvas, bg='purple')
@@ -74,85 +75,75 @@ class DamageCalcWin():
 
     def _create_wpn_box(self):
         """Create the box that manage the wpn data."""
-        # ----- Frames -----
         # Main frame
-        self.wpn_main_frame = tk.Frame(self.top_frame,bg='green')
+        self.wpn_main_frame = tk.Frame(self.top_frame, bg='green')
         self.wpn_main_frame.pack(side='left', anchor='w', fill='none',
                              padx=2, pady=2, expand=True)
         # Title
-        self.top_title = tk.Label(self.wpn_main_frame, text="Weapon")
+        self.top_title = tk.Label(self.wpn_main_frame, text="WEAPON")
         self.top_title.pack(side='top', fill='none',
                             padx=2, pady=2, expand=True)
-        # Labels frame
-        self.wpn_labels = tk.Frame(self.wpn_main_frame,bg='blue')
-        self.wpn_labels.pack(side='left', anchor='w', fill='none',
+        # Wpn frame
+        self.wpn_frame = tk.Frame(self.wpn_main_frame, bg='cyan')
+        self.wpn_frame.pack(side='left', anchor='w', fill='none',
                              padx=2, pady=2, expand=True)
-        # Entries frame
-        self.wpn_entries = tk.Frame(self.wpn_main_frame, bg='blue')
-        self.wpn_entries.pack(side='left', anchor='w', fill='none',
-                              padx=2, pady=2, expand=True)
-        # Other labels frame
-        self.other_labels = tk.Frame(self.wpn_main_frame, bg='blue')
-        self.other_labels.pack(side='left', anchor='w', fill='none',
-                               padx=2, pady=2, expand=True)
-        # Other entries frame
-        self.other_entries = tk.Frame(self.wpn_main_frame, bg='blue')
-        self.other_entries.pack(side='left', anchor='w', fill='none',
-                                padx=2, pady=2, expand=True)
-        
-        # ----- Labels -----
+        # ----------------------------------------------------------------------
         # Raw
-        self.raw_label = tk.Label(self.wpn_labels, text="Raw: ")
-        self.raw_label.pack(padx=3, pady=3)
-        # Element
-        self.elem_label = tk.Label(self.wpn_labels, text="Element: ")
-        self.elem_label.pack(padx=3, pady=3)
-        # Affinity
-        self.crit_label = tk.Label(self.wpn_labels, text="Affinity: ")
-        self.crit_label.pack(padx=3, pady=3)
-        # Sharpness
-        self.sharp_label = tk.Label(self.wpn_labels, text="Sharpness: ")
-        self.sharp_label.pack(padx=3, pady=3)
-        # MV
-        self.mv_label = tk.Label(self.other_labels, text="Motion value: ")
-        self.mv_label.pack(anchor='w', padx=3, pady=3)
-        # Hitzone
-        self.hzv_label = tk.Label(self.other_labels, text="Hitzone: ")
-        self.hzv_label.pack(anchor='w', padx=3, pady=3)
-        # Elem hitzone
-        self.ehzv_label = tk.Label(self.other_labels, text="Elem. hitzone: ")
-        self.ehzv_label.pack(anchor='w', padx=3, pady=3)
+        self.raw_label = tk.Label(self.wpn_frame, text="Raw: ")
+        self.raw_label.grid(row=1, column=1, sticky='w')
 
-        # ----- Entries -----
-        # Raw
-        self.raw_entry = tk.Entry(self.wpn_entries, width=8, justify='center',
+        self.raw_entry = tk.Entry(self.wpn_frame, width=8, justify='center',
                                   textvariable=self.raw)
-        self.raw_entry.pack(anchor='w', padx=3, pady=4)
+        self.raw_entry.grid(row=1, column=2)
+
         # Element
-        self.elem_entry = tk.Entry(self.wpn_entries, width=8, justify='center',
+        self.elem_label = tk.Label(self.wpn_frame, text="Element: ")
+        self.elem_label.grid(row=2, column=1, sticky='w')
+        
+        self.elem_entry = tk.Entry(self.wpn_frame, width=8, justify='center',
                                    textvariable=self.elem)
-        self.elem_entry.pack(anchor='w', padx=3, pady=4)
+        self.elem_entry.grid(row=2, column=2)
+
         # Affinity
-        self.crit_entry = tk.Entry(self.wpn_entries, width=8, justify='center',
+        self.crit_label = tk.Label(self.wpn_frame, text="Affinity: ")
+        self.crit_label.grid(row=3, column=1, sticky='w')
+
+        self.crit_entry = tk.Entry(self.wpn_frame, width=8, justify='center',
                                    textvariable=self.crit)
-        self.crit_entry.pack(anchor='w', padx=3, pady=4)
-        # Sharp
-        self.sharp_menu = tk.OptionMenu(self.wpn_entries,
+        self.crit_entry.grid(row=3, column=2)
+
+        # Sharpness
+        self.sharp_label = tk.Label(self.wpn_frame, text="Sharpness: ")
+        self.sharp_label.grid(row=4, column=1, sticky='w')
+
+        self.sharp_menu = tk.OptionMenu(self.wpn_frame,
                                         self.sharp, *self.sharp_list)
         self.sharp_menu.config(width=6)
-        self.sharp_menu.pack(anchor='n', padx=3, pady=1)
+        self.sharp_menu.grid(row=4, column=2)
+
         # MV
-        self.mv_entry = tk.Entry(self.other_entries, width=8, justify='center',
+        self.mv_label = tk.Label(self.wpn_frame, text="Motion value: ")
+        self.mv_label.grid(row=1, column=3, sticky='w')
+
+        self.mv_entry = tk.Entry(self.wpn_frame, width=8, justify='center',
                                  textvariable=self.mv)
-        self.mv_entry.pack(anchor='w', padx=3, pady=4)
+        self.mv_entry.grid(row=1, column=4)
+
         # Hitzone
-        self.hzv_entry = tk.Entry(self.other_entries, width=8, justify='center',
+        self.hzv_label = tk.Label(self.wpn_frame, text="Hitzone: ")
+        self.hzv_label.grid(row=2, column=3, sticky='w')
+
+        self.hzv_entry = tk.Entry(self.wpn_frame, width=8, justify='center',
                                   textvariable=self.hzv)
-        self.hzv_entry.pack(anchor='w', padx=3, pady=4)
+        self.hzv_entry.grid(row=2, column=4)
+        
         # Elem hitzone
-        self.ehzv_entry = tk.Entry(self.other_entries, width=8,
+        self.ehzv_label = tk.Label(self.wpn_frame, text="Elem. hitzone: ")
+        self.ehzv_label.grid(row=3, column=3, sticky='w')
+
+        self.ehzv_entry = tk.Entry(self.wpn_frame, width=8,
                                    justify='center', textvariable=self.ehzv)
-        self.ehzv_entry.pack(anchor='w', padx=3, pady=4)
+        self.ehzv_entry.grid(row=3, column=4)      
 
     def _create_results_box(self):
         """Create the box that manage the results."""
@@ -161,49 +152,44 @@ class DamageCalcWin():
         self.results_frame.pack(side='left', anchor='w', fill='none',
                               padx=5, pady=5, expand=True)
         # Title
-        self.results_title = tk.Label(self.results_frame, text="Results")
+        self.results_title = tk.Label(self.results_frame, text="RESULTS")
         self.results_title.pack(side='top', fill='none',
                             padx=2, pady=2, expand=True)
-        
-    def _create_items_food_box(self):
-        """Create the box that manage the items."""
-        # Frame
-        self.items_food_frame = tk.Frame(self.bot_right_frame, bg='pink')
-        self.items_food_frame.pack(side='left', anchor='w', fill='none',
+    
+    def _create_other_frame_one(self):
+        """"""
+        self.other_frame_one = tk.Frame(self.bot_right_frame, bg='pink')
+        self.other_frame_one.pack(side='left', anchor='w', fill='none',
                               padx=2, pady=2, expand=True)
         
-        # ----- Items -----
+        self._create_items_box()
+        self._create_food_box()
+
+    def _create_other_frame_two(self):
+        """"""
+        self.other_frame_two = tk.Frame(self.bot_right_frame, bg='pink')
+        self.other_frame_two.pack(side='left', anchor='w', fill='none',
+                              padx=2, pady=2, expand=True)
+        
+        self._create_hh_songs_box()
+        self._create_other_box()
+
+    def _create_items_box(self):
+        """Create the box that manage the items."""
         # Title
-        self.items_title = tk.Label(self.items_food_frame, text="Items")
+        self.items_title = tk.Label(self.other_frame_one, text="ITEMS")
         self.items_title.pack(side='top', fill='none',
                                     padx=2, pady=2, expand=True)
+        # Frame
+        #self.items_frame = tk.Frame(self.other_frame_one, bg='red')
+        #self.items_frame.pack(side='top', fill='none',
+        #                      padx=2, pady=2, expand=True)
         
-        # Powercharm
-        self.powercharm_check = tk.Checkbutton(self.items_food_frame,
-            text='Powercharm', variable=self.other.powercharm,
-            onvalue=1, offvalue=0)
-        self.powercharm_check.pack(anchor='w')
-
-        # Powertalon
-        self.powertalon_check = tk.Checkbutton(self.items_food_frame,
-            text='Powertalon', variable=self.other.powertalon,
-            onvalue=1, offvalue=0)
-        self.powertalon_check.pack(anchor='w')
-
-        # Might Seed
-        self.might_seed_check = tk.Checkbutton(self.items_food_frame,
-            text='Might Seed', variable=self.other.might_seed,
-            onvalue=1, offvalue=0)
-        self.might_seed_check.pack(anchor='w')
-
-        # Demon Powder
-        self.demon_powder_check = tk.Checkbutton(self.items_food_frame,
-            text='Demon Powder', variable=self.other.demon_powder,
-            onvalue=1, offvalue=0)
-        self.demon_powder_check.pack(anchor='w')
+        self._make_checkboxes(self.other_frame_one, self.other,
+                              self.other.items_list)
 
         # Demondrug
-        self.demondrug_check = tk.Checkbutton(self.items_food_frame,
+        self.demondrug_check = tk.Checkbutton(self.other_frame_one,
             text='Demondrug', variable=self.other.demondrug,
             onvalue=1, offvalue=0, state='active')
         self.demondrug_check.config(command=lambda:self._mutually_ex(
@@ -212,222 +198,164 @@ class DamageCalcWin():
         self.demondrug_check.pack(anchor='w')
 
         # Mega Demondrug
-        self.mega_demondrug_check = tk.Checkbutton(self.items_food_frame,
+        self.mega_demondrug_check = tk.Checkbutton(self.other_frame_one,
             text='Mega Demondrug', variable=self.other.mega_demondrug,
             onvalue=1, offvalue=0, state='active')
         self.mega_demondrug_check.config(command=lambda:self._mutually_ex(
                                                     self.other.mega_demondrug,
                                                     self.demondrug_check))
         self.mega_demondrug_check.pack(anchor='w')
-
-        # ----- Food -----
+    
+    def _create_food_box(self):
+        """"""
         # Title
-        self.food_title = tk.Label(self.items_food_frame, text="Food")
+        self.food_title = tk.Label(self.other_frame_one, text="FOOD")
         self.food_title.pack(side='top', fill='none',
-                             padx=2, pady=2, expand=True)
+                            padx=2, pady=2, expand=True)
+        # Frame
+        self.food_frame = tk.Frame(self.other_frame_one, bg='red')
+        self.food_frame.pack(side='top', fill='none',
+                                padx=2, pady=2, expand=True)
         
         # Dango booster menu
-        self.dango_booster_menu = tk.OptionMenu(self.items_food_frame,
+        self.dango_booster_menu = tk.OptionMenu(self.food_frame,
                                             self.other.dango_booster_lvl,
                                             *self.other.dango_booster_lvl_list)
         self.dango_booster_menu.config(state='disabled')
-        self.dango_booster_menu.pack(pady=2)
+        self.dango_booster_menu.grid(row=1, column=2, sticky='w')
         
         # Dango booster check
-        self.dango_booster_check = tk.Checkbutton(self.items_food_frame,
+        self.dango_booster_check = tk.Checkbutton(self.food_frame,
             text='Dango Booster', variable=self.other.dango_booster,
             onvalue=1, offvalue=0)
         self.dango_booster_check.config(command=lambda:self._switch_state(
                                                     self.other.dango_booster,
                                                     self.dango_booster_menu))
-        self.dango_booster_check.pack(pady=4, anchor='w')
+        self.dango_booster_check.grid(row=1, column=1, sticky='w')
 
         # Dango adrenaline menu
-        self.dango_adrenaline_menu = tk.OptionMenu(self.items_food_frame,
+        self.dango_adrenaline_menu = tk.OptionMenu(self.food_frame,
                                             self.other.dango_adrenaline_lvl,
                                             *self.other.dango_adrenaline_lvl_list)
         self.dango_adrenaline_menu.config(state='disabled')
-        self.dango_adrenaline_menu.pack(pady=2)
+        self.dango_adrenaline_menu.grid(row=2, column=2, sticky='w')
         
         # Dango adrenaline check
-        self.dango_adrenaline_check = tk.Checkbutton(self.items_food_frame,
+        self.dango_adrenaline_check = tk.Checkbutton(self.food_frame,
             text='Dango Adrenaline', variable=self.other.dango_adrenaline,
             onvalue=1, offvalue=0)
         self.dango_adrenaline_check.config(command=lambda:self._switch_state(
                                                     self.other.dango_adrenaline,
                                                     self.dango_adrenaline_menu))
-        self.dango_adrenaline_check.pack(pady=4, anchor='w')
+        self.dango_adrenaline_check.grid(row=2, column=1, sticky='w')
+
+        # Dango bulker check
+        self.dango_bulker_check = tk.Checkbutton(self.food_frame,
+            text='Dango Bulker', variable=self.other.dango_bulker,
+            onvalue=1, offvalue=0)
+        self.dango_bulker_check.grid(row=3, column=1, sticky='w')
+    
+    def _create_hh_songs_box(self):
+        """"""
+        self.hh_songs_title = tk.Label(self.other_frame_two, text="HH SONGS")
+        self.hh_songs_title.pack(side='top', fill='none',
+                                    padx=2, pady=2, expand=True)
+        
+        self._make_checkboxes(self.other_frame_two, self.other,
+                              self.other.hh_songs_list)
 
     def _create_other_box(self):
         """Create the box that manage the options."""
-        # Frame
-        self.options_frame = tk.Frame(self.bot_right_frame, bg='pink')
-        self.options_frame.pack(side='left', anchor='w', fill='none',
-                              padx=2, pady=2, expand=True)
-        # Title
-        self.options_title = tk.Label(self.options_frame, text="Options")
-        self.options_title.pack(side='top', fill='none',
+        self.other_title = tk.Label(self.other_frame_two, text="OTHER")
+        self.other_title.pack(side='top', fill='none',
                                     padx=2, pady=2, expand=True)
         
-        # ----- Options -----
-        # Scroll change
-        self.scroll_check = tk.Checkbutton(self.options_frame,
-            text='Use Blue Scroll', variable=self.other.scroll_color,
-            onvalue=1, offvalue=0)
-        self.scroll_check.pack(anchor='w')
+        self._make_checkboxes(self.other_frame_two, self.other,
+                              self.other.other_list)
 
-        # Frenzy
-        self.frenzy_check = tk.Checkbutton(self.options_frame,
-            text='Beaten Frenzy', variable=self.other.beaten_frenzy,
-            onvalue=1, offvalue=0)
-        self.frenzy_check.pack(anchor='w')
-
-        # Attack song
-        self.attack_song_check = tk.Checkbutton(self.options_frame,
-            text='Attack Up Song', variable=self.other.attack_song,
-            onvalue=1, offvalue=0)
-        self.attack_song_check.pack(anchor='w')
-
-        # Affinity song
-        self.affinity_song_check = tk.Checkbutton(self.options_frame,
-            text='Affinity Up Song', variable=self.other.affinity_song,
-            onvalue=1, offvalue=0)
-        self.affinity_song_check.pack(anchor='w')
-
-        # Element song
-        self.element_song_check = tk.Checkbutton(self.options_frame,
-            text='Element Up Song', variable=self.other.element_song,
-            onvalue=1, offvalue=0)
-        self.element_song_check.pack(anchor='w')
-
-        # Infernal melody
-        self.infernal_melody_check = tk.Checkbutton(self.options_frame,
-            text='Infernal Melody', variable=self.other.infernal_melody,
-            onvalue=1, offvalue=0)
-        self.infernal_melody_check.pack(anchor='w')
+# -----------------------------------------------------------------------------
+# ---------------------------- SKILL FUNCTIONS --------------------------------
+# -----------------------------------------------------------------------------
 
     def _create_skills_box(self):
         """Create the box that manage the skills."""
         # Title
-        self.skills_title = tk.Label(self.bot_left_frame, text="Skills")
+        self.skills_title = tk.Label(self.bot_left_frame, text="SKILLS")
         self.skills_title.pack(side='top', fill='none',
                                      padx=2, pady=2, expand=True)
-        # Select frame
-        self.skills_select_frame = tk.Frame(self.bot_left_frame, bg='pink')
-        self.skills_select_frame.pack(side='left', anchor='e', fill='none',
+        # Frame
+        self.skills_frame = tk.Frame(self.bot_left_frame, bg='pink')
+        self.skills_frame.pack(side='bottom', anchor='s', fill='both',
                                padx=2, pady=2, expand=True)
-        # Skills frame
-        self.skills_main_frame = tk.Frame(self.bot_left_frame, bg='pink')
-        self.skills_main_frame.pack(side='bottom', anchor='s', fill='both',
-                               padx=2, pady=2, expand=True)
-        # Remove btn frame
-        self.skills_btn = tk.Frame(self.skills_main_frame, bg='red')
-        self.skills_btn.pack(side='left', anchor='s', fill='both',
-                                   padx=5, pady=2, expand=True)
-        # Skill labels frame
-        self.skills_labels = tk.Frame(self.skills_main_frame, bg='orange')
-        self.skills_labels.pack(side='left', anchor='n', fill='both',
-                               padx=2, pady=2, expand=True)
-        # Option menus frame
-        self.skills_optionmenu = tk.Frame(self.skills_main_frame, bg='yellow')
-        self.skills_optionmenu.pack(side='left', anchor='n', fill='both',
-                                   padx=2, pady=2, expand=True)
-        # Special label frame
-        self.special_labels = tk.Frame(self.skills_main_frame, bg='orange')
-        self.special_labels.pack(side='left', anchor='n', fill='both',
-                                 padx=2, pady=2, expand=True)
-        # Special optionmenu
-        self.special_optionmenu = tk.Frame(self.skills_main_frame, bg='red')
-        self.special_optionmenu.pack(side='left', anchor='s', fill='both',
-                                     padx=2, pady=2, expand=True)
-        
-        # ----- Skill selection -----
-        new_skill = tk.StringVar()
-        dropdown = ttk.Combobox(self.bot_left_frame,
-                                textvariable=new_skill, width=25,
+        # Skill selection dropdown
+        self.new_skill = tk.StringVar()
+        self.skill_dropdown = ttk.Combobox(self.bot_left_frame,
+                                textvariable=self.new_skill, width=25,
                                 values=self.skills.skill_list, state='readonly')
-        dropdown.pack(side='left', padx=3, pady=4, expand=True)
+        self.skill_dropdown.bind("<<ComboboxSelected>>", self._add_skill)
+        self.skill_dropdown.pack(side='left', padx=3, pady=4, expand=True)
 
-        self.add_skill_btn = tk.Button(self.bot_left_frame, width=10,
-                                    text='Add Skill',
-                                    command=lambda:self._add_skill(new_skill))
-        self.add_skill_btn.pack(side='left', anchor='w', expand=True)
-
-# -----------------------------------------------------------------------------
-# ----------------------------------- SKILLS ----------------------------------
-# -----------------------------------------------------------------------------
-
-    def _add_skill(self, new_skill):
+    def _add_skill(self, event):
         """Add the new skill"""
-        self.skill_name = new_skill.get()
+        self.skill_name = self.new_skill.get()
 
-        # Format the skill name for logical purposes, then check if the skill 
-        # is not already added to the list of active skills
+        # Format the skill name then check if the skill is not already active
         self._format_skill_name()
         skill_check = False
 
         for key in self.active_skills.keys():
-            if key == self.skill_name_edit:
+            if key == self.formatted_skill_name:
                 skill_check = True
 
-        # If the check passes, proceed with the addition of the skill
         if self.skill_name != '' and skill_check == False:
-            self._create_skill_elements(self.skill_name)
+            self._create_skill_elements()
             # Flag the newly added skill as active
-            setattr(self.skills, self.skill_name_edit, 1)
+            setattr(self.skills, self.formatted_skill_name, 1)
 
     def _format_skill_name(self):
         """Format the name of the newly added skill for use in the logic"""
-        self.skill_name_edit = self.skill_name.lower()
-        self.skill_name_edit = self.skill_name_edit.replace(' ', '_')
+        self.formatted_skill_name = self.skill_name.lower()
+        self.formatted_skill_name = self.formatted_skill_name.replace(' ', '_')
 
-        # Create two variables from the formatted name to access the
-        # skill's data
-        skill_lvl_name = self.skill_name_edit + '_lvl'
-        skill_lvl_list_name = self.skill_name_edit + '_lvl_list'
+        skill_lvl_str = self.formatted_skill_name + '_lvl'
+        skill_lvl_list_str = self.formatted_skill_name + '_lvl_list'
 
-        # Get the necessary attributes of the skills from the edits
-        self.skill_lvl = getattr(self.skills, skill_lvl_name)
-        self.skill_lvl_list = getattr(self.skills, skill_lvl_list_name)
+        self.skill_lvl = getattr(self.skills, skill_lvl_str)
+        self.skill_lvl_list = getattr(self.skills, skill_lvl_list_str)
 
     def _format_special_skill_name(self):
         """Format the name of the newly added skill for use in the logic"""
-        # Create three variables from the formatted name to access the
-        # skill's data
-        special_name = self.skill_name_edit + '_special_name'
-        special_lvl = self.skill_name_edit + '_special'
-        special_lvl_list = self.skill_name_edit + '_special_list'
+        special_name = self.formatted_skill_name + '_special_name'
+        special_lvl = self.formatted_skill_name + '_special'
+        special_lvl_list = self.formatted_skill_name + '_special_list'
 
-        # Get the necessary attributes of the skills from the edits
         self.special_name = getattr(self.skills, special_name)
         self.special_lvl = getattr(self.skills, special_lvl)
         self.special_lvl_list = getattr(self.skills, special_lvl_list)
 
-    def _create_skill_elements(self, skill_name):
+    def _create_skill_elements(self):
         """Create the elements of the newly added skill and add them
            to the list of active skills"""
-        skill_name = skill_name.lower()
-        skill = self.skill_name_edit
+        formatted_skill_name = self.formatted_skill_name
         skill_lvl = self.skill_lvl
         skill_lvl_list = self.skill_lvl_list
         skill_elements =[]
-        
+
         # Create the elements
         # Optionmenu
-        skill_menu = tk.OptionMenu(self.skills_optionmenu,
+        skill_menu = tk.OptionMenu(self.skills_frame,
                                    skill_lvl, *skill_lvl_list)
-        skill_menu.pack(anchor='n', padx=3, pady=1)
+        skill_menu.grid(row=self.row_pos, column=3, sticky='w')
         # Label
-        skill_label = tk.Label(self.skills_labels, text=self.skill_name)
-        skill_label.pack(padx=3, pady=6)
+        skill_label = tk.Label(self.skills_frame, text=self.skill_name)
+        skill_label.grid(row=self.row_pos, column=2, sticky='w')
         # Remove btn
-        skill_btn = tk.Button(self.skills_btn, width=3, height=1, text='X',
-                              command=lambda:self._remove_skill(skill))
-        skill_btn.pack(anchor='s', padx=3, pady=3)
+        skill_btn = tk.Button(self.skills_frame, width=3, height=1, text='X',
+                              command=lambda:self._remove_skill(formatted_skill_name))
+        skill_btn.grid(row=self.row_pos, column=1, sticky='w', padx=5)
         
-        # Check if the skill is labeled as "special" and needs other options,
-        # if it is, create the needed elements
-        if skill_name in self.skills.special_skill_list:
+        # Check if the skill is labeled as "special" and needs other options
+        if self.skill_name.lower() in self.skills.special_skill_list:
             self._format_special_skill_name()
 
             special_name = self.special_name
@@ -435,37 +363,62 @@ class DamageCalcWin():
             special_lvl_list = self.special_lvl_list
 
             # Option menu
-            special_menu = tk.OptionMenu(self.special_optionmenu,
+            special_menu = tk.OptionMenu(self.skills_frame,
                                          special_lvl, *special_lvl_list)
-            special_menu.pack(anchor='n', padx=3, pady=1)
+            special_menu.grid(row=self.row_pos, column=5, sticky='w')
             # Label
-            special_label = tk.Label(self.special_labels, text=special_name)
-            special_label.pack(padx=3, pady=6)
+            special_label = tk.Label(self.skills_frame, text=special_name)
+            special_label.grid(row=self.row_pos, column=4, sticky='w')
         else:
-            special_menu = tk.Label(self.special_optionmenu, text='')
-            special_menu.pack(padx=3, pady=6)
-
-            special_label = tk.Label(self.special_labels, text='')
-            special_label.pack(padx=3, pady=6)
+            # Empty option menu
+            special_menu = tk.Label(self.skills_frame, text='')
+            special_menu.grid(row=self.row_pos, column=5, sticky='w')
+            # Empty label
+            special_label = tk.Label(self.skills_frame, text='')
+            special_label.grid(row=self.row_pos, column=4, sticky='w')
 
         # Add the skill and relative elements to the dict of active skills
         skill_elements.extend([skill_menu, skill_label, skill_btn,
                                special_menu, special_label])
-        self.active_skills[self.skill_name_edit] = skill_elements
+        self.active_skills[formatted_skill_name] = skill_elements
 
-    def _remove_skill(self, skill):
+        self.row_pos += 1
+
+    def _remove_skill(self, skill_to_remove):
         """Remove the skill and relative elements"""
         # Flag the skill as inactive
-        setattr(self.skills, skill, 0)
+        setattr(self.skills, skill_to_remove, 0)
 
         # Remove the elements from the UI then the skill itself from the dict
-        for element in self.active_skills[skill]:
+        for element in self.active_skills[skill_to_remove]:
             element.destroy()
-        del self.active_skills[skill]
+        del self.active_skills[skill_to_remove]
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+
+    def _make_checkboxes(self, frame, instance, list):
+        """Automatically generate the checkboxes elements from a list,
+           then place them in the specified frame"""
+        self.frame = frame
+        self.list = list
+
+        for item in list:
+            item_name = self._format_name(instance, item)
+
+            item_checkbox = tk.Checkbutton(self.frame,
+                                       text=item, variable=item_name,
+                                       onvalue=1, offvalue=0)
+            item_checkbox.pack(anchor='w')
+
+    def _format_name(self, instance, item):
+        """Format the name for logical purposes"""
+        item_name = item.lower()
+        item_name = item_name.replace(' ', '_')
+
+        item_name = getattr(instance, item_name)
+        return item_name   
 
     def _switch_state(self, flag, menu):
         """Switch the state of the selected item"""

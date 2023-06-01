@@ -5,6 +5,18 @@ class Other():
 
     def __init__(self):
         """Initialize the variables"""
+        self.items_list = ['powercharm', 'powertalon', 'might seed',
+                           'demon powder']
+        self.items_list = [item.title() for item in self.items_list]
+
+        self.hh_songs_list = ['attack up', 'affinity up', 'element up',
+                              'infernal melody']
+        self.hh_songs_list = [item.title() for item in self.hh_songs_list]
+
+        self.other_list = ['blue scroll', 'beaten frenzy', 'power drum',
+                           'rousing roar', 'butterflame', 'cutterfly']
+        self.other_list = [item.title() for item in self.other_list]
+
     # ---------- ITEMS ----------
         self.powercharm = tk.IntVar()
         self.powercharm.set(1)
@@ -41,21 +53,33 @@ class Other():
         self.dango_bulker.set(0)
     
     # ---------- HH SONGS ----------
-        self.attack_song = tk.IntVar()
-        self.attack_song.set(0)
+        self.attack_up = tk.IntVar()
+        self.attack_up.set(0)
 
-        self.affinity_song = tk.IntVar()
-        self.affinity_song.set(0)
+        self.affinity_up = tk.IntVar()
+        self.affinity_up.set(0)
 
-        self.element_song = tk.IntVar()
-        self.element_song.set(0)
+        self.element_up = tk.IntVar()
+        self.element_up.set(0)
 
         self.infernal_melody = tk.IntVar()
         self.infernal_melody.set(0)
 
     # ---------- OTHER ----------
-        self.scroll_color = tk.IntVar()
-        self.scroll_color.set(0)
-
+        self.blue_scroll = tk.IntVar()
+        self.blue_scroll.set(0)
+        
         self.beaten_frenzy = tk.IntVar()
         self.beaten_frenzy.set(0)
+
+        self.rousing_roar = tk.IntVar()
+        self.rousing_roar.set(0)
+
+        self.power_drum = tk.IntVar()
+        self.power_drum.set(0)
+
+        self.butterflame = tk.IntVar()
+        self.butterflame.set(0)
+
+        self.cutterfly = tk.IntVar()
+        self.cutterfly.set(0)
