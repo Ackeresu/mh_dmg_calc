@@ -29,16 +29,21 @@ class Other():
         self.other_list = [item.title() for item in self.other_list]
 
     # ---------- RAMPAGE DECO ----------
-        self.element_exploit = 0
-        self.hellion_mode = 0
-        self.anti_species = 0
-        self.small_monster_exploit = 0
-        self.blight_exploit = 0
-        self.magnamalo_soul = 0
-        self.valstrax_soul = 0
-        self.kushala_daora_soul = 0
-        self.narwa_soul = 0
-        self.bloody_heart = 0
+        
+        for item in self.rampage_deco_list:
+            formatted_item = item.lower()
+            formatted_item = formatted_item.replace(' ', '_')
+            setattr(self, formatted_item, 0)
+        #self.element_exploit = 0
+        #self.hellion_mode = 0
+        #self.anti_species = 0
+        #self.small_monster_exploit = 0
+        #self.blight_exploit = 0
+        #self.magnamalo_soul = 0
+        #self.valstrax_soul = 0
+        #self.kushala_daora_soul = 0
+        #self.narwa_soul = 0
+        #self.bloody_heart = 0
 
     # ---------- PETALACE ----------
         self.hunting_iii = 0

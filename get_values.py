@@ -5,13 +5,26 @@ class GetValues():
         """Initialize the class"""
         self.dmg_calc_win = dmg_calc_win
 
+        self.atk_mltp = 1
+        self.atk_buffs = 0
+        self.atk_global_mltp = 1
+
+        self.elem_mltp = 1
+        self.elem_buffs = 0
+        self.elem_global_mltp = 1
+
+        self.crit_mltp = 1.25
+        self.crit_elem_mltp = 1.0
+        self.crit_buffs = 0
+
     def get_values(self):
         """Get the values"""
-        self._get_weapon_values()
+        self._get_wpn_specific_values()
+        self._get_wpn_values()
         self._get_other_values()
         self._get_skills_values()
     
-    def _get_weapon_values(self):
+    def _get_wpn_values(self):
         """Get the values from the entries and convert them if necessary"""
         self.raw = float(self.dmg_calc_win.raw_entry.get())
         self.elem = float(self.dmg_calc_win.elem_entry.get())
@@ -25,17 +38,55 @@ class GetValues():
         self.ehzv = float(self.dmg_calc_win.ehzv_entry.get())
         self.ehzv = self.ehzv / 100
 
-        self.atk_mltp = 1
-        self.atk_buffs = 0
-        self.atk_global_mltp = 1
+    def _get_wpn_specific_values(self):
+        """"""
+        gs_power_sheathe = self.dmg_calc_win.wpn.gs_power_sheathe
+        ls_white_spirit_gauge = self.dmg_calc_win.wpn.ls_white_spirit_gauge
+        ls_yellow_spirit_gauge = self.dmg_calc_win.wpn.ls_yellow_spirit_gauge
+        ls_red_spirit_gauge = self.dmg_calc_win.wpn.ls_red_spirit_gauge
+        db_demon_mode = self.dmg_calc_win.wpn.db_demon_mode
+        db_archdemon_mode = self.dmg_calc_win.wpn.db_archdemon_mode
+        db_feral_mode = self.dmg_calc_win.wpn.db_feral_mode
+        lance_red_glow = self.dmg_calc_win.wpn.lance_red_glow
+        lance_orange_glow = self.dmg_calc_win.wpn.lance_orange_glow
+        lance_yellow_glow = self.dmg_calc_win.wpn.lance_yellow_glow
+        lance_blue_glow = self.dmg_calc_win.wpn.lance_blue_glow
+        gl_erupting_cannon = self.dmg_calc_win.wpn.gl_erupting_cannon
+        cb_red_shield = self.dmg_calc_win.wpn.cb_red_shield
+        bow_herculean_draw = self.dmg_calc_win.wpn.bow_herculean_draw
 
-        self.elem_mltp = 1
-        self.elem_buffs = 0
-        self.elem_global_mltp = 1
+        if gs_power_sheathe == 1:
+            self.atk_mltp += 0.1
 
-        self.crit_mltp = 1.25
-        self.crit_elem_mltp = 1.0
-        self.crit_buffs = 0
+        if ls_white_spirit_gauge == 1:
+            self.atk_mltp += 0.04
+        if ls_yellow_spirit_gauge == 1:
+            self.atk_mltp += 0.08
+        if ls_red_spirit_gauge == 1:
+            self.atk_mltp += 0.12
+
+        if db_demon_mode == 1:
+            self.elem_mltp += 0.35
+        if db_archdemon_mode == 1:
+            self.elem_mltp += 0.2
+        if db_feral_mode == 1:
+            self.atk_mltp += 0.2
+
+        if lance_red_glow == 1:
+            self.atk_mltp += 0.05
+        if (lance_orange_glow or lance_blue_glow) == 1:
+            self.atk_mltp += 0.1
+        if lance_yellow_glow == 1:
+            self.atk_mltp += 0.15
+
+        if gl_erupting_cannon == 1:
+            self.atk_mltp += 0.3
+
+        if cb_red_shield == 1:
+            self.atk_mltp += 0.1
+
+        if bow_herculean_draw == 1:
+            self.atk_mltp += 0.1
 
     def _get_other_values(self):
         """Get the values not skill related"""

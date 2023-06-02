@@ -17,6 +17,7 @@ class DamageCalcWin():
         self.skills = Skills()
         self.other = Other()
         self.active_skills = {}
+        self.old_wpn_specific = ''
         self.old_rampage_deco = ''
         self.old_petalace = ''
         self.row_pos = 0
@@ -144,8 +145,23 @@ class DamageCalcWin():
         self.equipment_frame.pack(side='bottom', anchor='s', fill='both',
                                padx=2, pady=2, expand=True)
         
+        self._create_wpn_specific_box()
         self._create_rampage_deco_box()
         self._create_petalace_box()
+
+    def _create_wpn_specific_box(self):
+        """"""
+        # Title
+        self.wpn_specific_title = tk.Label(self.equipment_frame, text="WEAPON SPECIFIC")
+        self.wpn_specific_title.pack(side='top', fill='none',
+                                     padx=2, pady=2, expand=True)
+        # Weapon specific selection dropdown
+        self.active_wpn_specific = tk.StringVar()
+        self.wpn_specific_dropdown = ttk.Combobox(self.equipment_frame,
+                                textvariable=self.active_wpn_specific, width=20,
+                                values=self.wpn.wpn_specific_list, state='readonly')
+        self.wpn_specific_dropdown.bind("<<ComboboxSelected>>", self._wpn_specific_choice)
+        self.wpn_specific_dropdown.pack(side='top', padx=3, pady=4, expand=True)
         
     def _create_rampage_deco_box(self):
         """"""
@@ -174,6 +190,17 @@ class DamageCalcWin():
                                 values=self.other.petalace_list, state='readonly')
         self.petalace_dropdown.bind("<<ComboboxSelected>>", self._petalace_choice)
         self.petalace_dropdown.pack(side='top', padx=3, pady=4, expand=True)
+
+    def _wpn_specific_choice(self, event):
+        """Manage the addition of the selected rampage deco and remove the old one"""
+        new_wpn_specific = self.active_wpn_specific.get()
+
+        if self.old_wpn_specific != '':
+            setattr(self.wpn, self.old_wpn_specific, 0)
+        
+        new_wpn_specific_name = self._format_name(new_wpn_specific)
+        setattr(self.wpn, new_wpn_specific_name, 1)
+        self.old_wpn_specific = new_wpn_specific_name
 
     def _rampage_deco_choice(self, event):
         """Manage the addition of the selected rampage deco and remove the old one"""
@@ -391,7 +418,7 @@ class DamageCalcWin():
         formatted_skill_name = self.formatted_skill_name
         skill_lvl = self.skill_lvl
         skill_lvl_list = self.skill_lvl_list
-        skill_elements =[]
+        skill_elements = []
 
         # Create the elements
         # Optionmenu
