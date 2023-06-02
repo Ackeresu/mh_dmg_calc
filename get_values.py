@@ -313,16 +313,8 @@ class GetValues():
 
         if resentment == 0:
             pass
-        elif resentment_lvl == 1:
-            self.atk_buffs += 5
-        elif resentment_lvl == 2:
-            self.atk_buffs += 10
-        elif resentment_lvl == 3:
-            self.atk_buffs += 15
-        elif resentment_lvl == 4:
-            self.atk_buffs += 20
-        elif resentment_lvl == 5:
-            self.atk_buffs += 25
+        else:
+            self.atk_buffs += (resentment_lvl * 5)
 
         # Resuscitate
         resuscitate = self.dmg_calc_win.skills.resuscitate
@@ -751,7 +743,7 @@ class GetValues():
 
         if strife == 0:
             pass
-        elif red_health == '< 60%':
+        elif red_health == '<60%':
             if strife_lvl == 1:
                 self.elem_mltp += 0.05
                 self.crit_buffs += 5
@@ -761,7 +753,7 @@ class GetValues():
             elif strife_lvl == 3:
                 self.elem_mltp += 0.15
                 self.crit_buffs += 10
-        elif red_health == '> 60%':
+        elif red_health == '>60%':
             if strife_lvl == 1:
                 self.elem_mltp += 0.1
                 self.crit_buffs += 10

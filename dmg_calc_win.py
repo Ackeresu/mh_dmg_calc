@@ -28,19 +28,14 @@ class DamageCalcWin():
         self._create_window()
         self._calculate()
 
-        # Calculate button
-        self.calc_btn = tk.Button(self.left_center_frame, width=30, height=2,
-                                  text='CALCULATE', command=self._calculate)
-        self.calc_btn.pack(side='top', fill='both')
-
     def _create_window(self):
         """Call the functions necessary to build the window"""
         self._create_main_frames()
         self._create_wpn_box()
         self._create_equipment_box()
-        self._create_other_frame_one()
-        self._create_other_frame_two()
         self._create_skills_box()
+        self._create_other_box()
+        self._create_calc_btn_box()
         self._create_results_box()
 
     def _create_main_frames(self):
@@ -48,109 +43,121 @@ class DamageCalcWin():
         self.canvas = tk.Frame(self.root, width=200, height=180, bg='lightgrey')
         self.canvas.pack(fill='both', expand=True)
 
+        # Left side
         self.left_frame = tk.Frame(self.canvas, bg='blue')
-        self.left_frame.pack(side='left', expand=True)
+        self.left_frame.pack(side='left')
 
+        self.left_top_frame = tk.Frame(self.left_frame, bg='green')
+        self.left_top_frame.pack(padx=2, pady=2)
+
+        self.left_center_frame = tk.Frame(self.left_frame, bg='cyan')
+        self.left_center_frame.pack(padx=2, pady=2)
+
+        self.left_bottom_frame = tk.Frame(self.left_frame, bg='violet')
+        self.left_bottom_frame.pack(padx=2, pady=2)
+
+        # Right side
         self.right_frame = tk.Frame(self.canvas, bg='red')
-        self.right_frame.pack(side='right', expand=True)
+        self.right_frame.pack(side='right')
 
-        self.left_top_frame = tk.Frame(self.left_frame, bg='purple')
-        self.left_top_frame.pack(side='top', padx=2, pady=2, expand=True)
+        # ----------------------------------------------------------------------
 
-        self.left_center_frame = tk.Frame(self.left_frame, bg='pink')
-        self.left_center_frame.pack(side='top', padx=2, pady=2, expand=True)
+        # Weapon
+        self.wpn_frame = tk.Frame(self.left_top_frame, bg='purple')
+        self.wpn_frame.pack(side='left', padx=2, pady=2, anchor='n')
+        # Equipment
+        self.equipment_frame = tk.Frame(self.left_top_frame, bg='pink')
+        self.equipment_frame.pack(side='left', padx=2, pady=2)
 
-        self.left_bot_frame_L = tk.Frame(self.left_frame, bg='cyan')
-        self.left_bot_frame_L.pack(side='left', padx=2, pady=2, expand=True)
+        # Skills
+        self.skills_frame = tk.Frame(self.left_center_frame, bg='blue')
+        self.skills_frame.pack(side='left', padx=2, pady=2, anchor='n')
+        # Other
+        self.other_frame = tk.Frame(self.left_center_frame, bg='purple')
+        self.other_frame.pack(side='left', padx=2, pady=2)
 
-        self.left_bot_frame_R = tk.Frame(self.left_frame, bg='cyan')
-        self.left_bot_frame_R.pack(side='right', padx=2, pady=2, expand=True)
+        # Calc btn
+        self.calc_btn_frame = tk.Frame(self.left_bottom_frame, bg='cyan')
+        self.calc_btn_frame.pack(side='top', padx=2, pady=2)
 
     def _create_wpn_box(self):
         """Create the box that manage the wpn data."""
-        # Main frame
-        self.wpn_main_frame = tk.Frame(self.left_top_frame, bg='green')
-        self.wpn_main_frame.pack(side='left', anchor='w', fill='none',
-                             padx=2, pady=2, expand=True)
         # Title
-        self.top_title = tk.Label(self.wpn_main_frame, text="WEAPON")
+        self.top_title = tk.Label(self.wpn_frame, text="WEAPON")
         self.top_title.pack(side='top', fill='none',
                             padx=2, pady=2, expand=True)
         # Wpn frame
-        self.wpn_frame = tk.Frame(self.wpn_main_frame, bg='cyan')
-        self.wpn_frame.pack(side='left', anchor='w', fill='none',
+        self.wpn_data_frame = tk.Frame(self.wpn_frame, bg='cyan')
+        self.wpn_data_frame.pack(side='left', anchor='w', fill='none',
                              padx=2, pady=2, expand=True)
+        
         # ----------------------------------------------------------------------
+
         # Raw
-        self.raw_label = tk.Label(self.wpn_frame, text="Raw: ")
+        self.raw_label = tk.Label(self.wpn_data_frame, text="Raw: ")
         self.raw_label.grid(row=1, column=1, sticky='w')
 
-        self.raw_entry = tk.Entry(self.wpn_frame, width=8, justify='center',
+        self.raw_entry = tk.Entry(self.wpn_data_frame, width=8, justify='center',
                                   textvariable=self.wpn.raw)
         self.raw_entry.grid(row=1, column=2)
 
         # Element
-        self.elem_label = tk.Label(self.wpn_frame, text="Element: ")
+        self.elem_label = tk.Label(self.wpn_data_frame, text="Element: ")
         self.elem_label.grid(row=2, column=1, sticky='w')
         
-        self.elem_entry = tk.Entry(self.wpn_frame, width=8, justify='center',
+        self.elem_entry = tk.Entry(self.wpn_data_frame, width=8, justify='center',
                                    textvariable=self.wpn.element)
         self.elem_entry.grid(row=2, column=2)
 
         # Affinity
-        self.crit_label = tk.Label(self.wpn_frame, text="Affinity: ")
+        self.crit_label = tk.Label(self.wpn_data_frame, text="Affinity: ")
         self.crit_label.grid(row=3, column=1, sticky='w')
 
-        self.crit_entry = tk.Entry(self.wpn_frame, width=8, justify='center',
+        self.crit_entry = tk.Entry(self.wpn_data_frame, width=8, justify='center',
                                    textvariable=self.wpn.affinity)
         self.crit_entry.grid(row=3, column=2)
 
         # Sharpness
-        self.sharp_label = tk.Label(self.wpn_frame, text="Sharpness: ")
+        self.sharp_label = tk.Label(self.wpn_data_frame, text="Sharpness: ")
         self.sharp_label.grid(row=4, column=1, sticky='w')
 
-        self.sharp_menu = tk.OptionMenu(self.wpn_frame,
+        self.sharp_menu = tk.OptionMenu(self.wpn_data_frame,
                                         self.wpn.sharpness,
                                         *self.wpn.sharpness_list)
         self.sharp_menu.config(width=6)
         self.sharp_menu.grid(row=4, column=2)
 
         # MV
-        self.mv_label = tk.Label(self.wpn_frame, text="Motion value: ")
+        self.mv_label = tk.Label(self.wpn_data_frame, text="Motion value: ")
         self.mv_label.grid(row=1, column=3, sticky='w')
 
-        self.mv_entry = tk.Entry(self.wpn_frame, width=8, justify='center',
+        self.mv_entry = tk.Entry(self.wpn_data_frame, width=8, justify='center',
                                  textvariable=self.wpn.mv)
         self.mv_entry.grid(row=1, column=4)
 
         # Hitzone
-        self.hzv_label = tk.Label(self.wpn_frame, text="Hitzone: ")
+        self.hzv_label = tk.Label(self.wpn_data_frame, text="Hitzone: ")
         self.hzv_label.grid(row=2, column=3, sticky='w')
 
-        self.hzv_entry = tk.Entry(self.wpn_frame, width=8, justify='center',
+        self.hzv_entry = tk.Entry(self.wpn_data_frame, width=8, justify='center',
                                   textvariable=self.wpn.raw_hitzone)
         self.hzv_entry.grid(row=2, column=4)
         
         # Elem hitzone
-        self.ehzv_label = tk.Label(self.wpn_frame, text="Elem. hitzone: ")
+        self.ehzv_label = tk.Label(self.wpn_data_frame, text="Elem. hitzone: ")
         self.ehzv_label.grid(row=3, column=3, sticky='w')
 
-        self.ehzv_entry = tk.Entry(self.wpn_frame, width=8,
+        self.ehzv_entry = tk.Entry(self.wpn_data_frame, width=8,
                                    justify='center', textvariable=self.wpn.elemental_hitzone)
         self.ehzv_entry.grid(row=3, column=4)
 
-    def _create_equipment_box(self):
-        # Frame
-        self.equipment_frame = tk.Frame(self.left_top_frame, bg='pink')
-        self.equipment_frame.pack(side='bottom', anchor='s', fill='both',
-                               padx=2, pady=2, expand=True)
-        
+    def _create_equipment_box(self):        
         self._create_wpn_specific_box()
         self._create_rampage_deco_box()
         self._create_petalace_box()
 
     def _create_wpn_specific_box(self):
-        """"""
+        """Create the box that manage the weapon specific buffs"""
         # Title
         self.wpn_specific_title = tk.Label(self.equipment_frame, text="WEAPON SPECIFIC")
         self.wpn_specific_title.pack(side='top', fill='none',
@@ -158,13 +165,13 @@ class DamageCalcWin():
         # Weapon specific selection dropdown
         self.active_wpn_specific = tk.StringVar()
         self.wpn_specific_dropdown = ttk.Combobox(self.equipment_frame,
-                                textvariable=self.active_wpn_specific, width=20,
+                                textvariable=self.active_wpn_specific, width=25,
                                 values=self.wpn.wpn_specific_list, state='readonly')
         self.wpn_specific_dropdown.bind("<<ComboboxSelected>>", self._wpn_specific_choice)
         self.wpn_specific_dropdown.pack(side='top', padx=3, pady=4, expand=True)
         
     def _create_rampage_deco_box(self):
-        """"""
+        """Create the box that manage the rampage decos"""
         # Title
         self.rampage_deco_title = tk.Label(self.equipment_frame, text="RAMPAGE DECO")
         self.rampage_deco_title.pack(side='top', fill='none',
@@ -172,13 +179,13 @@ class DamageCalcWin():
         # Petalace selection dropdown
         self.active_rampage_deco = tk.StringVar()
         self.rampage_deco_dropdown = ttk.Combobox(self.equipment_frame,
-                                textvariable=self.active_rampage_deco, width=20,
+                                textvariable=self.active_rampage_deco, width=25,
                                 values=self.other.rampage_deco_list, state='readonly')
         self.rampage_deco_dropdown.bind("<<ComboboxSelected>>", self._rampage_deco_choice)
         self.rampage_deco_dropdown.pack(side='top', padx=3, pady=4, expand=True)
 
     def _create_petalace_box(self):
-        """"""
+        """Create the box that manage the petalaces"""
         # Title
         self.petalace_title = tk.Label(self.equipment_frame, text="PETALACE")
         self.petalace_title.pack(side='top', fill='none',
@@ -186,7 +193,7 @@ class DamageCalcWin():
         # Petalace selection dropdown
         self.active_petalace = tk.StringVar()
         self.petalace_dropdown = ttk.Combobox(self.equipment_frame,
-                                textvariable=self.active_petalace, width=20,
+                                textvariable=self.active_petalace, width=25,
                                 values=self.other.petalace_list, state='readonly')
         self.petalace_dropdown.bind("<<ComboboxSelected>>", self._petalace_choice)
         self.petalace_dropdown.pack(side='top', padx=3, pady=4, expand=True)
@@ -225,7 +232,7 @@ class DamageCalcWin():
         self.old_petalace = new_petalace_name
 
     def _create_results_box(self):
-        """Create the box that manage the results."""
+        """Create the box that manage the results"""
         # Frame
         self.results_frame = tk.Frame(self.right_frame, bg='green')
         self.results_frame.pack(side='left', anchor='w', fill='none',
@@ -235,40 +242,36 @@ class DamageCalcWin():
         self.results_title.pack(side='top', fill='none',
                             padx=2, pady=2, expand=True)
     
-    def _create_other_frame_one(self):
-        """"""
-        self.other_frame_one = tk.Frame(self.left_bot_frame_R, bg='pink')
-        self.other_frame_one.pack(side='left', anchor='w', fill='none',
+    def _create_other_box(self):
+        """Create the box that manage all the other buffs"""
+        # Items frame
+        self.items_frame = tk.Frame(self.other_frame, bg='pink')
+        self.items_frame.pack(side='left', anchor='n', fill='none',
                               padx=2, pady=2, expand=True)
         
         self._create_items_box()
         self._create_food_box()
 
-    def _create_other_frame_two(self):
-        """"""
-        self.other_frame_two = tk.Frame(self.left_bot_frame_R, bg='pink')
-        self.other_frame_two.pack(side='left', anchor='w', fill='none',
+        # Other options frame
+        self.other_options_frame = tk.Frame(self.other_frame, bg='pink')
+        self.other_options_frame.pack(side='left', anchor='w', fill='none',
                               padx=2, pady=2, expand=True)
         
         self._create_hh_songs_box()
-        self._create_other_box()
+        self._create_other_options_box()
 
     def _create_items_box(self):
-        """Create the box that manage the items."""
+        """Create the box that manage the items"""
         # Title
-        self.items_title = tk.Label(self.other_frame_one, text="ITEMS")
+        self.items_title = tk.Label(self.items_frame, text="ITEMS")
         self.items_title.pack(side='top', fill='none',
                                     padx=2, pady=2, expand=True)
-        # Frame
-        #self.items_frame = tk.Frame(self.other_frame_one, bg='red')
-        #self.items_frame.pack(side='top', fill='none',
-        #                      padx=2, pady=2, expand=True)
         
-        self._make_checkboxes(self.other_frame_one, self.other,
+        self._make_checkboxes(self.items_frame, self.other,
                               self.other.items_list)
 
         # Demondrug
-        self.demondrug_check = tk.Checkbutton(self.other_frame_one,
+        self.demondrug_check = tk.Checkbutton(self.items_frame,
             text='Demondrug', variable=self.other.demondrug,
             onvalue=1, offvalue=0, state='active')
         self.demondrug_check.config(command=lambda:self._mutually_ex(
@@ -277,7 +280,7 @@ class DamageCalcWin():
         self.demondrug_check.pack(anchor='w')
 
         # Mega Demondrug
-        self.mega_demondrug_check = tk.Checkbutton(self.other_frame_one,
+        self.mega_demondrug_check = tk.Checkbutton(self.items_frame,
             text='Mega Demondrug', variable=self.other.mega_demondrug,
             onvalue=1, offvalue=0, state='active')
         self.mega_demondrug_check.config(command=lambda:self._mutually_ex(
@@ -288,11 +291,12 @@ class DamageCalcWin():
     def _create_food_box(self):
         """"""
         # Title
-        self.food_title = tk.Label(self.other_frame_one, text="FOOD")
+        self.food_title = tk.Label(self.items_frame, text="FOOD")
         self.food_title.pack(side='top', fill='none',
                             padx=2, pady=2, expand=True)
+        
         # Frame
-        self.food_frame = tk.Frame(self.other_frame_one, bg='red')
+        self.food_frame = tk.Frame(self.items_frame, bg='red')
         self.food_frame.pack(side='top', fill='none',
                                 padx=2, pady=2, expand=True)
         
@@ -335,40 +339,46 @@ class DamageCalcWin():
         self.dango_bulker_check.grid(row=3, column=1, sticky='w')
     
     def _create_hh_songs_box(self):
-        """"""
-        self.hh_songs_title = tk.Label(self.other_frame_two, text="HH SONGS")
+        """Create the box that manage the hh songs"""
+        self.hh_songs_title = tk.Label(self.other_options_frame, text="HH SONGS")
         self.hh_songs_title.pack(side='top', fill='none',
                                     padx=2, pady=2, expand=True)
         
-        self._make_checkboxes(self.other_frame_two, self.other,
+        self._make_checkboxes(self.other_options_frame, self.other,
                               self.other.hh_songs_list)
 
-    def _create_other_box(self):
-        """Create the box that manage the options."""
-        self.other_title = tk.Label(self.other_frame_two, text="OTHER")
+    def _create_other_options_box(self):
+        """Create the box that manage other options"""
+        self.other_title = tk.Label(self.other_options_frame, text="OTHER")
         self.other_title.pack(side='top', fill='none',
                                     padx=2, pady=2, expand=True)
         
-        self._make_checkboxes(self.other_frame_two, self.other,
+        self._make_checkboxes(self.other_options_frame, self.other,
                               self.other.other_list)
+        
+    def _create_calc_btn_box(self):
+        """Create the box that manage the calc btn"""
+        self.calc_btn = tk.Button(self.calc_btn_frame, width=50, height=2,
+                                  text='CALCULATE', command=self._calculate)
+        self.calc_btn.pack(side='top', fill='both')
 
 # -----------------------------------------------------------------------------
 # ---------------------------- SKILL FUNCTIONS --------------------------------
 # -----------------------------------------------------------------------------
 
     def _create_skills_box(self):
-        """Create the box that manage the skills."""
+        """Create the box that manage the skills"""
         # Title
-        self.skills_title = tk.Label(self.left_bot_frame_L, text="SKILLS")
+        self.skills_title = tk.Label(self.skills_frame, text="SKILLS")
         self.skills_title.pack(side='top', fill='none',
                                      padx=2, pady=2, expand=True)
         # Frame
-        self.skills_frame = tk.Frame(self.left_bot_frame_L, bg='pink')
-        self.skills_frame.pack(side='bottom', anchor='s', fill='both',
+        self.skills_data_frame = tk.Frame(self.skills_frame, bg='pink')
+        self.skills_data_frame.pack(side='bottom', anchor='s', fill='both',
                                padx=2, pady=2, expand=True)
         # Skill selection dropdown
         self.new_skill = tk.StringVar()
-        self.skill_dropdown = ttk.Combobox(self.left_bot_frame_L,
+        self.skill_dropdown = ttk.Combobox(self.skills_frame,
                                 textvariable=self.new_skill, width=25,
                                 values=self.skills.skill_list, state='readonly')
         self.skill_dropdown.bind("<<ComboboxSelected>>", self._add_skill)
@@ -422,14 +432,14 @@ class DamageCalcWin():
 
         # Create the elements
         # Optionmenu
-        skill_menu = tk.OptionMenu(self.skills_frame,
+        skill_menu = tk.OptionMenu(self.skills_data_frame,
                                    skill_lvl, *skill_lvl_list)
         skill_menu.grid(row=self.row_pos, column=3, sticky='w')
         # Label
-        skill_label = tk.Label(self.skills_frame, text=self.skill_name)
+        skill_label = tk.Label(self.skills_data_frame, text=self.skill_name)
         skill_label.grid(row=self.row_pos, column=2, sticky='w')
         # Remove btn
-        skill_btn = tk.Button(self.skills_frame, width=3, height=1, text='X',
+        skill_btn = tk.Button(self.skills_data_frame, width=3, height=1, text='X',
                               command=lambda:self._remove_skill(formatted_skill_name))
         skill_btn.grid(row=self.row_pos, column=1, sticky='w', padx=5)
         
@@ -442,18 +452,18 @@ class DamageCalcWin():
             special_lvl_list = self.special_lvl_list
 
             # Option menu
-            special_menu = tk.OptionMenu(self.skills_frame,
+            special_menu = tk.OptionMenu(self.skills_data_frame,
                                          special_lvl, *special_lvl_list)
             special_menu.grid(row=self.row_pos, column=5, sticky='w')
             # Label
-            special_label = tk.Label(self.skills_frame, text=special_name)
+            special_label = tk.Label(self.skills_data_frame, text=special_name)
             special_label.grid(row=self.row_pos, column=4, sticky='w')
         else:
             # Empty option menu
-            special_menu = tk.Label(self.skills_frame, text='')
+            special_menu = tk.Label(self.skills_data_frame, text='')
             special_menu.grid(row=self.row_pos, column=5, sticky='w')
             # Empty label
-            special_label = tk.Label(self.skills_frame, text='')
+            special_label = tk.Label(self.skills_data_frame, text='')
             special_label.grid(row=self.row_pos, column=4, sticky='w')
 
         # Add the skill and relative elements to the dict of active skills
@@ -518,8 +528,7 @@ class DamageCalcWin():
         """Call the necessary functions to calculate the damage"""
         # Check for a previous result and delete it if present.
         try:
-            self.results_label_1.destroy()
-            self.results_label_2.destroy()
+            self.results_label.destroy()
         except AttributeError:
             pass
         self.get_values = GetValues(self)
@@ -530,7 +539,7 @@ class DamageCalcWin():
 
     def _show_results(self):
         """Print the results"""
-        self.results_label_1 = tk.Label(self.results_frame, justify='left',
+        self.results_label = tk.Label(self.results_frame, justify='left',
             text=f"Displayed attack: {self.calc.display_atk}\n"
                  f"Displayed element: {self.calc.display_elem}\n\n"
                  f"Affinity: {self.calc.final_crit}\n\n"
@@ -542,16 +551,7 @@ class DamageCalcWin():
                  f"If crit: {self.calc.phys_crit_dmg}\n\n"
                  f"Elemental: {self.calc.elem_dmg}\n"
                  f"If crit: {self.calc.elem_crit_dmg}")
-        self.results_label_1.pack(side='left', padx=3, pady=3)
-
-        #self.results_label_2 = tk.Label(self.results_frame, justify='left',
-        #    text=f"Total damage: {self.calc.tot_dmg}\n"
-        #         f"If crit: {self.calc.phys_crit_dmg + self.calc.elem_crit_dmg}"
-        #         f"\n\nPhysical: {self.calc.phys_dmg}\n"
-        #         f"If crit: {self.calc.phys_crit_dmg}\n\n"
-       #         f"Elemental: {self.calc.elem_dmg}\n"
-        #         f"If crit: {self.calc.elem_crit_dmg}")
-        #self.results_label_2.pack(side='left', padx=3, pady=3)
+        self.results_label.pack(side='left', padx=3, pady=3)
 
 if __name__ == '__main__':
     # Make an app istance and run the app

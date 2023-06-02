@@ -253,5 +253,5 @@ class Skills:
         # Red health ratio
         self.strife_special_name = 'Red Health'
         self.strife_special = tk.StringVar()
-        self.strife_special.set('> 60%')
-        self.strife_special_list = ('< 60%', '> 60%')
+        self.strife_special.set('>60%')
+        self.strife_special_list = ('<60%', '>60%')

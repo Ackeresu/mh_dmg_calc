@@ -5,13 +5,12 @@ class Other():
 
     def __init__(self):
         """Initialize the variables"""
-        self.rampage_deco_list = ['none', 'element exploit', 'hellion mode',
-                                  'anti species', 'small monster exploit',
-                                  'blight exploit', 'magnamalo soul',
-                                  'valstrax soul', 'kushala daora soul',
-                                  'narwa soul', 'bloody heart']
+        self.rampage_deco_list = ['none', 'anti species', 'blight exploit',
+                                  'bloody heart', 'element exploit',
+                                  'hellion mode', 'kushala daora soul',
+                                  'magnamalo soul', 'narwa soul',
+                                  'small monster exploit', 'valstrax soul']
         self.rampage_deco_list = [item.title() for item in self.rampage_deco_list]
-        self.rampage_deco_list = sorted(self.rampage_deco_list)
 
         self.petalace_list = ('None', 'Hunting III', 'Strength III', 'Fortitude III',
                               'Demon III', 'Absolute', 'Underworld')
@@ -28,30 +27,15 @@ class Other():
                            'rousing roar', 'butterflame', 'cutterfly']
         self.other_list = [item.title() for item in self.other_list]
 
-    # ---------- RAMPAGE DECO ----------
-        
+    # ---------- RAMPAGE DECO ---------- 
         for item in self.rampage_deco_list:
-            formatted_item = item.lower()
-            formatted_item = formatted_item.replace(' ', '_')
+            formatted_item = self._format_name(item)
             setattr(self, formatted_item, 0)
-        #self.element_exploit = 0
-        #self.hellion_mode = 0
-        #self.anti_species = 0
-        #self.small_monster_exploit = 0
-        #self.blight_exploit = 0
-        #self.magnamalo_soul = 0
-        #self.valstrax_soul = 0
-        #self.kushala_daora_soul = 0
-        #self.narwa_soul = 0
-        #self.bloody_heart = 0
 
     # ---------- PETALACE ----------
-        self.hunting_iii = 0
-        self.strength_iii = 0
-        self.fortitude_iii = 0
-        self.demon_iii = 0
-        self.absolute = 0
-        self.underworld = 0
+        for item in self.petalace_list:
+            formatted_item = self._format_name(item)
+            setattr(self, formatted_item, 0)
 
     # ---------- ITEMS ----------
         self.powercharm = tk.IntVar()
@@ -89,6 +73,11 @@ class Other():
         self.dango_bulker.set(0)
     
     # ---------- HH SONGS ----------
+        #for item in self.hh_songs_list:
+        #    formatted_item = self._format_name(item)
+        #    self.formatted_item = tk.IntVar()
+        #    self.formatted_item.set(0)
+
         self.attack_up = tk.IntVar()
         self.attack_up.set(0)
 
@@ -119,3 +108,15 @@ class Other():
 
         self.cutterfly = tk.IntVar()
         self.cutterfly.set(0)
+
+    def _format_name(self, item):
+        """Format the name for logical purposes"""
+        item_name = item.lower()
+        item_name = item_name.replace(' ', '_')
+        return item_name
+    
+    def _initialize_intvar(self, item):
+        self.formatted_item = self._format_name(item)
+        self.formatted_item = tk.IntVar()
+        self.formatted_item.set(0)
+        
