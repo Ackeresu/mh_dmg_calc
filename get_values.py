@@ -153,7 +153,7 @@ class GetValues():
         if demon_iii == 1:
             self.atk_buffs += 20
 
-        if absolute or underworld == 1:
+        if (absolute or underworld) == 1:
             self.atk_buffs += 15
 
         # ---------- ITEMS ----------
@@ -192,6 +192,7 @@ class GetValues():
         if dango_booster == 0:
             pass
         else:
+            # Buff value per level: 6/9/12/15
             self.atk_buffs += (dango_booster_lvl * 3) + 3
 
         if dango_adrenaline == 0:
@@ -314,6 +315,7 @@ class GetValues():
         if resentment == 0:
             pass
         else:
+            # Buff value per level: 5/10/15/20/25
             self.atk_buffs += (resentment_lvl * 5)
 
         # Resuscitate
@@ -322,6 +324,8 @@ class GetValues():
 
         if resuscitate == 0:
             pass
+        #else:
+        #    self.atk_buffs += ((resuscitate_lvl * 2) * 5) - 10
         elif resuscitate_lvl == 1:
             self.atk_buffs += 5
         elif resuscitate_lvl == 2:
@@ -335,12 +339,9 @@ class GetValues():
 
         if buildup_boost == 0:
             pass
-        elif buildup_boost_lvl == 1:
-            self.atk_global_mltp += 0.1
-        elif buildup_boost_lvl == 2:
-            self.atk_global_mltp += 0.15
-        elif buildup_boost_lvl == 3:
-            self.atk_global_mltp += 0.2
+        else:
+            # Buff value per level: 0.1/0.15/0.20
+            self.atk_global_mltp += ((buildup_boost_lvl * 5) + 5) / 100
 
         # Foray
         foray = self.dmg_calc_win.skills.foray
@@ -376,12 +377,9 @@ class GetValues():
 
         if offensive_guard == 0:
             pass
-        elif offensive_guard_lvl == 1:
-            self.atk_mltp += 0.05
-        elif offensive_guard_lvl == 2:
-            self.atk_mltp += 0.1
-        elif offensive_guard_lvl == 3:
-            self.atk_mltp += 0.15
+        else:
+            # Buff value per level: 0.05/0.1/0.15
+            self.atk_mltp += (offensive_guard_lvl * 5) / 100
 
         # Heroics
         heroics = self.dmg_calc_win.skills.heroics
@@ -426,12 +424,9 @@ class GetValues():
 
         if element_exploit == 0:
             pass
-        elif element_exploit_lvl == 1:
-            self.elem_global_mltp += 0.1
-        elif element_exploit_lvl == 2:
-            self.elem_global_mltp += 0.125
-        elif element_exploit_lvl == 3:
-            self.elem_global_mltp += 0.15
+        else:
+            # Buff value per level: 0.1/0.125/0.15
+            self.elem_global_mltp += ((element_exploit_lvl - 1) * 0.025) + 0.1
 
         # Burst
         burst = self.dmg_calc_win.skills.burst
@@ -455,15 +450,11 @@ class GetValues():
 
         if coalescence == 0:
             pass
-        elif coalescence_lvl == 1:
-            self.atk_buffs += 12
-            self.elem_buffs += 2
-        elif coalescence_lvl == 2:
-            self.atk_buffs += 15
-            self.elem_buffs += 3
-        elif coalescence_lvl == 3:
-            self.atk_buffs += 18
-            self.elem_buffs += 4
+        else:
+            # Buff value per level: 12/15/18
+            self.atk_buffs += (coalescence_lvl * 3) + 9
+            # Buff value per level: 2/3/4
+            self.elem_buffs += coalescence_lvl + 1
 
         # Bloodlust
         bloodlust = self.dmg_calc_win.skills.bloodlust
@@ -494,12 +485,9 @@ class GetValues():
         if mail_of_hellfire == 0:
             pass
         # Red scroll
-        elif mail_of_hellfire_lvl == 1 and self.blue_scroll == 0:
-            self.atk_buffs += 15
-        elif mail_of_hellfire_lvl == 2 and self.blue_scroll == 0:
-            self.atk_buffs += 20
-        elif mail_of_hellfire_lvl == 3 and self.blue_scroll == 0:
-            self.atk_buffs += 25
+        elif self.blue_scroll == 0:
+            # Buff value per level: 15/20/25
+            self.atk_buffs += (mail_of_hellfire_lvl * 5) + 10
         # Blue scroll
         elif mail_of_hellfire_lvl == 1 and self.blue_scroll == 1:
             self.elem_mltp += 0.05
@@ -514,18 +502,8 @@ class GetValues():
 
         if critical_eye == 0:
             pass
-        elif critical_eye_lvl == 1:
-            self.crit_buffs += 5
-        elif critical_eye_lvl == 2:
-            self.crit_buffs += 10
-        elif critical_eye_lvl == 3:
-            self.crit_buffs += 15
-        elif critical_eye_lvl == 4:
-            self.crit_buffs += 20
-        elif critical_eye_lvl == 5:
-            self.crit_buffs += 25
-        elif critical_eye_lvl == 6:
-            self.crit_buffs += 30
+        elif  1 <= critical_eye_lvl <= 6:
+            self.crit_buffs += critical_eye_lvl * 5
         elif critical_eye_lvl == 7:
             self.crit_buffs += 40
 
@@ -535,12 +513,9 @@ class GetValues():
 
         if critical_boost == 0:
             pass
-        elif critical_boost_lvl == 1:
-            self.crit_mltp = 1.3
-        elif critical_boost_lvl == 2:
-            self.crit_mltp = 1.35
-        elif critical_boost_lvl == 3:
-            self.crit_mltp = 1.4
+        else:
+            # Buff value per level: 1.3/1.35/1.4
+            self.crit_mltp = (critical_boost_lvl * 0.05) + 1.25
         
         # Critical element
         critical_element = self.dmg_calc_win.skills.critical_element
@@ -548,12 +523,9 @@ class GetValues():
 
         if critical_element == 0:
             pass
-        elif critical_element_lvl == 1:
-            self.crit_elem_mltp = 1.05
-        elif critical_element_lvl == 2:
-            self.crit_elem_mltp = 1.1
-        elif critical_element_lvl == 3:
-            self.crit_elem_mltp = 1.15
+        else:
+            # Buff value per level: 0.05/0.1/0.15
+            self.crit_elem_mltp = (critical_element_lvl * 5) / 100
 
         # Critical draw
         critical_draw = self.dmg_calc_win.skills.critical_draw
@@ -562,11 +534,11 @@ class GetValues():
         if critical_draw == 0:
             pass
         elif critical_draw_lvl == 1:
-            self.crit_buffs += 10
+            self.crit_buffs += 15
         elif critical_draw_lvl == 2:
-            self.crit_buffs += 20
-        elif critical_draw_lvl == 3:
             self.crit_buffs += 30
+        elif critical_draw_lvl == 3:
+            self.crit_buffs += 60
 
         # Latent power
         latent_power = self.dmg_calc_win.skills.latent_power
@@ -574,16 +546,9 @@ class GetValues():
 
         if latent_power == 0:
             pass
-        elif latent_power_lvl == 1:
-            self.crit_buffs += 10
-        elif latent_power_lvl == 2:
-            self.crit_buffs += 20
-        elif latent_power_lvl == 3:
-            self.crit_buffs += 30
-        elif latent_power_lvl == 4:
-            self.crit_buffs += 40
-        elif latent_power_lvl == 5:
-            self.crit_buffs += 50
+        else:
+            # Buff value per level: 10/20/30/40/50
+            self.crit_buffs += latent_power_lvl * 10
 
         # Maximum might
         maximum_might = self.dmg_calc_win.skills.maximum_might
@@ -591,12 +556,9 @@ class GetValues():
 
         if maximum_might == 0:
             pass
-        elif maximum_might_lvl == 1:
-            self.crit_buffs += 10
-        elif maximum_might_lvl == 2:
-            self.crit_buffs += 20
-        elif maximum_might_lvl == 3:
-            self.crit_buffs += 30
+        else:
+            # Buff value per level: 10/20/30
+            self.crit_buffs += maximum_might_lvl * 10
 
         # Weakness exploit
         weakness_exploit = self.dmg_calc_win.skills.weakness_exploit
@@ -633,7 +595,7 @@ class GetValues():
         elif kushala_teostra_blessing_lvl == 1:
             self.elem_mltp += 0.05
         elif kushala_teostra_blessing_lvl >= 2:
-            self.elem_mltp += 0.1
+            self.elem_mltp += 0.10
 
         # Stormsoul
         stormsoul = self.dmg_calc_win.skills.stormsoul
@@ -641,10 +603,9 @@ class GetValues():
 
         if stormsoul == 0:
             pass
-        elif stormsoul_lvl == 1:
-            self.elem_mltp += 0.05
-        elif stormsoul_lvl == 2:
-            self.elem_mltp += 0.1
+        elif 1 <= stormsoul_lvl <= 2:
+            # Buff value per level: 0.05/0.1
+            self.elem_mltp += (stormsoul_lvl * 5) / 100
         elif stormsoul_lvl >= 3:
             self.elem_mltp += 0.15
 
@@ -654,10 +615,9 @@ class GetValues():
 
         if dragonheart == 0:
             pass
-        elif dragonheart_lvl == 4:
-            self.atk_mltp += 0.05
-        elif dragonheart_lvl == 5:
-            self.atk_mltp += 0.1
+        elif dragonheart_lvl >= 4:
+            # Buff value per level: 0.05/0.1
+            self.atk_mltp += (dragonheart_lvl - 3) * 0.05
 
         # Frostcraft
         frostcraft = self.dmg_calc_win.skills.frostcraft
@@ -687,12 +647,9 @@ class GetValues():
 
         if charge_master == 0:
             pass
-        elif charge_master_lvl == 1:
-            self.elem_global_mltp += 0.05
-        elif charge_master_lvl == 2:
-            self.elem_global_mltp += 0.1
-        elif charge_master_lvl == 3:
-            self.elem_global_mltp += 0.15
+        else:
+            # Buff value per level: 0.05/0.1/0.15
+            self.elem_global_mltp += (charge_master_lvl * 5) / 100
 
         # Normal rapid up
         #normal_rapid_up = self.dmg_calc_win.skills.normal_rapid_up
@@ -717,10 +674,9 @@ class GetValues():
 
         if fortify == 0:
             pass
-        elif carts_n == 1:
-            self.atk_mltp += 0.1
-        elif carts_n == 2:
-            self.atk_mltp += 0.2
+        else:
+            # Buff value per level: 0.1/0.2
+            self.atk_mltp += carts_n / 10
 
         # Dereliction
         dereliction = self.dmg_calc_win.skills.dereliction
@@ -754,15 +710,10 @@ class GetValues():
                 self.elem_mltp += 0.15
                 self.crit_buffs += 10
         elif red_health == '>60%':
-            if strife_lvl == 1:
-                self.elem_mltp += 0.1
-                self.crit_buffs += 10
-            elif strife_lvl == 2:
-                self.elem_mltp += 0.15
-                self.crit_buffs += 15
-            elif strife_lvl == 3:
-                self.elem_mltp += 0.20
-                self.crit_buffs += 20
+            # Buff value per level: 0.1/0.15/0.2
+            self.elem_mltp += ((strife_lvl * 5) / 100) + 0.05
+            # Buff value per level: 10/15/20
+            self.crit_buffs += (strife_lvl * 5) + 5
 
     def _check_qurio_red(self, dereliction_lvl, qurio_n):
         """Check the value for the buff in the red scroll"""
