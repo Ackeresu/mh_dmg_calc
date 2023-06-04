@@ -17,9 +17,9 @@ class DamageCalcWin():
         self.skills = Skills()
         self.other = Other()
         self.active_skills = {}
-        self.old_wpn_specific = ''
-        self.old_rampage_deco = ''
-        self.old_petalace = ''
+        self.old_wpn_specific = 'none'
+        self.old_rampage_deco = 'none'
+        self.old_petalace = 'none'
         self.row_pos = 0
 
         self.root.title("MH Damage Calculator")
@@ -162,12 +162,14 @@ class DamageCalcWin():
         self.wpn_specific_title = tk.Label(self.equipment_frame, text="WEAPON SPECIFIC")
         self.wpn_specific_title.pack(side='top', fill='none',
                                      padx=2, pady=2, expand=True)
-        # Weapon specific selection dropdown
+        # Dropdown
         self.active_wpn_specific = tk.StringVar()
+        wpn_specific_data = [self.wpn, self.old_wpn_specific, self.active_wpn_specific]
         self.wpn_specific_dropdown = ttk.Combobox(self.equipment_frame,
                                 textvariable=self.active_wpn_specific, width=25,
                                 values=self.wpn.wpn_specific_list, state='readonly')
-        self.wpn_specific_dropdown.bind("<<ComboboxSelected>>", self._wpn_specific_choice)
+        self.wpn_specific_dropdown.bind("<<ComboboxSelected>>", lambda event,
+                                    data=wpn_specific_data: self._dropdown_choice(event, data))
         self.wpn_specific_dropdown.pack(side='top', padx=3, pady=4, expand=True)
         
     def _create_rampage_deco_box(self):
@@ -176,12 +178,14 @@ class DamageCalcWin():
         self.rampage_deco_title = tk.Label(self.equipment_frame, text="RAMPAGE DECO")
         self.rampage_deco_title.pack(side='top', fill='none',
                                      padx=2, pady=2, expand=True)
-        # Petalace selection dropdown
+        # Dropdown
         self.active_rampage_deco = tk.StringVar()
+        rampage_deco_data = [self.other, self.old_rampage_deco, self.active_rampage_deco]
         self.rampage_deco_dropdown = ttk.Combobox(self.equipment_frame,
                                 textvariable=self.active_rampage_deco, width=25,
                                 values=self.other.rampage_deco_list, state='readonly')
-        self.rampage_deco_dropdown.bind("<<ComboboxSelected>>", self._rampage_deco_choice)
+        self.rampage_deco_dropdown.bind("<<ComboboxSelected>>", lambda event,
+                                    data=rampage_deco_data: self._dropdown_choice(event, data))
         self.rampage_deco_dropdown.pack(side='top', padx=3, pady=4, expand=True)
 
     def _create_petalace_box(self):
@@ -190,46 +194,27 @@ class DamageCalcWin():
         self.petalace_title = tk.Label(self.equipment_frame, text="PETALACE")
         self.petalace_title.pack(side='top', fill='none',
                                      padx=2, pady=2, expand=True)
-        # Petalace selection dropdown
+        # Dropdown
         self.active_petalace = tk.StringVar()
+        petalace_data = [self.other, self.old_petalace, self.active_petalace]
         self.petalace_dropdown = ttk.Combobox(self.equipment_frame,
                                 textvariable=self.active_petalace, width=25,
                                 values=self.other.petalace_list, state='readonly')
-        self.petalace_dropdown.bind("<<ComboboxSelected>>", self._petalace_choice)
+        self.petalace_dropdown.bind("<<ComboboxSelected>>", lambda event,
+                                    data=petalace_data: self._dropdown_choice(event, data))
         self.petalace_dropdown.pack(side='top', padx=3, pady=4, expand=True)
 
-    def _wpn_specific_choice(self, event):
-        """Manage the addition of the selected rampage deco and remove the old one"""
-        new_wpn_specific = self.active_wpn_specific.get()
+    def _dropdown_choice(self, event, data):
+        """Manage the addition of the selected dropdown choice and remove the old one"""
+        instance = data[0]
+        old_choice = data[1]
+        new_choice = data[2].get()
 
-        if self.old_wpn_specific != '':
-            setattr(self.wpn, self.old_wpn_specific, 0)
+        setattr(instance, old_choice, 0)
         
-        new_wpn_specific_name = self._format_name(new_wpn_specific)
-        setattr(self.wpn, new_wpn_specific_name, 1)
-        self.old_wpn_specific = new_wpn_specific_name
-
-    def _rampage_deco_choice(self, event):
-        """Manage the addition of the selected rampage deco and remove the old one"""
-        new_rampage_deco = self.active_rampage_deco.get()
-
-        if self.old_rampage_deco != '':
-            setattr(self.other, self.old_rampage_deco, 0)
-        
-        new_rampage_deco_name = self._format_name(new_rampage_deco)
-        setattr(self.other, new_rampage_deco_name, 1)
-        self.old_rampage_deco = new_rampage_deco_name
-
-    def _petalace_choice(self, event):
-        """Manage the addition of the selected petalace and remove the old one"""
-        new_petalace = self.active_petalace.get()
-
-        if self.old_petalace != '':
-            setattr(self.other, self.old_petalace, 0)
-        
-        new_petalace_name = self._format_name(new_petalace)
-        setattr(self.other, new_petalace_name, 1)
-        self.old_petalace = new_petalace_name
+        new_choice_name = self._format_name(new_choice)
+        setattr(instance, new_choice_name, 1)
+        data[1] = new_choice_name
 
     def _create_results_box(self):
         """Create the box that manage the results"""
