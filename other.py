@@ -119,4 +119,3 @@ class Other():
         self.formatted_item = self._format_name(item)
         self.formatted_item = tk.IntVar()
         self.formatted_item.set(0)
-        

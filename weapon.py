@@ -5,8 +5,9 @@ class Weapon():
 
     def __init__(self):
         """Initialize the variables"""
-        self.wpn_list = ('Raw', 'Element', 'Affinity', 'Sharpness')
-        self.monster_list = ('MV', 'Raw Hitzone', 'Elemental Hitzone')
+        self.wpn_list = ('Raw', 'Element', 'Affinity', 'Sharpness',
+                         'MV', 'Raw Hitzone', 'Elemental Hitzone')
+        #self.monster_list = ('MV', 'Raw Hitzone', 'Elemental Hitzone')
 
         self.wpn_specific_list = ['None', 'GS Power Sheathe', 'LS White Spirit Gauge',
                                'LS Yellow Spirit Gauge', 'LS Red Spirit Gauge',
@@ -45,4 +46,3 @@ class Weapon():
 
         self.elemental_hitzone = tk.DoubleVar()
         self.elemental_hitzone.set(30)
-        

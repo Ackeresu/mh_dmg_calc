@@ -42,30 +42,25 @@ class DamageCalc():
         elem_sharp_mltp = self.sharp_mltp[1]
 
         # Calculate the displayed atk and elem
-        self.display_atk = round(
-            (self.raw * self.atk_mltp + self.atk_buffs) * 1 + 0.1)
-        self.display_elem = round(
-            (self.elem * self.elem_mltp + self.elem_buffs) * 1 + 0.1)
+        self.display_atk = round((self.raw * self.atk_mltp + self.atk_buffs) * 1 + 0.1)
+        self.display_elem = round((self.elem * self.elem_mltp + self.elem_buffs) * 1 + 0.1)
 
-        phys_atk = (self.display_atk * raw_sharp_mltp * self.atk_global_mltp
-                    * self.mv)
-        elem_atk = (self.display_elem * elem_sharp_mltp * self.elem_global_mltp)
+        phys_atk = round(self.display_atk * raw_sharp_mltp * self.atk_global_mltp * self.mv)
+        elem_atk = round(self.display_elem * elem_sharp_mltp * self.elem_global_mltp)
 
         # Calculate the effective raw/elem
         # Crit multiplier
         self.final_crit = round(self.crit + self.crit_buffs)
         # Convert the crit multipliers from float (1.xx) to int (xx)
-        crit_mltp_value = (self.crit_mltp * 100) - 100
-        crit_elem_mltp_value = (self.crit_elem_mltp * 100) - 100
+        crit_mltp_value = round(self.crit_mltp * 100) - 100
+        crit_elem_mltp_value = round(self.crit_elem_mltp * 100) - 100
 
         if self.final_crit >= 100:
             crit_calc = 1 + (crit_mltp_value / 100)
             elem_crit_calc = 1 + (crit_elem_mltp_value / 100)
         else:
-            crit_calc = 1 + ((self.final_crit / 100)
-                             * (crit_mltp_value / 100))
-            elem_crit_calc = 1 + ((self.final_crit / 100) 
-                                  * (crit_elem_mltp_value / 100))
+            crit_calc = 1 + ((self.final_crit / 100) * (crit_mltp_value / 100))
+            elem_crit_calc = 1 + ((self.final_crit / 100) * (crit_elem_mltp_value / 100))
 
         self.eff_raw = round((self.display_atk * raw_sharp_mltp *
                               self.atk_global_mltp) * crit_calc)
@@ -80,6 +75,7 @@ class DamageCalc():
         self.elem_crit_dmg = round(self.elem_dmg * self.crit_elem_mltp)
 
         self.tot_dmg = self.phys_dmg + self.elem_dmg
+        self.tot_crit_dmg = self.phys_crit_dmg + self.elem_crit_dmg
         
     def _sharp_mod(self):
         """Calculate the sharpness modifier"""

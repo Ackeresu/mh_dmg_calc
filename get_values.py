@@ -26,16 +26,16 @@ class GetValues():
     
     def _get_wpn_values(self):
         """Get the values from the entries and convert them if necessary"""
-        self.raw = float(self.dmg_calc_win.raw_entry.get())
-        self.elem = float(self.dmg_calc_win.elem_entry.get())
-        self.crit = float(self.dmg_calc_win.crit_entry.get())
+        self.raw = float(self.dmg_calc_win.wpn.raw.get())
+        self.elem = float(self.dmg_calc_win.wpn.element.get())
+        self.crit = float(self.dmg_calc_win.wpn.affinity.get())
         self.sharp = self.dmg_calc_win.wpn.sharpness.get()
 
-        self.mv = float(self.dmg_calc_win.mv_entry.get())
+        self.mv = float(self.dmg_calc_win.wpn.mv.get())
         self.mv = self.mv / 100
-        self.hzv = float(self.dmg_calc_win.hzv_entry.get())
+        self.hzv = float(self.dmg_calc_win.wpn.raw_hitzone.get())
         self.hzv = self.hzv / 100
-        self.ehzv = float(self.dmg_calc_win.ehzv_entry.get())
+        self.ehzv = float(self.dmg_calc_win.wpn.elemental_hitzone.get())
         self.ehzv = self.ehzv / 100
 
     def _get_wpn_specific_values(self):
