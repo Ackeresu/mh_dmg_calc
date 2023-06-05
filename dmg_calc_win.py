@@ -45,19 +45,15 @@ class DamageCalcWin():
 
         # Left side
         self.left_frame = tk.Frame(self.canvas, bg='blue')
-        #self.left_frame.config(borderwidth=2)
         self.left_frame.pack(side='left')
 
         self.left_top_frame = tk.Frame(self.left_frame, bg='green')
-        #self.left_top_frame.config(borderwidth=2)
         self.left_top_frame.pack(anchor='w')
 
         self.left_center_frame = tk.Frame(self.left_frame, bg='cyan')
-        #self.left_center_frame.config(borderwidth=2)
         self.left_center_frame.pack()
 
         self.left_bottom_frame = tk.Frame(self.left_frame, bg='violet')
-        #self.left_bottom_frame.config(borderwidth=2)
         self.left_bottom_frame.pack()
 
         # Right side
@@ -481,10 +477,12 @@ class DamageCalcWin():
     def _calculate(self):
         """Call the necessary functions to calculate the damage"""
         # Check for a previous result and delete it if present.
-        #try:
-        #    self.results_label.destroy()
-        #except AttributeError:
-        #    pass
+        try:
+            self.result_name_label.destroy()
+            self.result_label.destroy()
+            self.crit_label.destroy()
+        except AttributeError:
+            pass
         self.get_values = GetValues(self)
         self.get_values.get_values()
         self.calc = DamageCalc(self.get_values)
@@ -507,17 +505,17 @@ class DamageCalcWin():
         for item in result_name_list:
             if x <= len(result_name_list):
                 item_title = item.title()
-                result_name_label = tk.Label(self.results_output_frame, text=item_title)
-                result_name_label.grid(row=x, column=1, pady=2, sticky='w')
+                self.result_name_label = tk.Label(self.results_output_frame, text=item_title)
+                self.result_name_label.grid(row=x, column=1, pady=2, sticky='w')
 
-                result_label = tk.Label(self.results_output_frame, text=result_list[x])
-                result_label.grid(row=x, column=2, padx=(5,0), sticky='e')
+                self.result_label = tk.Label(self.results_output_frame, text=result_list[x])
+                self.result_label.grid(row=x, column=2, padx=(5,0), sticky='e')
 
                 if (item == 'total damage:' or
                     item == 'physical damage:' or item == 'elemental damage:'):
-                    crit_label = tk.Label(self.results_output_frame,
+                    self.crit_label = tk.Label(self.results_output_frame,
                                           text=f'({result_crit_list[y]})')
-                    crit_label.grid(row=x, column=3, sticky='w')
+                    self.crit_label.grid(row=x, column=3, sticky='w')
                     y += 1
             x += 1
 
