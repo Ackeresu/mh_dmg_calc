@@ -149,7 +149,7 @@ class DamageCalcWin():
                                 values=self.wpn.wpn_specific_list, state='readonly')
         self.wpn_specific_dropdown.bind("<<ComboboxSelected>>", lambda event,
                                     data=wpn_specific_data: self._dropdown_choice(event, data))
-        self.wpn_specific_dropdown.pack(side='top')
+        self.wpn_specific_dropdown.pack(side='top', padx=2, pady=(0,2))
         
     def _create_rampage_deco_box(self):
         """Create the box that manage the rampage decos"""
@@ -165,7 +165,7 @@ class DamageCalcWin():
                                 values=self.other.rampage_deco_list, state='readonly')
         self.rampage_deco_dropdown.bind("<<ComboboxSelected>>", lambda event,
                                     data=rampage_deco_data: self._dropdown_choice(event, data))
-        self.rampage_deco_dropdown.pack(side='top')
+        self.rampage_deco_dropdown.pack(side='top', padx=2, pady=(0,2))
 
     def _create_petalace_box(self):
         """Create the box that manage the petalaces"""
@@ -181,7 +181,7 @@ class DamageCalcWin():
                                 values=self.other.petalace_list, state='readonly')
         self.petalace_dropdown.bind("<<ComboboxSelected>>", lambda event,
                                     data=petalace_data: self._dropdown_choice(event, data))
-        self.petalace_dropdown.pack(side='top')
+        self.petalace_dropdown.pack(side='top', padx=2, pady=(0,2))
 
     def _dropdown_choice(self, event, data):
         """Manage the addition of the selected dropdown choice and remove the old one"""
@@ -361,7 +361,7 @@ class DamageCalcWin():
                                 textvariable=self.new_skill, width=25,
                                 values=self.skills.skill_list, state='readonly')
         self.skill_dropdown.bind("<<ComboboxSelected>>", self._add_skill)
-        self.skill_dropdown.pack(side='top')
+        self.skill_dropdown.pack(side='top', padx=2, pady=(1,3))
 
     def _add_skill(self, event):
         """Add the new skill"""
@@ -486,10 +486,10 @@ class DamageCalcWin():
     def _calculate(self):
         """Call the necessary functions to calculate the damage"""
         # Check for a previous result and delete it if present.
-        try:
-            self._delete_results_box()
-        except AttributeError:
-            pass
+        #try:
+        #    self._delete_results_box()
+        #except AttributeError:
+        #    pass
         self.get_values = GetValues(self)
         self.get_values.get_values()
         self.calc = DamageCalc(self.get_values)

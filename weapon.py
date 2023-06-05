@@ -24,24 +24,24 @@ class Weapon():
 
     # ---------- WEAPON ----------
         self.raw = tk.IntVar()
-        self.raw.set(300)
+        self.raw.set(395)
 
         self.element = tk.IntVar()
-        self.element.set(100)
+        self.element.set(0)
 
         self.affinity = tk.IntVar()
-        self.affinity.set(30)
+        self.affinity.set(0)
 
         self.sharpness = tk.StringVar()
-        self.sharpness.set('White')
+        self.sharpness.set('Purple')
         self.sharpness_list = ('Red', 'Orange', 'Yellow',
                                'Green', 'Blue', 'White', 'Purple')
         
         self.mv = tk.DoubleVar()
-        self.mv.set(50)
+        self.mv.set(80)
 
         self.raw_hitzone = tk.DoubleVar()
-        self.raw_hitzone.set(45)
+        self.raw_hitzone.set(100)
 
         self.elemental_hitzone = tk.DoubleVar()
         self.elemental_hitzone.set(30)
