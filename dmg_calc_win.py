@@ -324,25 +324,6 @@ class DamageCalcWin():
                                   text='CALCULATE', command=self._calculate)
         self.calc_btn.pack(side='top')
 
-    def _create_results_box(self):
-        """Create the box that manage the results"""
-        # Frame
-        self.results_frame = tk.Frame(self.right_frame, bg='green')
-        self.results_frame.config(borderwidth=10, relief='raised')
-        self.results_frame.pack(side='left', anchor='w')
-        # Title
-        self.results_title = tk.Label(self.results_frame, text="RESULTS")
-        self.results_title.pack(side='top', padx=2, pady=2)
-        # Output frame
-        self.results_output_frame = tk.Frame(self.results_frame, bg='pink')
-        self.results_output_frame.pack(side='top', anchor='n')
-
-    def _delete_results_box(self):
-        """Delete the precedent results elements"""
-        for element in self.results_elements_list:
-            element.destroy()
-        self.results_elements_list = []
-
 # -----------------------------------------------------------------------------
 # ---------------------------- SKILL FUNCTIONS --------------------------------
 # -----------------------------------------------------------------------------
@@ -486,49 +467,90 @@ class DamageCalcWin():
     def _calculate(self):
         """Call the necessary functions to calculate the damage"""
         # Check for a previous result and delete it if present.
-        #try:
-        #    self._delete_results_box()
-        #except AttributeError:
-        #    pass
+        try:
+            self._delete_results_box()
+        except AttributeError:
+            pass
         self.get_values = GetValues(self)
         self.get_values.get_values()
         self.calc = DamageCalc(self.get_values)
         self.calc.do_calcs()
         self._show_results()
+    
+    def _create_results_box(self):
+        """Create the box that manage the results"""
+        # New results
+        # Frame
+        self.results_frame = tk.Frame(self.right_frame, bg='green')
+        self.results_frame.config(borderwidth=10, relief='raised')
+        self.results_frame.pack(side='top', anchor='n')
+        # Title
+        self.results_title = tk.Label(self.results_frame, text="RESULTS")
+        self.results_title.pack(side='top', padx=2, pady=2)
+        # Output frame
+        self.results_output_frame = tk.Frame(self.results_frame, bg='pink')
+        self.results_output_frame.pack(side='top', anchor='n')
+
+        # Old results
+        # Frame
+        self.old_results_frame = tk.Frame(self.right_frame, bg='green')
+        self.old_results_frame.config(borderwidth=10, relief='raised')
+        self.old_results_frame.pack(side='bottom', anchor='n')
+        # Title
+        self.old_results_title = tk.Label(self.old_results_frame, text="PREVIOUS RESULTS")
+        self.old_results_title.pack(side='top', padx=2, pady=2)
+        # Output frame
+        self.old_results_output_frame = tk.Frame(self.old_results_frame, bg='pink')
+        self.old_results_output_frame.pack(side='top', anchor='n')
 
     def _show_results(self):
-        """Print the results"""
-        results_name_list = ['displayed attack:', 'displayed element:', 'affinity:',
+        """Manage the results"""
+        # Try to show the previous results, if there are not, skip
+        try:
+            self._create_results_elements(self.old_results_output_frame)
+        except AttributeError:
+            pass
+        self.results_name_list = ['displayed attack:', 'displayed element:', 'affinity:',
                         'effective raw:', 'effective element:', 'total damage:',
                         'physical damage:', 'elemental damage:']
-        results_list = [self.calc.display_atk, self.calc.display_elem,
+        self.results_list = [self.calc.display_atk, self.calc.display_elem,
                        self.calc.final_crit, self.calc.eff_raw, self.calc.eff_elem,
                        self.calc.tot_dmg, self.calc.phys_dmg, self.calc.elem_dmg]
-        results_crit_list = [self.calc.tot_crit_dmg, self.calc.phys_crit_dmg,
+        self.results_crit_list = [self.calc.tot_crit_dmg, self.calc.phys_crit_dmg,
                             self.calc.elem_crit_dmg]
         self.results_elements_list = []
-        
+
+        self._create_results_elements(self.results_output_frame)
+
+    def _create_results_elements(self, frame):
+        """Create the results elements"""
         x = 0
         y = 0
-        for item in results_name_list:
-            if x <= len(results_name_list):
+        for item in self.results_name_list:
+            if x <= len(self.results_name_list):
                 item_title = item.title()
-                self.result_name_label = tk.Label(self.results_output_frame, text=item_title)
-                self.result_name_label.grid(row=x, column=1, pady=2, sticky='w')
+                self.result_name_label = tk.Label(frame, text=item_title)
+                self.result_name_label.grid(row=x, column=1, pady=2, sticky='n')
                 self.results_elements_list.append(self.result_name_label)
 
-                self.result_label = tk.Label(self.results_output_frame, text=results_list[x])
+                self.result_label = tk.Label(frame, text=self.results_list[x])
                 self.result_label.grid(row=x, column=2, padx=(5,0), sticky='e')
                 self.results_elements_list.append(self.result_label)
 
                 if (item == 'total damage:' or
                     item == 'physical damage:' or item == 'elemental damage:'):
-                    self.crit_label = tk.Label(self.results_output_frame,
-                                          text=f'({results_crit_list[y]})')
+                    self.crit_label = tk.Label(frame,
+                                          text=f'({self.results_crit_list[y]})')
                     self.crit_label.grid(row=x, column=3, sticky='w')
                     self.results_elements_list.append(self.crit_label)
                     y += 1
             x += 1
+
+    def _delete_results_box(self):
+        """Delete the precedent results elements"""
+        for element in self.results_elements_list:
+            element.destroy()
+        self.results_elements_list = []
 
 if __name__ == '__main__':
     # Make an app istance and run the app
