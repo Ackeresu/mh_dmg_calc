@@ -17,6 +17,9 @@ class GetValues():
         self.crit_elem_mltp = 1.0
         self.crit_buffs = 0
 
+        self.buildup_boost_calc = 0
+        self.buildup_boost_eff_raw = 0
+
     def get_values(self):
         """Get the values"""
         self._get_wpn_specific_values()
@@ -341,7 +344,11 @@ class GetValues():
             pass
         else:
             # Buff value per level: 0.1/0.15/0.20
-            self.atk_global_mltp += ((buildup_boost_lvl * 5) + 5) / 100
+            self.buildup_boost_calc = ((buildup_boost_lvl * 5) + 5) / 100
+            self.atk_global_mltp += self.buildup_boost_calc
+            # The skill activates only 1/3 of the time, so this variable
+            # is needed for a correct calculations of the effective raw
+            self.buildup_boost_eff_raw = (self.buildup_boost_calc * 0.33)
 
         # Foray
         foray = self.dmg_calc_win.skills.foray

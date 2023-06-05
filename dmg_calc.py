@@ -24,6 +24,9 @@ class DamageCalc():
         self.crit_elem_mltp = value.crit_elem_mltp
         self.crit_buffs = value.crit_buffs
 
+        self.buildup_boost_calc = value.buildup_boost_calc
+        self.buildup_boost_eff_raw = value.buildup_boost_eff_raw
+
     def do_calcs(self):
         """Do the calculations"""
         # Damage formula:
@@ -62,10 +65,14 @@ class DamageCalc():
             crit_calc = 1 + ((self.final_crit / 100) * (crit_mltp_value / 100))
             elem_crit_calc = 1 + ((self.final_crit / 100) * (crit_elem_mltp_value / 100))
 
-        self.eff_raw = round((self.display_atk * raw_sharp_mltp *
-                              self.atk_global_mltp) * crit_calc)
-        self.eff_elem = round((self.display_elem * elem_sharp_mltp *
-                              self.elem_global_mltp) * elem_crit_calc)
+        if self.buildup_boost_calc != 0:
+            self.atk_global_mltp = ((self.atk_global_mltp - self.buildup_boost_calc)
+                                    + self.buildup_boost_eff_raw)
+
+        self.eff_raw = round(self.display_atk * raw_sharp_mltp
+                             * self.atk_global_mltp * crit_calc)
+        self.eff_elem = round(self.display_elem * elem_sharp_mltp *
+                              self.elem_global_mltp * elem_crit_calc)
 
         # Calculate the damage
         self.phys_dmg = round(phys_atk * self.hzv)
