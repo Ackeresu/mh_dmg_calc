@@ -651,6 +651,19 @@ class GetValues():
             # Buff value per level: 0.05/0.1/0.15
             self.elem_global_mltp += (charge_master_lvl * 5) / 100
 
+        # Adrenaline rush
+        adrenaline_rush = self.dmg_calc_win.skills.adrenaline_rush
+        adrenaline_rush_lvl = self.dmg_calc_win.skills.adrenaline_rush_lvl.get()
+
+        if adrenaline_rush == 0:
+            pass
+        elif adrenaline_rush_lvl == 1:
+            self.atk_buffs += 10
+        elif adrenaline_rush_lvl == 2:
+            self.atk_buffs += 15
+        elif adrenaline_rush_lvl == 3:
+            self.atk_buffs += 30
+
         # Normal rapid up
         #normal_rapid_up = self.dmg_calc_win.skills.normal_rapid_up
         #normal_rapid_up_lvl = self.dmg_calc_win.skills.normal_rapid_up_lvl.get()

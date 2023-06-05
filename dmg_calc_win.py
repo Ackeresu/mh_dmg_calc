@@ -22,7 +22,7 @@ class DamageCalcWin():
         self.old_petalace = 'none'
         self.row_pos = 0
 
-        self.root.title("MH Damage Calculator")
+        self.root.title("MH Sunbreak Damage Calculator")
         self.root.resizable(False, False)
         
         self._create_window()
@@ -94,11 +94,12 @@ class DamageCalcWin():
         # Wpn frame
         self.wpn_data_frame = tk.Frame(self.wpn_frame, bg='cyan')
         self.wpn_data_frame.pack(side='left', anchor='w')
-        
-        # ----------------------------------------------------------------------
+
         x = 0
         y = 0
+
         for item in self.wpn.wpn_list:
+            # If x > 3, change column and reset row
             if x > 3:
                 x = 0
                 y = 3
@@ -125,7 +126,11 @@ class DamageCalcWin():
                 wpn_entry.grid(row=x, column=y+1)
                 x += 1
 
-    def _create_equipment_box(self):        
+    def _create_equipment_box(self):
+        """Call the functions to make the equipment box"""
+        # The lists present in all these functions are necessary to pass the 
+        # variable and the event to trigger the function call
+        # in the "_dropdown_choice" function 
         self._create_wpn_specific_box()
         self._create_rampage_deco_box()
         self._create_petalace_box()
@@ -138,6 +143,7 @@ class DamageCalcWin():
         # Dropdown
         self.active_wpn_specific = tk.StringVar()
         wpn_specific_data = [self.wpn, self.old_wpn_specific, self.active_wpn_specific]
+
         self.wpn_specific_dropdown = ttk.Combobox(self.equipment_frame,
                                 textvariable=self.active_wpn_specific, width=25,
                                 values=self.wpn.wpn_specific_list, state='readonly')
@@ -153,6 +159,7 @@ class DamageCalcWin():
         # Dropdown
         self.active_rampage_deco = tk.StringVar()
         rampage_deco_data = [self.other, self.old_rampage_deco, self.active_rampage_deco]
+
         self.rampage_deco_dropdown = ttk.Combobox(self.equipment_frame,
                                 textvariable=self.active_rampage_deco, width=25,
                                 values=self.other.rampage_deco_list, state='readonly')
@@ -168,6 +175,7 @@ class DamageCalcWin():
         # Dropdown
         self.active_petalace = tk.StringVar()
         petalace_data = [self.other, self.old_petalace, self.active_petalace]
+
         self.petalace_dropdown = ttk.Combobox(self.equipment_frame,
                                 textvariable=self.active_petalace, width=25,
                                 values=self.other.petalace_list, state='readonly')
@@ -231,7 +239,7 @@ class DamageCalcWin():
         self.mega_demondrug_check.pack(anchor='w')
     
     def _create_food_box(self):
-        """"""
+        """Create the box that manage the food"""
         # Title
         self.food_title = tk.Label(self.items_frame, text="FOOD")
         self.food_title.pack(side='top', padx=2, pady=2)
@@ -329,6 +337,12 @@ class DamageCalcWin():
         self.results_output_frame = tk.Frame(self.results_frame, bg='pink')
         self.results_output_frame.pack(side='top', anchor='n')
 
+    def _delete_results_box(self):
+        """Delete the precedent results elements"""
+        for element in self.results_elements_list:
+            element.destroy()
+        self.results_elements_list = []
+
 # -----------------------------------------------------------------------------
 # ---------------------------- SKILL FUNCTIONS --------------------------------
 # -----------------------------------------------------------------------------
@@ -419,23 +433,18 @@ class DamageCalcWin():
             # Option menu
             special_menu = tk.OptionMenu(self.skills_data_frame,
                                          special_lvl, *special_lvl_list)
-            special_menu.grid(row=self.row_pos, column=5, sticky='w')
+            special_menu.grid(row=self.row_pos, column=5, sticky='w')    
             # Label
             special_label = tk.Label(self.skills_data_frame, text=special_name)
             special_label.grid(row=self.row_pos, column=4, sticky='w')
+
+            skill_elements.extend([skill_menu, skill_label, skill_btn,
+                                   special_menu, special_label])
         else:
-            # Empty option menu
-            special_menu = tk.Label(self.skills_data_frame, text='')
-            special_menu.grid(row=self.row_pos, column=5, sticky='w')
-            # Empty label
-            special_label = tk.Label(self.skills_data_frame, text='')
-            special_label.grid(row=self.row_pos, column=4, sticky='w')
+            skill_elements.extend([skill_menu, skill_label, skill_btn])
 
         # Add the skill and relative elements to the dict of active skills
-        skill_elements.extend([skill_menu, skill_label, skill_btn,
-                               special_menu, special_label])
         self.active_skills[formatted_skill_name] = skill_elements
-
         self.row_pos += 1
 
     def _remove_skill(self, skill_to_remove):
@@ -478,9 +487,7 @@ class DamageCalcWin():
         """Call the necessary functions to calculate the damage"""
         # Check for a previous result and delete it if present.
         try:
-            self.result_name_label.destroy()
-            self.result_label.destroy()
-            self.crit_label.destroy()
+            self._delete_results_box()
         except AttributeError:
             pass
         self.get_values = GetValues(self)
@@ -491,31 +498,35 @@ class DamageCalcWin():
 
     def _show_results(self):
         """Print the results"""
-        result_name_list = ['displayed attack:', 'displayed element:', 'affinity:',
+        results_name_list = ['displayed attack:', 'displayed element:', 'affinity:',
                         'effective raw:', 'effective element:', 'total damage:',
                         'physical damage:', 'elemental damage:']
-        result_list = [self.calc.display_atk, self.calc.display_elem,
+        results_list = [self.calc.display_atk, self.calc.display_elem,
                        self.calc.final_crit, self.calc.eff_raw, self.calc.eff_elem,
                        self.calc.tot_dmg, self.calc.phys_dmg, self.calc.elem_dmg]
-        result_crit_list = [self.calc.tot_crit_dmg, self.calc.phys_crit_dmg,
+        results_crit_list = [self.calc.tot_crit_dmg, self.calc.phys_crit_dmg,
                             self.calc.elem_crit_dmg]
+        self.results_elements_list = []
         
         x = 0
         y = 0
-        for item in result_name_list:
-            if x <= len(result_name_list):
+        for item in results_name_list:
+            if x <= len(results_name_list):
                 item_title = item.title()
                 self.result_name_label = tk.Label(self.results_output_frame, text=item_title)
                 self.result_name_label.grid(row=x, column=1, pady=2, sticky='w')
+                self.results_elements_list.append(self.result_name_label)
 
-                self.result_label = tk.Label(self.results_output_frame, text=result_list[x])
+                self.result_label = tk.Label(self.results_output_frame, text=results_list[x])
                 self.result_label.grid(row=x, column=2, padx=(5,0), sticky='e')
+                self.results_elements_list.append(self.result_label)
 
                 if (item == 'total damage:' or
                     item == 'physical damage:' or item == 'elemental damage:'):
                     self.crit_label = tk.Label(self.results_output_frame,
-                                          text=f'({result_crit_list[y]})')
+                                          text=f'({results_crit_list[y]})')
                     self.crit_label.grid(row=x, column=3, sticky='w')
+                    self.results_elements_list.append(self.crit_label)
                     y += 1
             x += 1
 
@@ -523,5 +534,4 @@ if __name__ == '__main__':
     # Make an app istance and run the app
     root = tk.Tk()
     app = DamageCalcWin(root)
-    #app.root.title("MH Builder")
     root.mainloop()

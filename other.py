@@ -115,7 +115,7 @@ class Other():
         item_name = item_name.replace(' ', '_')
         return item_name
     
-    def _initialize_intvar(self, item):
-        self.formatted_item = self._format_name(item)
-        self.formatted_item = tk.IntVar()
-        self.formatted_item.set(0)
+    #def _initialize_intvar(self, item):
+    #    self.formatted_item = self._format_name(item)
+    #    self.formatted_item = tk.IntVar()
+    #    self.formatted_item.set(0)

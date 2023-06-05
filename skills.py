@@ -17,7 +17,7 @@ class Skills:
                            'weakness exploit', 'sneak attack',
                            'kushala teostra blessing', 'stormsoul',
                            'dragonheart', 'frostcraft', 'grinder',
-                           'charge master']
+                           'charge master', 'adrenaline rush']
         
         self.special_skill_list = ['fortify','dereliction', 'strife',]
 
@@ -212,6 +212,12 @@ class Skills:
         self.charge_master_lvl = tk.IntVar()
         self.charge_master_lvl.set(3)
         self.charge_master_lvl_list = list(range(1, 4))
+
+        # Adrenaline rush
+        self.adrenaline_rush = 0
+        self.adrenaline_rush_lvl = tk.IntVar()
+        self.adrenaline_rush_lvl.set(3)
+        self.adrenaline_rush_lvl_list = list(range(1, 4))
 
         # Normal rapid up
         #self.normal_rapid_up = 0

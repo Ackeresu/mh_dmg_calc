@@ -7,7 +7,6 @@ class Weapon():
         """Initialize the variables"""
         self.wpn_list = ('Raw', 'Element', 'Affinity', 'Sharpness',
                          'MV', 'Raw Hitzone', 'Elemental Hitzone')
-        #self.monster_list = ('MV', 'Raw Hitzone', 'Elemental Hitzone')
 
         self.wpn_specific_list = ['None', 'GS Power Sheathe', 'LS White Spirit Gauge',
                                'LS Yellow Spirit Gauge', 'LS Red Spirit Gauge',

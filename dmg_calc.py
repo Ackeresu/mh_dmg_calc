@@ -88,7 +88,7 @@ class DamageCalc():
         elif self.sharp == 'Green':
             self.sharp_mltp = [1.05, 1]
         elif self.sharp == 'Blue':
-            self.sharp_mltpr = [1.2, 1.063]
+            self.sharp_mltp = [1.2, 1.063]
         elif self.sharp == 'White':
             self.sharp_mltp = [1.32, 1.15]
         elif self.sharp == 'Purple':
