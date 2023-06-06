@@ -12,7 +12,7 @@ class Other():
                                   'small monster exploit', 'valstrax soul']
         self.rampage_deco_list = [item.title() for item in self.rampage_deco_list]
 
-        self.petalace_list = ('None', 'Hunting III', 'Strength III', 'Fortitude III',
+        self.petalace_list = ('Hunting III', 'Strength III', 'Fortitude III',
                               'Demon III', 'Absolute', 'Underworld')
 
         self.items_list = ['powercharm', 'powertalon', 'might seed',

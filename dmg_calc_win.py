@@ -21,6 +21,7 @@ class DamageCalcWin():
         self.old_rampage_deco = 'none'
         self.old_petalace = 'none'
         self.row_pos = 0
+        self.results_elements_list = []
 
         self.root.title("MH Sunbreak Damage Calculator")
         self.root.resizable(False, False)
@@ -59,7 +60,7 @@ class DamageCalcWin():
         # Right side
         self.right_frame = tk.Frame(self.canvas, bg='red')
         self.right_frame.config(borderwidth=2)
-        self.right_frame.pack(side='right')
+        self.right_frame.pack(side='right', anchor='n')
 
         # ----------------------------------------------------------------------
 
@@ -518,8 +519,7 @@ class DamageCalcWin():
                        self.calc.tot_dmg, self.calc.phys_dmg, self.calc.elem_dmg]
         self.results_crit_list = [self.calc.tot_crit_dmg, self.calc.phys_crit_dmg,
                             self.calc.elem_crit_dmg]
-        self.results_elements_list = []
-
+        
         self._create_results_elements(self.results_output_frame)
 
     def _create_results_elements(self, frame):
@@ -529,20 +529,21 @@ class DamageCalcWin():
         for item in self.results_name_list:
             if x <= len(self.results_name_list):
                 item_title = item.title()
-                self.result_name_label = tk.Label(frame, text=item_title)
-                self.result_name_label.grid(row=x, column=1, pady=2, sticky='n')
-                self.results_elements_list.append(self.result_name_label)
-
-                self.result_label = tk.Label(frame, text=self.results_list[x])
-                self.result_label.grid(row=x, column=2, padx=(5,0), sticky='e')
-                self.results_elements_list.append(self.result_label)
-
+                # Result name
+                result_name_label = tk.Label(frame, text=item_title)
+                result_name_label.grid(row=x, column=1, pady=2, sticky='n')
+                self.results_elements_list.append(result_name_label)
+                # Result value
+                result_label = tk.Label(frame, text=self.results_list[x])
+                result_label.grid(row=x, column=2, padx=(5,0), sticky='e')
+                self.results_elements_list.append(result_label)
+                # Result if crit
                 if (item == 'total damage:' or
                     item == 'physical damage:' or item == 'elemental damage:'):
-                    self.crit_label = tk.Label(frame,
+                    crit_label = tk.Label(frame,
                                           text=f'({self.results_crit_list[y]})')
-                    self.crit_label.grid(row=x, column=3, sticky='w')
-                    self.results_elements_list.append(self.crit_label)
+                    crit_label.grid(row=x, column=3, sticky='w')
+                    self.results_elements_list.append(crit_label)
                     y += 1
             x += 1
 
@@ -550,7 +551,6 @@ class DamageCalcWin():
         """Delete the precedent results elements"""
         for element in self.results_elements_list:
             element.destroy()
-        self.results_elements_list = []
 
 if __name__ == '__main__':
     # Make an app istance and run the app
